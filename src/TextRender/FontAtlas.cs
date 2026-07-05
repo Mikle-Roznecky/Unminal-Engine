@@ -8,7 +8,7 @@ public class FontAtlas : IDisposable
     public int Width {get; private set;}
     public int Height {get; private set;}
 
-    private Dictionary<char, GlyphData> _glyphs = new Dictionary<char, GlyphData>();
+    private ConcurrentDictionary<char, GlyphData> _glyphs = new ConcurrentDictionary<char, GlyphData>();
 
     private const string Charset = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?-+*/|\=()[]{}<>@#$%^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 
@@ -69,7 +69,7 @@ public class FontAtlas : IDisposable
             
             float advance = size.Width; 
 
-            _glyphs[c] = new GlyphData(c, u, v, w, h, 0, 0, advance);
+            _glyphs.TryAdd(c, new GlyphData(c, u, v, w, h, 0, 0, advance));
 
             currentX += size.Width + padding;
             if (size.Height > maxHeightInRow) maxHeightInRow = size.Height;
