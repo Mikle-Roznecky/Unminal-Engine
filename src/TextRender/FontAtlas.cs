@@ -1,6 +1,8 @@
 // TextRender/FontAtlas.cs
 namespace EOCS.TextRender;
 
+using System.Collections.Concurrent;
+
 [SupportedOSPlatform("windows")]
 public class FontAtlas : IDisposable
 {   

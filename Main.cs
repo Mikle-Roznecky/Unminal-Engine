@@ -112,7 +112,9 @@ public class Main : GameWindow
         }
         else
         {
-            if (input.IsKeyReleased(Keys.F3)) debug_menu = !debug_menu;
+            if (input.IsKeyReleased(Keys.F3)) { 
+                debug_menu = !debug_menu;
+            }
 
             if (input.IsKeyReleased(Keys.Escape))
             {
@@ -135,6 +137,7 @@ public class Main : GameWindow
 
             _model = Matrix4.Identity;
         }
+        SetTitle();
     }
 
     protected override void OnRenderFrame(FrameEventArgs e)
@@ -200,6 +203,18 @@ public class Main : GameWindow
                 _projection = Matrix4.CreatePerspectiveFieldOfView(_activeCameraRef.FOV, Size.X / (float)Size.Y, 0.1f, 100.0f);
             }
         } 
+    }
+    
+    private void SetTitle(){
+        string BaseTitle = Config.Get<string>("Title", "EOCS Engine");
+        if (this.WindowState != WindowState.Fullscreen){
+            if (debug_menu) Title = BaseTitle + " (In Debug Menu)";
+            else if (_GamePaused) Title = BaseTitle + " (In Pause)";
+            else if (gameConsole != null && gameConsole.IsOpen) Title = BaseTitle + " (In Console)";
+            else Title = BaseTitle;
+        } else {
+            if (Title != BaseTitle) Title = BaseTitle;
+        }
     }
 }
 
