@@ -32,6 +32,10 @@ public class Skybox : IDisposable
         1.0f, -1.0f, -1.0f,  -1.0f, -1.0f,  1.0f,   1.0f, -1.0f,  1.0f
     };
 
+    /// <summary>
+    /// Initializes a new instance of the Skybox class by loading shaders, setting up geometry, and loading cubemap textures.
+    /// </summary>
+    /// <param name="faces">An array of file paths to the six texture images representing the skybox faces.</param>
     public Skybox(string[] faces)
     {
         LoadShaders();
@@ -39,6 +43,9 @@ public class Skybox : IDisposable
         LoadTexture(faces);
     }
 
+    /// <summary>
+    /// Loads, compiles, and links the vertex and fragment shaders for the skybox, and retrieves uniform locations.
+    /// </summary>
     private void LoadShaders()
     {
         string vertCode = File.ReadAllText("./Assets/shaders/SkyBox/shader.vert");
@@ -84,6 +91,9 @@ public class Skybox : IDisposable
         _skyboxLoc = GL.GetUniformLocation(_shaderProgram, "skybox");
     }
 
+    /// <summary>
+    /// Generates and configures the Vertex Array Object (VAO) and Vertex Buffer Object (VBO) for the skybox cube geometry.
+    /// </summary>
     private void SetupGeometry()
     {
         _vao = GL.GenVertexArray();
@@ -99,6 +109,10 @@ public class Skybox : IDisposable
         GL.BindVertexArray(0);
     }
 
+    /// <summary>
+    /// Loads and configures the six cubemap textures, applying necessary image rotations and alignment adjustments for each face.
+    /// </summary>
+    /// <param name="faces">An array of file paths to the six texture images representing the skybox faces.</param>
     private void LoadTexture(string[] faces)
     {
         _textureId = GL.GenTexture();
@@ -163,6 +177,11 @@ public class Skybox : IDisposable
         GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapR, (int)TextureWrapMode.ClampToEdge);
     }
 
+    /// <summary>
+    /// Checks the compilation status of a shader and prints an error log if the compilation failed.
+    /// </summary>
+    /// <param name="shader">The OpenGL handle of the shader to check.</param>
+    /// <param name="type">The descriptive label or type of the shader (e.g., "Vertex" or "Fragment").</param>
     private void CheckShader(int shader, string type)
     {
         GL.GetShader(shader, ShaderParameter.CompileStatus, out int success);
@@ -172,6 +191,11 @@ public class Skybox : IDisposable
         }
     }
 
+    /// <summary>
+    /// Renders the skybox using the specified view and projection matrices, temporarily modifying depth and culling states.
+    /// </summary>
+    /// <param name="view">The current camera view matrix, from which translation will be removed.</param>
+    /// <param name="projection">The current camera projection matrix.</param>
     public void Draw(Matrix4 view, Matrix4 projection)
     {
         bool depthTestEnabled = GL.IsEnabled(EnableCap.DepthTest);
