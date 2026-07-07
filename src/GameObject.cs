@@ -1,7 +1,7 @@
-namespace EOCS.Objects;
+namespace Unminal.Objects;
 
 using OpenTK.Mathematics;
-using EOCS.Render;
+using Unminal.Render;
 
 [SupportedOSPlatform("windows")]
 public class GameObject

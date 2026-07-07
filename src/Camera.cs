@@ -1,5 +1,5 @@
 // camera.cs
-namespace EOCS.Core;
+namespace Unminal.Core;
 
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;

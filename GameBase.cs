@@ -1,6 +1,6 @@
-using EOCS.Main;
+using Unminal.Main;
 
-namespace EOCS.Base;
+namespace Unminal.Base;
 
 [SupportedOSPlatform("windows")]
 public abstract class BaseGame

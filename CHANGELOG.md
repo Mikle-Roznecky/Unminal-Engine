@@ -1,5 +1,5 @@
 # Changelog
-# All changes in project EOCS
+# All changes in project Unminal (earlier EOCS)
 # Project create by Dov1ntc!
 
 ## [0.2.2-alpha] - 2026.03.05
@@ -31,7 +31,7 @@
 ### Changed
 - Main.cs refactoring: Hard-coded game logic (teapot, skybox) has been completely removed from the main window class. Now Main acts only as a container and render manager.
 - Input control: The keyboard and mouse processing logic has been moved inside the Camera class and the Update method of the user's game.
-- Code optimization: Removed unnecessary using from files thanks to global imports. Namespace name conflicts have been fixed (the EOCS.Camera namespace has been renamed/managed through aliases).
+- Code optimization: Removed unnecessary using from files thanks to global imports. Namespace name conflicts have been fixed (the Unminal.Camera namespace has been renamed/managed through aliases).
 
 ### Fixed
 - Bug with FOV: Fixed the bug of “breaking” the viewing angle when zooming with the mouse wheel (added the correct Clamp range from 30 to 110 degrees).
@@ -63,7 +63,7 @@
 ### Changed
 - The menu with additional information opens only when you press f3
 - A menu with additional information displays the position and rotation of the camera
-- Now each file is in its own namespace (render/Mesh.cs -> namespace EOCS.render)
+- Now each file is in its own namespace (render/Mesh.cs -> namespace Unminal.render)
 
 ### Added
 - New classes make it easier to create more than one object
@@ -98,8 +98,8 @@
 ## [0.0.3] - 2026.04.17
 
 ### Changed
-- Renamed project files and directory from **3dGame** to **EOCS**
-- Updated root namespace from **BPX** to **EOCS**
+- Renamed project files and directory from **3dGame** to **Unminal**
+- Updated root namespace from **BPX** to **Unminal**
 - README.md
 
 ### Added

@@ -1,7 +1,7 @@
-namespace EOCS.Script;
+namespace Unminal.Script;
 
-using EOCS.Main;
-using EOCS.SkyBox;
+using Unminal.Main;
+using Unminal.SkyBox;
 
 [SupportedOSPlatform("windows")]
 public class MyGame : BaseGame

@@ -1,5 +1,5 @@
 // render/Mesh.cs
-namespace EOCS.Render;
+namespace Unminal.Render;
 
 [SupportedOSPlatform("windows")]
 public class Mesh : IDisposable

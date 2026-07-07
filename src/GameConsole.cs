@@ -1,6 +1,6 @@
-namespace EOCS.GameConsole;
+namespace Unminal.GameConsole;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
+using EOCS.PrimitiveFigures._2D;
 
 [SupportedOSPlatform("windows")]
 public class GameConsole

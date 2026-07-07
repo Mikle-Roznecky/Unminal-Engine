@@ -1,4 +1,4 @@
-namespace EOCS.Utils.Colors;
+namespace Unminal.Utils.Colors;
 
 public static class Colors
 {

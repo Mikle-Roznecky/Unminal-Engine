@@ -1,6 +1,6 @@
 {
     "CanF3": false,
-    "VSync": true,
-    "Title": "Engine On CSharp Test 2.0.1",
+    "VSync": false,
+    "Title": "Unminal Engine Test 0.2.1",
     "ConsoleHistoryLenght": 100
 }

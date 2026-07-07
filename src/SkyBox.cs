@@ -1,4 +1,4 @@
-namespace EOCS.SkyBox;
+namespace Unminal.SkyBox;
 
 [SupportedOSPlatform("windows")]
 public class Skybox : IDisposable

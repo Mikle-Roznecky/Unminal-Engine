@@ -1,9 +1,9 @@
-﻿namespace EOCS;
+﻿namespace Unminal;
 
 using System.Runtime.Versioning;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Mathematics;
-using EOCS.Script;
+using Unminal.Script;
 
 [SupportedOSPlatform("windows")]
 class Program

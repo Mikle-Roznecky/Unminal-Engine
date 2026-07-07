@@ -1,13 +1,13 @@
-# EOCS (Engine on CSharp)
+# Unminal (Engine on CSharp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![.NET Version](https://img.shields.io/badge/.NET-10.0-blue)](https://dotnet.microsoft.com/)
 [![OpenTK](https://img.shields.io/badge/OpenTK-4.9.4-green)](https://opentk.net/)
 [![Windows](https://img.shields.io/badge/Windows-10%2B-0078D6)](https://www.microsoft.com/windows)
 
 > A simple, open-source 3D game engine built from scratch in C# using OpenTK.
-> **[Wiki of this project](https://github.com/Xwared-Team/Engine-on-CSharp/wiki)**
+> **[Wiki of this project](https://github.com/dovintc-off/Unminal-Engine/wiki)**
 
-Welcome to **EOCS**! This is a personal project aimed at creating a flexible and modular 3D game engine. The entire codebase is open-source, meaning you are free to download, modify, experiment with, and build the project yourself.
+Welcome to **Unminal**! This is a personal project aimed at creating a flexible and modular 3D game engine. The entire codebase is open-source, meaning you are free to download, modify, experiment with, and build the project yourself.
 
 ## Features
 
@@ -34,7 +34,7 @@ Welcome to **EOCS**! This is a personal project aimed at creating a flexible and
 ### Steps
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/Xwared-Team/Engine-on-CSharp.git
+    git clone https://github.com/dovintc-off/Unminal-Engine.git
     cd Engine-on-CSharp
     ```
 
@@ -50,7 +50,7 @@ Welcome to **EOCS**! This is a personal project aimed at creating a flexible and
 
 ## How You Can Help
 
-1.  **Report Bugs:** If you find a crash or unexpected behavior, please open an [Issue](https://github.com/dovintc-off/Engine-on-CSharp/issues).
+1.  **Report Bugs:** If you find a crash or unexpected behavior, please open an [Issue](https://github.com/dovintc-off/Unminal-Engine/issues).
 2.  **Suggest Features:** Have an idea for a new rendering feature or UI improvement? Let’s discuss it in Discussions or Issues.
 3.  **Pull Requests:** Feel free to fork the repo, fix bugs, or add features, and submit a PR. Please follow the coding style of the project.
 
@@ -59,9 +59,7 @@ Welcome to **EOCS**! This is a personal project aimed at creating a flexible and
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ## Author
-
-**Dov1ntc**  
-[GitHub Profile](https://github.com/dovintc-off)
+**Dov1ntc -** [GitHub Profile](https://github.com/dovintc-off)
 
 ---
 *If you like this project, consider giving it a ⭐ on GitHub!*

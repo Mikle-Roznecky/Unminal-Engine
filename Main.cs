@@ -1,4 +1,4 @@
-namespace EOCS.Main;
+namespace Unminal.Main;
 
 [SupportedOSPlatform("windows")]
 public class Main : GameWindow
@@ -26,7 +26,7 @@ public class Main : GameWindow
                     Config.Get<int>("WindowWidth", 1200), 
                     Config.Get<int>("WindowHeight", 900)
                 ),
-                Title = Config.Get<string>("Title", "EOCS Engine"),
+                Title = Config.Get<string>("Title", "Unminal Engine"),
                 
                 APIVersion = new Version(
                     Config.Get<int>("ApiMajor", 3), 
@@ -105,7 +105,7 @@ public class Main : GameWindow
             WindowState = _GameFullscreen ? WindowState.Fullscreen : WindowState.Normal;
         }
 
-        gameConsole?.ProcessInput()
+        gameConsole?.ProcessInput(input);
 
         // Console open/close
         if (gameConsole != null && gameConsole.IsOpen)
@@ -162,7 +162,7 @@ public class Main : GameWindow
             float TS = 0.5f;
             Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Size.X, Size.Y, 0, -1, 1);
             
-            _textRenderer.DrawString($"EOCS V0.2.0 {gameConsole?.IsOpen}", 10, 7, TS, ortho, Colors.White, 2f);
+            _textRenderer.DrawString($"Unminal V0.2.1 {gameConsole?.IsOpen}", 10, 7, TS, ortho, Colors.White, 2f);
             _textRenderer.DrawString($"FPS: {1.0 / e.Time:F1}", 10, 63, TS, ortho, Colors.White, 1f); 
             
             string posText = string.Format(CultureInfo.InvariantCulture, 
@@ -211,7 +211,7 @@ public class Main : GameWindow
     
     // Helper Metods
     private void SetTitle(){
-        string BaseTitle = Config.Get<string>("Title", "EOCS Engine");
+        string BaseTitle = Config.Get<string>("Title", "Unminal Engine");
         if (this.WindowState != WindowState.Fullscreen){
             if (debug_menu) Title = BaseTitle + " (In Debug Menu)";
             else if (_GamePaused) Title = BaseTitle + " (In Pause)";

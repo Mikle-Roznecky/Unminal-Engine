@@ -1,5 +1,5 @@
 // render/ShaderProgram.cs
-namespace EOCS.Render;
+namespace Unminal.Render;
 
 [SupportedOSPlatform("windows")]
 public class ShaderProgram: IDisposable

@@ -1,5 +1,5 @@
 // TextRender/FontAtlas.cs
-namespace EOCS.UI.TextRender;
+namespace Unminal.UI.TextRender;
 
 using System.Collections.Concurrent;
 

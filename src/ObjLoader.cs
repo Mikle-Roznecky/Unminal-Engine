@@ -1,5 +1,5 @@
 // ObjLoader.cs
-namespace EOCS.Core;
+namespace Unminal.Core;
 
 public class ObjModel
 {

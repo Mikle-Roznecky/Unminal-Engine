@@ -1,4 +1,4 @@
-namespace EOCS.ConfigManager;
+namespace Unminal.ConfigManager;
 
 using System;
 using System.Collections.Generic;
