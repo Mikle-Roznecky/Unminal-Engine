@@ -97,15 +97,17 @@ public class Main : GameWindow
 
         KeyboardState input = KeyboardState;
         MouseState mouse = MouseState;
-
+        
+        // Full Screen enable/disable
         if (input.IsKeyReleased(Keys.F11))
         {
             _GameFullscreen = !_GameFullscreen;
             WindowState = _GameFullscreen ? WindowState.Fullscreen : WindowState.Normal;
         }
 
-        gameConsole?.ProcessInput(input);
+        gameConsole?.ProcessInput()
 
+        // Console open/close
         if (gameConsole != null && gameConsole.IsOpen)
         {
             CursorState = CursorState.Normal;
@@ -124,6 +126,7 @@ public class Main : GameWindow
             CursorState = _GamePaused ? CursorState.Normal : CursorState.Grabbed;
         }
 
+        // Script Update Data
         if ((gameConsole == null || !gameConsole.IsOpen) && !_GamePaused)
         {
             var FUV = new FrameUpdateVars(input, mouse, (float)e.Time);
@@ -153,6 +156,7 @@ public class Main : GameWindow
             gameConsole.DrawConsole(Size.X, Size.Y);
         } 
 
+        // Debug Menu
         if (_textRenderer != null && debug_menu && _activeCameraRef != null)
         {
             float TS = 0.5f;
@@ -205,6 +209,7 @@ public class Main : GameWindow
         } 
     }
     
+    // Helper Metods
     private void SetTitle(){
         string BaseTitle = Config.Get<string>("Title", "EOCS Engine");
         if (this.WindowState != WindowState.Fullscreen){
