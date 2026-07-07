@@ -56,7 +56,7 @@ public class FontAtlas : IDisposable
             
             if (currentY + size.Height > Height)
             {
-                Console.WriteLine($"[FontAtlas.cs:59] Warning: Font atlas overflow! Symbol: '{c}'");
+                GameConsole.GameConsole.Instance?.Log("Warning", $"Font atlas overflow! Symbol: '{c}'");
                 break;
             }
 
@@ -82,7 +82,7 @@ public class FontAtlas : IDisposable
             Directory.CreateDirectory(dirName);
         }
         bitmap.Save(outputPath, ImageFormat.Png);
-        Console.WriteLine($"[FontAtlas.cs:85] Font atlas saved to: {outputPath}");
+        GameConsole.GameConsole.Instance?.Log("Debug", $"Font atlas saved to: {outputPath}");
 
         LoadTextureToOpenGL(bitmap);
     }

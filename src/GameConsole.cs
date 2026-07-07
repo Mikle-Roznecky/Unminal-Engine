@@ -1,11 +1,14 @@
 namespace EOCS.GameConsole;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 [SupportedOSPlatform("windows")]
 public class GameConsole
 {
     public bool IsOpen {get; private set;} = false;
     public List<string> History {get; private set;} = new List<string>();
-    
+    public static GameConsole? Instance { get; private set; }
+    private TextRenderer? _textRenderer;
     public string Command {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
     private const string _pathToFileHistory = "./Assets/ConsoleHistory.log";
@@ -20,8 +23,16 @@ public class GameConsole
 
     public GameConsole(bool isOpen = false)
     {
+        Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
+
+        _textRenderer = new TextRenderer(
+            "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
+            32,
+            "./Assets/shaders/text/shader.vert",
+            "./Assets/shaders/text/shader.frag"
+        );
     }
 
     public void ProcessInput(KeyboardState input)
@@ -47,9 +58,16 @@ public class GameConsole
         }
     }
 
+    public void Log(string logType, string TextLog, 
+        [CallerFilePath] string file = "", 
+        [CallerLineNumber] int line = 0)
+    {
+        string fileName = System.IO.Path.GetFileName(file);
+        History.Add($"[Log,LogType={logType},fileError={fileName},lineError={line}]{TextLog}");
+    }
+
     private List<string> ReadHistory()
     {   
-        Console.WriteLine(Config.Get<int>("ConsoleHistoryLenght"));
 
         if (!File.Exists(_pathToFileHistory))
         {
@@ -92,6 +110,14 @@ public class GameConsole
         _background.Alpha = 0.5f;
 
         _background.Draw(ortho);
+
+        int index = 0;
+        foreach (var line in History)
+        {
+
+            _textRenderer?.DrawString(line, 10, (30 * index) + 2, 0.5f, ortho, Colors.White, 1f);
+            index++;
+        }
 
         GL.Enable(EnableCap.DepthTest);
     }

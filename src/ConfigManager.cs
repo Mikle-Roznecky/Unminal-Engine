@@ -22,7 +22,7 @@ public class ConfigManager
     {
         if (!File.Exists(_filePath))
         {
-            Console.WriteLine($"[ConfigManager.cs:25] File '{_filePath}' not found. Creating default empty config.");
+            GameConsole.GameConsole.Instance?.Log("Error", $"File '{_filePath}' not found. Creating default empty config.");
             Save();
             return;
         }
@@ -48,11 +48,11 @@ public class ConfigManager
                 }
             }
             
-            Console.WriteLine("[ConfigManager.cs:51] Loaded successfully.");
+            GameConsole.GameConsole.Instance?.Log("Debug", "Loaded successfully.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[ConfigManager.cs:55] Error loading file: {ex.Message}");
+            GameConsole.GameConsole.Instance?.Log("Error", $"Error loading file: {ex.Message}");
         }
     }
 
@@ -81,7 +81,7 @@ public class ConfigManager
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ConfigManager.cs:84] Type mismatch for key '{key}'. Expected {typeof(T)}, got {value.GetType()}. Error: {ex.Message}");
+                GameConsole.GameConsole.Instance?.Log("Error", $"Type mismatch for key '{key}'. Expected {typeof(T)}, got {value.GetType()}. Error: {ex.Message}");
                 return defaultValue;
             }
         }

@@ -2,7 +2,7 @@
 # All changes in project EOCS
 # Project create by Dov1ntc!
 
-## [2.0.2-alpha] - 2026.03.05
+## [0.2.2-alpha] - 2026.03.05
 
 ### Added
 - Developer Console: Implemented the core `GameConsole` class with history logging and file persistence.
@@ -15,9 +15,9 @@
 - Resolved various initialization and rendering issues in the graphics pipeline.
 - Fixed shader compilation errors related to uniform location binding.
 
-## [2.0.1] - 2026.04.30
+## [0.2.1] - 2026.04.30
 ### Added
-- "|" and "\" symbol 
+- " | " and " \ " symbol 
 - Config File
 
 ## [0.2.0] - 2026.04.24

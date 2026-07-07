@@ -8,7 +8,7 @@ public class MyGame : BaseGame
 {
     private List<GameObject> _objects = new List<GameObject>();
     private Skybox? _skybox;
-
+    
     public override void Load(Matrix4 initialProjection)
     {
         ActiveCamera = new Camera(new Vector3(0, 0, 0), -90.0f, 0.0f);

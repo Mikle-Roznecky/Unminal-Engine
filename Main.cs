@@ -79,7 +79,7 @@ public class Main : GameWindow
     protected override void OnMouseMove(MouseMoveEventArgs e)
     {
 
-        if (!gameConsole.IsOpen){
+        if (gameConsole != null && !gameConsole.IsOpen){
             base.OnMouseMove(e);
             if (CursorState != CursorState.Grabbed) return;
 
@@ -97,19 +97,33 @@ public class Main : GameWindow
 
         KeyboardState input = KeyboardState;
         MouseState mouse = MouseState;
+
+        if (input.IsKeyReleased(Keys.F11))
+        {
+            _GameFullscreen = !_GameFullscreen;
+            WindowState = _GameFullscreen ? WindowState.Fullscreen : WindowState.Normal;
+        }
+
         gameConsole?.ProcessInput(input);
 
-        if (!gameConsole.IsOpen){
-            if (input.IsKeyReleased(Keys.Escape)){
-                _GamePaused = !_GamePaused;
-                CursorState = _GamePaused ? CursorState.Normal : CursorState.Grabbed;
-            }
-            if (input.IsKeyReleased(Keys.F11)){
-                _GameFullscreen = !_GameFullscreen;
-                WindowState = _GameFullscreen ? WindowState.Fullscreen : WindowState.Normal;
-            }
+        if (gameConsole != null && gameConsole.IsOpen)
+        {
+            CursorState = CursorState.Normal;
+        }
+        else
+        {
             if (input.IsKeyReleased(Keys.F3)) debug_menu = !debug_menu;
 
+            if (input.IsKeyReleased(Keys.Escape))
+            {
+                _GamePaused = !_GamePaused;
+            }
+
+            CursorState = _GamePaused ? CursorState.Normal : CursorState.Grabbed;
+        }
+
+        if ((gameConsole == null || !gameConsole.IsOpen) && !_GamePaused)
+        {
             var FUV = new FrameUpdateVars(input, mouse, (float)e.Time);
             _userGame.Update(FUV);
 
@@ -131,7 +145,7 @@ public class Main : GameWindow
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         _userGame.Draw(_projection);
 
-        if (gameConsole.IsOpen)
+        if (gameConsole != null && gameConsole.IsOpen)
         {
             gameConsole.DrawConsole(Size.X, Size.Y);
         } 
@@ -167,6 +181,7 @@ public class Main : GameWindow
         
         float currentFov = _activeCameraRef?.FOV ?? _initialFov;
         _projection = Matrix4.CreatePerspectiveFieldOfView(currentFov, Size.X / (float)Size.Y, 0.1f, 1000.0f);
+
     }
 
     protected override void OnUnload()
@@ -178,7 +193,7 @@ public class Main : GameWindow
     protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
         base.OnMouseWheel(e);
-        if (!gameConsole.IsOpen){
+        if (gameConsole != null && !gameConsole.IsOpen){
             if (_activeCameraRef != null)
             {
                 _activeCameraRef.ProcessMouseScroll(e.OffsetY);
