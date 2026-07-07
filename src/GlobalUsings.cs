@@ -13,7 +13,7 @@ global using EOCS.Base;
 global using EOCS.Core;
 global using EOCS.Objects;
 global using EOCS.Render;
-global using EOCS.TextRender.TextRender;
+global using EOCS.UI.TextRender;
 global using EOCS.Utils.Colors;
 global using EOCS.ConfigManager;
 global using EOCS.GameConsole;

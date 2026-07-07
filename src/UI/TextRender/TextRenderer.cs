@@ -1,5 +1,5 @@
 // TextRender/TextReander.cs
-namespace EOCS.TextRender.TextRender;
+namespace EOCS.UI.TextRender;
 
 [SupportedOSPlatform("windows")]
 public class TextRenderer : IDisposable
