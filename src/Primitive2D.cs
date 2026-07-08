@@ -17,12 +17,23 @@ public abstract class Primitive2D : IDisposable
     private const string pathVertex = "./Assets/shaders/base.vert";
     private const string pathFragment = "./Assets/shaders/base.frag";
 
+    /// <summary>
+    /// Initializes a new instance of the class with default values, automatically loading geometry and compiling shaders.
+    /// </summary>
     public Primitive2D()
     {
         InitializeGeometry();
         InitializeShader();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the class with specified transformation, color, alpha, and rotation parameters.
+    /// </summary>
+    /// <param name="position">The initial position on the 2D plane.</param>
+    /// <param name="scale">The initial scale factor of the primitive.</param>
+    /// <param name="color">The RGB color vector of the primitive.</param>
+    /// <param name="alpha">The alpha opacity value.</param>
+    /// <param name="rotation">The rotation angle in radians.</param>
     public Primitive2D(Vector2 position, Vector2 scale, Vector3 color, float alpha, float rotation) : this()
     {
         Position = position;
@@ -32,6 +43,9 @@ public abstract class Primitive2D : IDisposable
         Rotation = rotation;
     }
 
+    /// <summary>
+    /// Loads the vertex and fragment shader source code from files, compiles them, and links them into a single shader program.
+    /// </summary>
     private void InitializeShader()
     {
         if (ShaderProgram != -1) return;
@@ -74,6 +88,9 @@ public abstract class Primitive2D : IDisposable
         GL.DeleteShader(fragShader);
     }
 
+    /// <summary>
+    /// Generates and configures OpenGL buffers (VAO and VBO) and uploads the vertex coordinate array to the GPU memory.
+    /// </summary>
     private void InitializeGeometry()
     {   
         float[] vertices = GetVertices();
@@ -94,6 +111,11 @@ public abstract class Primitive2D : IDisposable
         GL.BindVertexArray(0);
     }
 
+    /// <summary>
+    /// Checks the compilation status of the specified shader and throws an exception if it failed.
+    /// </summary>
+    /// <param name="shaderId">The OpenGL identifier of the shader to check.</param>
+    /// <exception cref="Exception">Thrown if the shader compilation status is unsuccessful.</exception>
     public void CheckShaderCompilation(int shaderId)
     {   
         GL.GetShader(shaderId, ShaderParameter.CompileStatus, out int success);
@@ -101,6 +123,10 @@ public abstract class Primitive2D : IDisposable
             throw new Exception($"[Primitive2D] Shader Error: {GL.GetShaderInfoLog(shaderId)}");
     }
 
+    /// <summary>
+    /// Checks the linking status of the shader program and throws an exception if it failed.
+    /// </summary>
+    /// <exception cref="Exception">Thrown if the shader program linking status is unsuccessful.</exception>
     public void CheckShaderLink()
     {
         GL.GetProgram(ShaderProgram, GetProgramParameterName.LinkStatus, out int success);
@@ -108,9 +134,17 @@ public abstract class Primitive2D : IDisposable
             throw new Exception($"[Primitive2D] Link Error: {GL.GetProgramInfoLog(ShaderProgram)}");
     }
 
+    /// <summary>
+    /// When overridden in a derived class, returns a flat array of vertex coordinates (X, Y) for the primitive's geometry.
+    /// </summary>
+    /// <returns>An array of floats representing the vertex positions of the primitive.</returns>
     protected abstract float[] GetVertices();
 
-        public void Draw(Matrix4 projection)
+    /// <summary>
+    /// Renders the primitive on the screen by calculating the model matrix (scale, rotation, translation) and passing all uniform parameters to the shader.
+    /// </summary>
+    /// <param name="projection">The projection matrix used to transform coordinates into screen space.</param>
+    public void Draw(Matrix4 projection)
     {
         GL.UseProgram(ShaderProgram);
 
@@ -135,10 +169,17 @@ public abstract class Primitive2D : IDisposable
         GL.BindVertexArray(0);
     }
 
+    /// <summary>
+    /// Frees the unmanaged OpenGL resources (VAO and VBO) allocated by this primitive.
+    /// </summary>
     public virtual void Dispose()
     {
         GL.DeleteVertexArray(VAO);
         GL.DeleteBuffer(VBO);
 
+        if (ShaderProgram != -1){
+            GL.DeleteShader(ShaderProgram);
+            ShaderProgram = -1
+        }
     }
 }

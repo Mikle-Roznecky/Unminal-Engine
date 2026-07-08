@@ -6,6 +6,9 @@ using System.IO;
 using System.Runtime.Versioning;
 using System.Text.Json;
 
+/// <summary>
+/// Manages configuration settings by saving and loading them from a JSON file.
+/// </summary>
 [SupportedOSPlatform("windows")]
 public class ConfigManager
 {
@@ -13,11 +16,18 @@ public class ConfigManager
     
     private readonly string _filePath;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ConfigManager"/> class with a specified file path.
+    /// </summary>
+    /// <param name="filePath">The path to the configuration JSON file. Default is "config.json".</param>
     public ConfigManager(string filePath = "config.json")
     {
         _filePath = filePath;
     }
 
+    /// <summary>
+    /// Loads configuration settings from the JSON file. If the file does not exist, a default empty file is created.
+    /// </summary>
     public void Load()
     {
         if (!File.Exists(_filePath))
@@ -56,6 +66,9 @@ public class ConfigManager
         }
     }
 
+    /// <summary>
+    /// Saves the current configuration settings into the JSON file with indentation formatting.
+    /// </summary>
     public void Save()
     {
         var options = new JsonSerializerOptions
@@ -67,6 +80,13 @@ public class ConfigManager
         File.WriteAllText(_filePath, json);
     }
 
+    /// <summary>
+    /// Retrieves a configuration value associated with the specified key, casting or converting it to the requested type.
+    /// </summary>
+    /// <typeparam name="T">The type of the configuration value to return.</typeparam>
+    /// <param name="key">The unique key of the setting.</param>
+    /// <param name="defaultValue">The value to return if the key is not found or type conversion fails.</param>
+    /// <returns>The stored setting value converted to type <typeparamref name="T"/>, or <paramref name="defaultValue"/>.</returns>
     public T Get<T>(string key, T defaultValue = default!)
     {
         if (_settings.TryGetValue(key, out object? value))
@@ -91,6 +111,11 @@ public class ConfigManager
         }
     }
 
+    /// <summary>
+    /// Converts a <see cref="JsonElement"/> to its corresponding standard C# primitive object type.
+    /// </summary>
+    /// <param name="element">The JSON element to convert.</param>
+    /// <returns>A primitive object (string, int, long, double, bool, DBNull, or raw JSON string).</returns>
     private object ConvertJsonElementToObject(JsonElement element)
     {
         switch (element.ValueKind)
