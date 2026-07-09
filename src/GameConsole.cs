@@ -1,7 +1,8 @@
 namespace Unminal.GameConsole;
 using System.Runtime.CompilerServices;
-using EOCS.PrimitiveFigures._2D;
-using OpenTK;
+using Unminal.PrimitiveFigures._2D;
+using Unminal.UI.TextRender.RichText;
+using Unminal.Utils.Colors;
 
 [SupportedOSPlatform("windows")]
 public class GameConsole
@@ -10,6 +11,7 @@ public class GameConsole
     public List<string> History {get; private set;} = new List<string>();
     public static GameConsole? Instance { get; private set; }
     private TextRenderer? _textRenderer;
+    private RichTextSegment? _richTextRenderer;
     public string Command {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
     private const string _pathToFileHistory = "./Assets/ConsoleHistory.log";
@@ -28,7 +30,7 @@ public class GameConsole
         Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
-
+        _richTextRenderer = new RichTextSegment("HelloMyFriend[#FF00FF00]Hello2i[#FFFF0000]oeonm[#0000FFFF]hel3w", new Vector4(1, 1, 1, 1));
         _textRenderer = new TextRenderer(
             "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
             32,

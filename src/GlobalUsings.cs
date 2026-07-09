@@ -16,6 +16,4 @@ global using Unminal.Render;
 global using Unminal.UI.TextRender;
 global using Unminal.Utils.Colors;
 global using Unminal.ConfigManager;
-global using Unminal.GameConsole;
 global using Unminal.PrimitiveFigures._2D.Primitive2D_AbstractClass;
-global using Unminal.PrimitiveFigures._2D;

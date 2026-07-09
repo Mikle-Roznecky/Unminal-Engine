@@ -213,6 +213,10 @@ public class TextRenderer : IDisposable
         GL.Disable(EnableCap.Blend);
     }
 
+    public void SetColor(Vector4 Color){
+        GL.Uniform4(_locColor, Color);
+    }
+
     /// <summary>
     /// Releases the inner font atlas resources and deletes unmanaged OpenGL objects (VAO, VBO, and shader program).
     /// </summary>
