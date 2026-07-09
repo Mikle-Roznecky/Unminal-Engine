@@ -35,6 +35,7 @@ public class Main : GameWindow
             })
     {
         _userGame = userGame;
+        this.TextInput += HandleConsoleTextInput;
     }
 
     protected override void OnLoad()
@@ -141,6 +142,19 @@ public class Main : GameWindow
             _model = Matrix4.Identity;
         }
         SetTitle();
+    }
+
+    private void HandleConsoleTextInput(TextInputEventArgs e)
+    {
+        if (gameConsole != null && gameConsole.IsOpen)
+        {
+            string text = e.AsString; 
+            
+            if (!string.IsNullOrEmpty(text) && text[0] >= 32)
+            {
+                gameConsole.AppendToCommand(text);
+            }
+        }
     }
 
     protected override void OnRenderFrame(FrameEventArgs e)

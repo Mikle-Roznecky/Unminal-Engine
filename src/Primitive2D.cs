@@ -179,7 +179,7 @@ public abstract class Primitive2D : IDisposable
 
         if (ShaderProgram != -1){
             GL.DeleteShader(ShaderProgram);
-            ShaderProgram = -1
+            ShaderProgram = -1;
         }
     }
 }

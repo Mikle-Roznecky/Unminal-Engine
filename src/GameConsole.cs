@@ -1,6 +1,7 @@
 namespace Unminal.GameConsole;
 using System.Runtime.CompilerServices;
 using EOCS.PrimitiveFigures._2D;
+using OpenTK;
 
 [SupportedOSPlatform("windows")]
 public class GameConsole
@@ -12,6 +13,7 @@ public class GameConsole
     public string Command {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
     private const string _pathToFileHistory = "./Assets/ConsoleHistory.log";
+    private KeyboardState _prevInput;
 
     Square _background = new Square(
         new Vector2(0, 0),
@@ -36,27 +38,39 @@ public class GameConsole
     }
 
     public void ProcessInput(KeyboardState input)
-    {
+    {   
+
         bool isToggleKeyDown = input.IsKeyDown(Keys.GraveAccent);
 
         if (isToggleKeyDown && !_wasToggleKeyPressed)
         {
             IsOpen = !IsOpen;
-
             if (IsOpen) Command = "";
         }
         _wasToggleKeyPressed = isToggleKeyDown;
 
-        if (!IsOpen) return;
+        if (!IsOpen) {
+            _prevInput = input; 
+            return;
+        }
 
+        if (input.IsKeyReleased(Keys.Backspace)) {
+            if (Command.Length > 0) {
+                Command = Command[..^1];
+            }
+            return;
+        }
 
         if (input.IsKeyReleased(Keys.Enter))
         {
             CommandExecutor(Command);
             WriteHistory(Command);
             Command = "";
+            return;
         }
     }
+
+    public void AppendToCommand(string text) {Command += text;}
 
     public void Log(string logType, string TextLog, 
         [CallerFilePath] string file = "", 
@@ -118,6 +132,8 @@ public class GameConsole
             _textRenderer?.DrawString(line, 10, (30 * index) + 2, 0.5f, ortho, Colors.White, 1f);
             index++;
         }
+
+        _textRenderer?.DrawString(Command, 10, 400 + 2, 0.5f, ortho, Colors.White, 1f);
 
         GL.Enable(EnableCap.DepthTest);
     }
