@@ -18,6 +18,7 @@ public class RichTextSegment {
         while(!string.IsNullOrWhiteSpace(parsedText)) {
             int entry_color = parsedText.IndexOf("[#");
             int close_color = parsedText.IndexOf("]");
+            if (entry_color == -1) return new List<TextPart> { new TextPart { Text = parsedText, TextColor = DefaultColor } };
             if (entry_color == -1 || close_color == -1 || close_color <= entry_color) break;
             if (entry_color > 0) {
                 Parts.Add(new TextPart {Text = parsedText[..entry_color], TextColor = DefaultColor});

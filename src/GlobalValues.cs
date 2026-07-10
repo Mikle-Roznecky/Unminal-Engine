@@ -1,6 +1,6 @@
 namespace Unminal.Core;
 
-public static class Engine {
+public static class EngineValues {
     public static Vector2i WindowSize {get; set;}
     public static float DeltaTime {get; set;}
     public static double TotalTime {get; set;}
