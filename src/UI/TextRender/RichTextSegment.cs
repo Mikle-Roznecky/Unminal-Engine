@@ -1,12 +1,12 @@
 namespace Unminal.UI.TextRender.RichText;
 
+[SupportedOSPlatform("windows")]
 public class RichTextSegment {
     public string? RawText {get; private set;}
-    private List<TextPart>? Parts {get; set;}
+    public Vector4 defaultColor;
 
-    public RichTextSegment(string rawText, Vector4 DefaulColor) {
-        RawText = rawText;
-        Parts = ParseColor(RawText, DefaulColor);
+    public RichTextSegment(Vector4 DefaultColor) {
+        defaultColor = DefaultColor;
     }
 
     private List<TextPart> ParseColor(string text, Vector4 DefaultColor)  {
@@ -38,8 +38,15 @@ public class RichTextSegment {
         return Parts;
     } 
 
-    public void Draw(TextRenderer renderer, ref float x, float y, float scale, Matrix4 projection)
-    {
+    public void Draw(TextRenderer renderer, string text, float x, float y, float scale, Matrix4 projection) {
+        List<TextPart> Parts = ParseColor(text, defaultColor);
+        float cur_x = x;
+        if (Parts == null) return;
+        foreach (TextPart part in Parts) {
+            if (string.IsNullOrEmpty(part.Text)) continue;
+            renderer.DrawString(part.Text, cur_x, y, scale, projection, part.TextColor);
+            cur_x += renderer.MeasureWidth(part.Text, scale);
+        }
     }
 
     private struct TextPart {

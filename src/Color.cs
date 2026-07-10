@@ -115,11 +115,12 @@ public static class Colors
         return (byte)((v1 << 4) | v2);
     }
 
-    public static Vector4 HEXtoVEC4(string color) {
-        var (isValid, len) = IsValidHEX(color);
+    public static Vector4 HEXtoVEC4(string input) {
+        if (string.IsNullOrEmpty(input)) return new Vector4(1f, 1f, 1f, 1f);
+        if (TryGetNamedColor(input, out var namedColor)) return namedColor;
+        var (isValid, len) = IsValidHEX(input);
         if (!isValid) return new Vector4(1f, 1f, 1f, 1f);
-        Vector4 HexColor = HEXtoRGBA(color);
-        return HexColor;
+        return HEXtoRGBA(input);
     }
 
     public static bool IsValidRGB(int r, int g, int b) 
@@ -152,4 +153,7 @@ public static class Colors
         
         return (valid, 4);
     }
+
+    public static bool TryGetNamedColor(string name, out Vector4 color) 
+        => NamedColors.TryGetValue(name, out color);
 }

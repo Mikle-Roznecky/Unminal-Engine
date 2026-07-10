@@ -30,7 +30,7 @@ public class GameConsole
         Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
-        _richTextRenderer = new RichTextSegment("HelloMyFriend[#FF00FF00]Hello2i[#FFFF0000]oeonm[#0000FFFF]hel3w", new Vector4(1, 1, 1, 1));
+        _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
         _textRenderer = new TextRenderer(
             "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
             32,
@@ -131,11 +131,13 @@ public class GameConsole
         foreach (var line in History)
         {
 
-            _textRenderer?.DrawString(line, 10, (30 * index) + 2, 0.5f, ortho, Colors.White, 1f);
+            _textRenderer?.DrawString(line, 10, (30 * index) + 2, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
             index++;
         }
 
-        _textRenderer?.DrawString(Command, 10, 400 + 2, 0.5f, ortho, Colors.White, 1f);
+        _textRenderer?.DrawString(Command, 10, 400 + 2, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
+        _richTextRenderer?.Draw(_textRenderer, "/server player kick targetid Pogyto#2 [#red]<- dont have permission to use this command", 10, 500, 0.5f, ortho);
+        _richTextRenderer?.Draw(_textRenderer, "/server player kick targetid Pogyto#2 [#FF0000]<- dont have permission to use this command", 10, 550, 0.5f, ortho);
 
         GL.Enable(EnableCap.DepthTest);
     }

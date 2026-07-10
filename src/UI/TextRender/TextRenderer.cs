@@ -164,7 +164,7 @@ public class TextRenderer : IDisposable
     /// <param name="projection">The orthographic or perspective matrix mapping text coordinates to the screen layout.</param>
     /// <param name="color">The color vector applied to shade the text glyphs.</param>
     /// <param name="spacing">The pixel gap multiplier applied uniformly between individual characters. Default is 1.0f.</param>
-    public void DrawString(string text, float x, float y, float scale, Matrix4 projection, Vector3 color, float spacing = 1.0f)
+    public void DrawString(string text, float x, float y, float scale, Matrix4 projection, Vector4 color, float spacing = 1.0f)
     {
         if (string.IsNullOrEmpty(text)) return;
 
@@ -192,7 +192,7 @@ public class TextRenderer : IDisposable
         GL.UseProgram(_shaderProgram);
         GL.UniformMatrix4(_locProjection, false, ref projection);
         
-        GL.Uniform3(_locColor, color);
+        GL.Uniform4(_locColor, color);
 
         GL.ActiveTexture(TextureUnit.Texture0);
         GL.BindTexture(TextureTarget.Texture2D, _fontAtlas.TextureID);
@@ -213,8 +213,20 @@ public class TextRenderer : IDisposable
         GL.Disable(EnableCap.Blend);
     }
 
-    public void SetColor(Vector4 Color){
-        GL.Uniform4(_locColor, Color);
+    public float MeasureWidth(string text, float scale, float spacing = 1.0f)
+    {
+        if (string.IsNullOrEmpty(text)) return 0f;
+
+        float width = 0f;
+        foreach (char c in text)
+        {
+            if (_fontAtlas.TryGetGlyph(c, out var glyph))
+            {
+                width += (glyph.Advance + spacing) * scale;
+            }
+        }
+        
+        return width;
     }
 
     /// <summary>

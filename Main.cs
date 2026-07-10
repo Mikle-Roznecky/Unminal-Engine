@@ -176,20 +176,20 @@ public class Main : GameWindow
             float TS = 0.5f;
             Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Size.X, Size.Y, 0, -1, 1);
             
-            _textRenderer.DrawString($"Unminal V0.2.1 {gameConsole?.IsOpen}", 10, 7, TS, ortho, Colors.White, 2f);
-            _textRenderer.DrawString($"FPS: {1.0 / e.Time:F1}", 10, 63, TS, ortho, Colors.White, 1f); 
+            _textRenderer.DrawString($"Unminal V0.2.1 {gameConsole?.IsOpen}", 10, 7, TS, ortho, new Vector4(Colors.White, 1f), 2f);
+            _textRenderer.DrawString($"FPS: {1.0 / e.Time:F1}", 10, 63, TS, ortho, new Vector4(Colors.White, 1f), 1f); 
             
             string posText = string.Format(CultureInfo.InvariantCulture, 
                 "Pos: {0:F1} {1:F1} {2:F1} | FOV: {3}", 
 
                 _activeCameraRef.Position.X, _activeCameraRef.Position.Y, _activeCameraRef.Position.Z, 
                 MathHelper.RadiansToDegrees(_activeCameraRef!.FOV));
-            _textRenderer.DrawString(posText, 10, 91, TS, ortho, Colors.White, 1f);
+            _textRenderer.DrawString(posText, 10, 91, TS, ortho, new Vector4(Colors.White, 1f), 1f);
 
             string dirText = string.Format(CultureInfo.InvariantCulture, 
                 "Dir: {0:F1} {1:F1} {2:F1}", 
                 _activeCameraRef.Front.X, _activeCameraRef.Front.Y, _activeCameraRef.Front.Z);
-            _textRenderer.DrawString(dirText, 10, 119, TS, ortho, Colors.White, 1f); 
+            _textRenderer.DrawString(dirText, 10, 119, TS, ortho, new Vector4(Colors.White, 1f), 1f); 
 
         }
         Context.SwapBuffers();
