@@ -15,7 +15,7 @@ public class GameConsole
     public string Command {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
     private const string _pathToFileHistory = "./Assets/ConsoleHistory.log";
-    private KeyboardState _prevInput;
+    private KeyboardState? _prevInput;
 
     Square _background = new Square(
         new Vector2(0, 0),
@@ -25,8 +25,7 @@ public class GameConsole
         0
     );
 
-    public GameConsole(bool isOpen = false)
-    {
+    public GameConsole(bool isOpen = false) {
         Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
@@ -39,8 +38,7 @@ public class GameConsole
         );
     }
 
-    public void ProcessInput(KeyboardState input)
-    {   
+    public void ProcessInput(KeyboardState input) {   
 
         bool isToggleKeyDown = input.IsKeyDown(Keys.GraveAccent);
 
@@ -136,9 +134,10 @@ public class GameConsole
         }
 
         _textRenderer?.DrawString(Command, 10, 400 + 2, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
-        _richTextRenderer?.Draw(_textRenderer, "/server player kick targetid Pogyto#2 [#red]<- dont have permission to use this command", 10, 500, 0.5f, ortho);
-        _richTextRenderer?.Draw(_textRenderer, "/server player kick targetid Pogyto#2 [#FF0000]<- dont have permission to use this command", 10, 550, 0.5f, ortho);
-
+        if (_textRenderer != null) {
+            _richTextRenderer?.Draw(_textRenderer, "/server player kick targetid Pogyto#2 [#red]<- dont have permission to use this command", 10, 500, 0.5f, ortho);
+            _richTextRenderer?.Draw(_textRenderer, "/server player kick targetid Pogyto#2 [#FF0000]<- dont have permission to use this command", 10, 550, 0.5f, ortho);
+        }
         GL.Enable(EnableCap.DepthTest);
     }
 

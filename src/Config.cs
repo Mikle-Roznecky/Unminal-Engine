@@ -9,13 +9,15 @@ public static class Config
         IsLoaded = true;
     }
 
-    public static T Get<T>(string key, T defaultValue = default)
+    public static T Get<T>(string key, T? defaultValue = default)
     {
-        if (!IsLoaded)
-        {
-            Init(); 
-        }
-        return _manager.Get(key, defaultValue);
+        if (!IsLoaded) Init();
+        
+        var value = _manager.Get(key, defaultValue);
+
+        #pragma warning disable CS8603
+        return value ?? defaultValue;
+        #pragma warning restore CS8603
     }
     
     public static void Save()
