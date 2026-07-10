@@ -2,16 +2,27 @@ namespace Unminal.Script;
 
 using Unminal.Main;
 using Unminal.SkyBox;
+using Unminal.UI.TextRender.RichText;
 
 [SupportedOSPlatform("windows")]
 public class MyGame : BaseGame
 {
     private List<GameObject> _objects = new List<GameObject>();
     private Skybox? _skybox;
-    
+    private TextRenderer? _textRenderer;
+    private RichTextSegment? _richTextRenderer;
+
     public override void Load(Matrix4 initialProjection)
     {
         ActiveCamera = new Camera(new Vector3(0, 0, 0), -90.0f, 0.0f);
+
+        _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
+        _textRenderer = new TextRenderer(
+            "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
+            32,
+            "./Assets/shaders/text/shader.vert",
+            "./Assets/shaders/text/shader.frag"
+        );
 
         var modelData = ObjLoader.Load("./Assets/3D_objects/teapol.obj");
         var mesh = new Mesh(modelData.Vertices, modelData.Indices);
@@ -29,32 +40,25 @@ public class MyGame : BaseGame
         };
         _objects.Add(teapot1);
 
-        var teapot2 = new GameObject(mesh, shader)
-        {
-            Position = new Vector3(20, 0, -50), 
-            Scale = new Vector3(0.5f),
-            Color = new Vector3(0.2f, 0.2f, 0.8f),
-            LightPos = new Vector3(10f, 15f, 10f)
-        };
-        _objects.Add(teapot2);
+        modelData = ObjLoader.Load("./Assets/3D_objects/cube.obj");
+        mesh = new Mesh(modelData.Vertices, modelData.Indices);
 
-        var teapot3 = new GameObject(mesh, shader)
+        var cube1 = new GameObject(mesh, shader)
         {
-            Position = new Vector3(-20, 20, -50), 
-            Scale = new Vector3(0.5f),
+            Position = new Vector3(20, 12, -50), 
+            Scale = new Vector3(6f),
             Color = new Vector3(0.2f, 0.8f, 0.2f),
             LightPos = new Vector3(10f, 15f, 10f)
         };
-        _objects.Add(teapot3);
-        
-        var teapot4 = new GameObject(mesh, shader)
+        _objects.Add(cube1);
+        var cube2 = new GameObject(mesh, shader)
         {
-            Position = new Vector3(20, 20, -50), 
-            Scale = new Vector3(0.5f),
-            Color = new Vector3(0.8f, 0.8f, 0.2f),
+            Position = new Vector3(20, 0, -50), 
+            Scale = new Vector3(6f),
+            Color = new Vector3(0.2f, 0.2f, 0.8f),
             LightPos = new Vector3(10f, 15f, 10f)
         };
-        _objects.Add(teapot4);
+        _objects.Add(cube2);
 
         string[] skyboxFaces = 
         {
@@ -73,8 +77,7 @@ public class MyGame : BaseGame
         base.Update(FUV);
     }
 
-    public override void Draw(Matrix4 projection)
-    {
+    public override void Draw(Matrix4 projection) {
         if (ActiveCamera == null) return;
         Matrix4 view = ActiveCamera.GetViewMatrix();
 
@@ -83,6 +86,10 @@ public class MyGame : BaseGame
         foreach (var obj in _objects)
         {
             obj.Draw(view, projection);
+        }
+        if (EngineValues.IsPaused && _textRenderer != null){
+            Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, EngineValues.WindowSize.Y, EngineValues.WindowSize.X, 0, -1, 1);
+            _richTextRenderer?.Draw(_textRenderer, "In Pause", 10, 550, 0.5f, ortho);
         }
     }
 }
