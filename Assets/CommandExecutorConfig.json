@@ -1,18 +1,19 @@
 {
     "canf3": {
-        "arg": {
-            "true": {
-                "ExecuteMetod": "SetCanF3",
-                "ArgsExecuteMetod": "true"
-            },
-            "false": {
-                "ExecuteMetod": "SetCanF3",
-                "ArgsExecuteMetod": "true"
+        "ExecutedLayer": true,
+        "ExecuteMetod": "SetCanF3",
+        "ArgsExecuteMetod": {"canf3": "canopenf3"},
+        "AdditionalArgs": {
+            "canf3": {
+                "input": "canopenf3",
+                "configInput": ["type:bool"]
             }
         }
     },
     "server": {
+        "ExecutedLayer": false,
         "open": {
+            "ExecutedLayer": true,
             "ExecuteMetod": "GameServerOpen",
             "ArgsExecuteMetod": {"port": "USER_VEL_CACOETO_CHISLO?8008", "limitUser": "LIMIT_NA_VHODIASHIH?-1"},
             "AdditionalArgs": {
@@ -27,7 +28,9 @@
             }
         },
         "player": {
+            "ExecutedLayer": false,
             "kick": {
+                "ExecutedLayer": true,
                 "AllowAdmin": true,
                 "ExecuteMetod": "KickPlayerFromServer",
                 "ArgsExecuteMetod": {

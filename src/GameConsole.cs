@@ -1,8 +1,5 @@
-namespace Unminal.GameConsole;
+namespace Unminal.UI.GameConsole;
 using System.Runtime.CompilerServices;
-using Unminal.PrimitiveFigures._2D;
-using Unminal.UI.TextRender.RichText;
-using Unminal.Utils.Colors;
 
 [SupportedOSPlatform("windows")]
 public class GameConsole

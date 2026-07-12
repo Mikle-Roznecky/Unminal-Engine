@@ -1,4 +1,4 @@
-namespace Unminal.PrimitiveFigures._2D.Primitive2D_AbstractClass;
+namespace Unminal.Render.PrimitiveFigures._2D.Primitive2D_AbstractClass;
 
 public abstract class Primitive2D : IDisposable
 {

@@ -1,4 +1,4 @@
-namespace Unminal.ConfigManager;
+namespace Unminal.Core.ConfigManager;
 
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ public class ConfigManager
     {
         if (!File.Exists(_filePath))
         {
-            GameConsole.GameConsole.Instance?.Log("Error", $"File '{_filePath}' not found. Creating default empty config.");
+            GameConsole.Instance?.Log("Error", $"File '{_filePath}' not found. Creating default empty config.");
             Save();
             return;
         }
@@ -58,11 +58,11 @@ public class ConfigManager
                 }
             }
             
-            GameConsole.GameConsole.Instance?.Log("Debug", "Loaded successfully.");
+            GameConsole.Instance?.Log("Debug", "Loaded successfully.");
         }
         catch (Exception ex)
         {
-            GameConsole.GameConsole.Instance?.Log("Error", $"Error loading file: {ex.Message}");
+            GameConsole.Instance?.Log("Error", $"Error loading file: {ex.Message}");
         }
     }
 
@@ -101,7 +101,7 @@ public class ConfigManager
             }
             catch (Exception ex)
             {
-                GameConsole.GameConsole.Instance?.Log("Error", $"Type mismatch for key '{key}'. Expected {typeof(T)}, got {value.GetType()}. Error: {ex.Message}");
+                GameConsole.Instance?.Log("Error", $"Type mismatch for key '{key}'. Expected {typeof(T)}, got {value.GetType()}. Error: {ex.Message}");
                 return defaultValue;
             }
         }

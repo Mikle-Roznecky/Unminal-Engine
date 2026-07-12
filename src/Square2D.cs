@@ -1,4 +1,4 @@
-namespace Unminal.PrimitiveFigures._2D;
+namespace Unminal.Render.PrimitiveFigures._2D;
 
 public class Square : Primitive2D
 {

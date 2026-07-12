@@ -1,4 +1,4 @@
-namespace Unminal.Core;
+namespace Unminal.Core.EngineValues;
 
 public static class EngineValues {
     public static Vector2i WindowSize {get; set;}

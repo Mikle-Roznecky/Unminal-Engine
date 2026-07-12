@@ -1,9 +1,5 @@
 namespace Unminal.Script;
 
-using Unminal.Main;
-using Unminal.SkyBox;
-using Unminal.UI.TextRender.RichText;
-
 [SupportedOSPlatform("windows")]
 public class MyGame : BaseGame
 {
@@ -26,7 +22,7 @@ public class MyGame : BaseGame
 
         var modelData = ObjLoader.Load("./Assets/3D_objects/teapol.obj");
         var mesh = new Mesh(modelData.Vertices, modelData.Indices);
-        var shader = new ShaderProgram(
+        var shader = new Shader(
             "./Assets/shaders/main/shader.vert", 
             "./Assets/shaders/main/shader.frag"
         );
