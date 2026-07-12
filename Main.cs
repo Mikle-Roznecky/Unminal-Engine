@@ -10,9 +10,9 @@ public class Main : GameWindow
     bool _GamePaused = false;
     bool _GameFullscreen = false;
     float _initialFov = MathHelper.PiOver4;
-    private TextRenderer? _textRenderer;
+    private Text? _textRenderer;
     private Camera? _activeCameraRef; 
-    private GameConsole.GameConsole? gameConsole;
+    private GameConsole? gameConsole;
 
     public Main(BaseGame userGame) 
         : base(
@@ -42,7 +42,7 @@ public class Main : GameWindow
     {
         base.OnLoad(); 
 
-        gameConsole = new GameConsole.GameConsole();
+        gameConsole = new GameConsole();
 
         bool vsync = Config.Get<bool>("VSync", false);
         this.VSync = vsync ? VSyncMode.On : VSyncMode.Off;
@@ -54,7 +54,7 @@ public class Main : GameWindow
         GL.Enable(EnableCap.Blend); 
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-        _textRenderer = new TextRenderer(
+        _textRenderer = new Text(
             "./Assets/fonts/VCR-OSD-MONO.ttf",
             32,
             "./Assets/shaders/text/shader.vert",

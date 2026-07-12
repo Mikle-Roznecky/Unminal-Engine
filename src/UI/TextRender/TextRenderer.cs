@@ -1,18 +1,13 @@
 // TextRender/TextRenderer.cs
-namespace Unminal.UI.TextRender;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Versioning;
+namespace Unminal.UI.TextRender.TextRenderer;
 
 /// <summary>
 /// Renders text using dynamic vertex buffers and a pre-generated font texture atlas in OpenGL.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public class TextRenderer : IDisposable
+public class Text : IDisposable
 {
-    private readonly FontAtlas _fontAtlas;
+    private readonly Atlas _fontAtlas;
 
     private readonly int _vao;
     private readonly int _vbo;
@@ -30,9 +25,9 @@ public class TextRenderer : IDisposable
     /// <param name="fontSize">The point size of the font to generate in the atlas.</param>
     /// <param name="shaderVertex">The file path to the vertex shader source code.</param>
     /// <param name="shaderFragment">The file path to the fragment shader source code.</param>
-    public TextRenderer(string fontPath, int fontSize, string shaderVertex, string shaderFragment)
+    public Text(string fontPath, int fontSize, string shaderVertex, string shaderFragment)
     {
-        _fontAtlas = new FontAtlas(fontPath, fontSize);
+        _fontAtlas = new Atlas(fontPath, fontSize);
 
         _vao = GL.GenVertexArray();
         GL.BindVertexArray(_vao);

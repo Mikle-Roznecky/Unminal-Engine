@@ -7,7 +7,7 @@ public class GameConsole
     public bool IsOpen {get; private set;} = false;
     public List<string> History {get; private set;} = new List<string>();
     public static GameConsole? Instance { get; private set; }
-    private TextRenderer? _textRenderer;
+    private Text? _textRenderer;
     private RichTextSegment? _richTextRenderer;
     public string Command {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
@@ -27,7 +27,7 @@ public class GameConsole
         History = ReadHistory();
         IsOpen = isOpen;
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
-        _textRenderer = new TextRenderer(
+        _textRenderer = new Text(
             "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
             32,
             "./Assets/shaders/text/shader.vert",

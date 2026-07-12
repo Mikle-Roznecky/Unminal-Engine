@@ -5,7 +5,7 @@ public class MyGame : BaseGame
 {
     private List<GameObject> _objects = new List<GameObject>();
     private Skybox? _skybox;
-    private TextRenderer? _textRenderer;
+    private Text? _textRenderer;
     private RichTextSegment? _richTextRenderer;
 
     public override void Load(Matrix4 initialProjection)
@@ -13,7 +13,7 @@ public class MyGame : BaseGame
         ActiveCamera = new Camera(new Vector3(0, 0, 0), -90.0f, 0.0f);
 
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
-        _textRenderer = new TextRenderer(
+        _textRenderer = new Text(
             "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
             32,
             "./Assets/shaders/text/shader.vert",

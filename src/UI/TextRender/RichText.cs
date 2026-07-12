@@ -39,7 +39,7 @@ public class RichTextSegment {
         return Parts;
     } 
 
-    public void Draw(TextRenderer renderer, string text, float x, float y, float scale, Matrix4 projection) {
+    public void Draw(Text renderer, string text, float x, float y, float scale, Matrix4 projection) {
         List<TextPart> Parts = ParseColor(text, defaultColor);
         float cur_x = x;
         if (Parts == null) return;

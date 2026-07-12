@@ -1,4 +1,4 @@
-namespace Unminal.Core.Commands.Struct;
+namespace Unminal.Core.Commands.Structure;
 public class Command {
     public string? Name {get; set;}
     public List<Command> Layer {get; set;} = new List<Command>(); 
