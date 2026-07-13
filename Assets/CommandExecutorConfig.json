@@ -1,15 +1,4 @@
 {
-    "canf3": {
-        "ExecutedLayer": true,
-        "ExecuteMetod": "SetCanF3",
-        "ArgsExecuteMetod": {"canf3": "canopenf3"},
-        "AdditionalArgs": {
-            "canf3": {
-                "input": "canopenf3",
-                "configInput": ["type:bool"]
-            }
-        }
-    },
     "server": {
         "ExecutedLayer": false,
         "open": {
@@ -31,7 +20,6 @@
             "ExecutedLayer": false,
             "kick": {
                 "ExecutedLayer": true,
-                "AllowAdmin": true,
                 "ExecuteMetod": "KickPlayerFromServer",
                 "ArgsExecuteMetod": {
                     "targetId": "PLAYER_UID_TOKEN?error('Cant kick all players')",
@@ -54,6 +42,7 @@
                 }
             },
             "ignore": {
+                "ExecutedLayer": true,
                 "ExecuteMetod": "PlayerIgnorePlayer",
                 "ArgsExecuteMetod": {
                     "targetPlayer": "PLAYER_NICKNAME?PLAYER_UID_TOKEN?error('Who should I block?')",

@@ -1,5 +1,6 @@
 namespace Unminal.UI.GameConsole;
 using System.Runtime.CompilerServices;
+using Unminal.Core.Commands.CommandParser;
 
 [SupportedOSPlatform("windows")]
 public class GameConsole
@@ -13,6 +14,7 @@ public class GameConsole
     private bool _wasToggleKeyPressed = false;
     private const string _pathToFileHistory = "./Assets/ConsoleHistory.log";
     private KeyboardState? _prevInput;
+    private ParserCommands parserCommands; 
 
     Square _background = new Square(
         new Vector2(0, 0),
@@ -26,6 +28,8 @@ public class GameConsole
         Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
+        parserCommands = new ParserCommands("./Assets/CommandExecutorConfig.json");
+        parserCommands.Parse();
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
         _textRenderer = new Text(
             "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
@@ -123,23 +127,18 @@ public class GameConsole
         _background.Draw(ortho);
 
         int index = 0;
-        foreach (var line in History)
-        {
-
+        foreach (var line in History) {
             _textRenderer?.DrawString(line, 10, (30 * index) + 2, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
             index++;
         }
 
-        _textRenderer?.DrawString(Command, 10, 400 + 2, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
-        if (_textRenderer != null) {
-            _richTextRenderer?.Draw(_textRenderer, "/server player kick targetid Pogyto#2 [#red]<- dont have permission to use this command", 10, 500, 0.5f, ortho);
-            _richTextRenderer?.Draw(_textRenderer, "/server player kick targetid Pogyto#2 [#FF0000]<- dont have permission to use this command", 10, 550, 0.5f, ortho);
-        }
+        _textRenderer?.DrawString(Command, 10, EngineValues.WindowSize.Y - 30, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
         GL.Enable(EnableCap.DepthTest);
     }
 
-    private void CommandExecutor(string command)
-    {
-        
+    private void CommandExecutor(string Excommand) {
+        System.Console.WriteLine(Excommand);
+        if (string.IsNullOrWhiteSpace(Excommand)) return;
+        bool s = parserCommands.TryExecute(Excommand);
     }
 }

@@ -83,7 +83,7 @@ public class MyGame : BaseGame
         {
             obj.Draw(view, projection);
         }
-        if (EngineValues.IsPaused && _textRenderer != null){
+        if (!EngineValues.IsConsoleOpen && EngineValues.IsPaused && _textRenderer != null){
             Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, EngineValues.WindowSize.Y, EngineValues.WindowSize.X, 0, -1, 1);
             _richTextRenderer?.Draw(_textRenderer, "In Pause", 10, 550, 0.5f, ortho);
         }

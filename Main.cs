@@ -205,7 +205,7 @@ public class Main : GameWindow
     {
         base.OnResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
-        EngineValues.WindowSize = new Vector2i(Size.Y, Size.X);
+        EngineValues.WindowSize = new Vector2i(Size.X, Size.Y);
         float currentFov = _activeCameraRef?.FOV ?? _initialFov;
         _projection = Matrix4.CreatePerspectiveFieldOfView(currentFov, Size.X / (float)Size.Y, 0.1f, 1000.0f);
 
