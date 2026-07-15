@@ -10,7 +10,7 @@ public class GameConsole
     public static GameConsole? Instance { get; private set; }
     private Text? _textRenderer;
     private RichTextSegment? _richTextRenderer;
-    public string Command {get; private set;} = "";
+    public string InputedCommand {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
     private const string _pathToFileHistory = "./Assets/ConsoleHistory.log";
     private KeyboardState? _prevInput;
@@ -29,7 +29,6 @@ public class GameConsole
         History = ReadHistory();
         IsOpen = isOpen;
         parserCommands = new ParserCommands("./Assets/CommandExecutorConfig.json");
-        parserCommands.Parse();
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
         _textRenderer = new Text(
             "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
@@ -46,7 +45,7 @@ public class GameConsole
         if (isToggleKeyDown && !_wasToggleKeyPressed)
         {
             IsOpen = !IsOpen;
-            if (IsOpen) Command = "";
+            if (IsOpen) InputedCommand = "";
         }
         _wasToggleKeyPressed = isToggleKeyDown;
 
@@ -56,22 +55,22 @@ public class GameConsole
         }
 
         if (input.IsKeyReleased(Keys.Backspace)) {
-            if (Command.Length > 0) {
-                Command = Command[..^1];
+            if (InputedCommand.Length > 0) {
+                InputedCommand = InputedCommand[..^1];
             }
             return;
         }
 
-        if (input.IsKeyReleased(Keys.Enter))
-        {
-            CommandExecutor(Command);
-            WriteHistory(Command);
-            Command = "";
+        if (input.IsKeyReleased(Keys.Enter)) {
+            if (string.IsNullOrWhiteSpace(InputedCommand)) return;
+            CommandExecutor(InputedCommand);
+            WriteHistory(InputedCommand);
+            InputedCommand = "";
             return;
         }
     }
 
-    public void AppendToCommand(string text) {Command += text;}
+    public void AppendToCommand(string text) {InputedCommand += text;}
 
     public void Log(string logType, string TextLog, 
         [CallerFilePath] string file = "", 
@@ -115,7 +114,6 @@ public class GameConsole
         GL.Enable(EnableCap.Blend);
 
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
         Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, width, height, 0, -1, 1);
 
         _background.Position = new Vector2(width / 2f, height / 2f);
@@ -132,13 +130,61 @@ public class GameConsole
             index++;
         }
 
-        _textRenderer?.DrawString(Command, 10, EngineValues.WindowSize.Y - 30, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
+        _textRenderer?.DrawString(InputedCommand, 10, EngineValues.WindowSize.Y - 30, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
         GL.Enable(EnableCap.DepthTest);
     }
 
     private void CommandExecutor(string Excommand) {
         System.Console.WriteLine(Excommand);
         if (string.IsNullOrWhiteSpace(Excommand)) return;
-        bool s = parserCommands.TryExecute(Excommand);
+        
+        List<Command> commands = parserCommands.Parse();
+        
+        var tokens = Excommand.TrimStart('/').Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        
+        Command? current = commands.Find(c => 
+            string.Equals(c.Name, tokens[0], StringComparison.OrdinalIgnoreCase));
+
+        if (current == null) {
+            Console.WriteLine($"[#red]Unknown root command: {tokens[0]}");
+            return;
+        }
+
+        int i = 1;
+        bool commandFound = true;
+
+        while (i < tokens.Length && !current.ExecutedLayer) {
+            var next = current.Layer.Find(c => 
+                string.Equals(c.Name, tokens[i], StringComparison.OrdinalIgnoreCase));
+                
+            if (next == null) {
+                commandFound = false;
+                break;
+            }
+            
+            current = next;
+            i++;
+        }
+
+        if (!commandFound) {
+            Console.WriteLine($"[#red]Unknown subcommand '{tokens[i]}' for '{current.Name}'. Available: {string.Join(", ", current.Layer.Select(c => c.Name))}");
+            return;
+        }
+
+        if (!current.ExecutedLayer) {
+            var subs = current.Layer.Select(c => c.Name);
+            Console.WriteLine($"[INFO] '{current.Name}' requires action. Available: {string.Join(", ", subs)}");
+            return;
+        }
+
+        var args = tokens.Skip(i).ToArray();
+
+        var userArgs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        for (int j = 0; j < args.Length - 1; j += 2)
+        {
+            userArgs[args[j]] = args[j + 1];
+        }
+
+        Console.WriteLine($"[#cornflowerblue]Execute Method:\n{current.ExecuteMethod}\nUser Args: {string.Join(", ", userArgs.Select(a => $"{a.Key}={a.Value}"))}");
     }
 }
