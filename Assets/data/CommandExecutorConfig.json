@@ -1,4 +1,17 @@
 {
+    "write": {
+        "ExecutedLayer": true,
+        "ExecuteMetod": "KickPlayerFromServer",
+        "ArgsExecuteMetod": {
+            "targetId": "PLAYER_UID_TOKEN?error('Cant kick all players')"
+        },
+        "AdditionalArgs": {
+            "targetid": {
+                "input": "PLAYER_UID_TOKEN",
+                "configInput": ["type:int", "lim:-1/1+"]
+            }
+        }
+    },
     "server": {
         "ExecutedLayer": false,
         "open": {
