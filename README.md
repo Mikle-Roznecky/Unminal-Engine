@@ -5,7 +5,7 @@
 [![Windows](https://img.shields.io/badge/Windows-10%2B-0078D6)](https://www.microsoft.com/windows)
 
 > A simple, open-source 3D game engine built from scratch in C# using OpenTK.
-> **[Wiki of this project](https://github.com/dovintc-off/Unminal-Engine/wiki)**
+> **[Wiki of this project](https://dovintc-off.github.io/Unminal-wiki/)**
 
 Welcome to **Unminal**! This is a personal project aimed at creating a flexible and modular 3D game engine. The entire codebase is open-source, meaning you are free to download, modify, experiment with, and build the project yourself.
 
