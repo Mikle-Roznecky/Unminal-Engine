@@ -42,28 +42,54 @@ public class ParserCommands
     }
 }
 
-internal static class JsonNodeCommandExtensions {
-    public static Command? ToCommand(this JsonNode? node, string nodeName = "") {
-        if (node is JsonObject jsonObject) {
-            var command = new Command { Name = nodeName };
+internal static class JsonNodeCommandExtensions 
+{
+    public static Command? ToCommand(this JsonNode? node, string nodeName = "") 
+    {
+        if (node is JsonObject jsonObject) 
+        {
+            var command = new Command 
+            { 
+                Name = nodeName,
+                ArgsExecuteMethod = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
+                ConfigInput = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            };
             
-            foreach (var property in jsonObject) {
+            foreach (var property in jsonObject) 
+            {
                 string key = property.Key;
                 JsonNode? value = property.Value;
 
                 if (value == null) continue;
 
-                if (key.Equals("ExecuteMetod", StringComparison.OrdinalIgnoreCase))
-                    command.ExecuteMethod = value.ToString();
-                else if (key.Equals("ExecutedLayer", StringComparison.OrdinalIgnoreCase))
-                    command.ExecutedLayer = value.GetValue<bool>();
-                else if (key.Equals("ArgsExecuteMetod", StringComparison.OrdinalIgnoreCase))
-                    command.ArgsExecuteMethod = ParseSimpleDictionary(value.AsObject());
-                else if (key.Equals("AdditionalArgs", StringComparison.OrdinalIgnoreCase))
-                    command.AdditionalArgs = ParseNestedDictionary(value.AsObject());
-                else if (value is JsonObject childObject) {
-                    var subCommand = childObject.ToCommand(key);
-                    if (subCommand != null) command.Layer.Add(subCommand);
+                switch (key.ToLowerInvariant())
+                {
+                    case "executemetod":
+                        command.ExecuteMethod = value.ToString();
+                        break;
+                        
+                    case "executedlayer":
+                        command.ExecutedLayer = value.GetValue<bool>();
+                        break;
+                        
+                    case "argsexecutemetod":
+                        command.ArgsExecuteMethod = ParseSimpleDictionary(value.AsObject());
+                        break;
+                        
+                    case "configinput":
+                        command.ConfigInput = ParseSimpleDictionary(value.AsObject());
+                        break;
+                        
+                    case "castomargs":
+                        break;
+
+                    default:
+                        if (value is JsonObject childObject) 
+                        {
+                            var subCommand = childObject.ToCommand(key);
+                            if (subCommand != null) command.Layer.Add(subCommand);
+                        }
+                        break;
                 }
             }
             return command;
@@ -71,9 +97,17 @@ internal static class JsonNodeCommandExtensions {
         return null;
     }
 
-    private static Dictionary<string, string> ParseSimpleDictionary(JsonObject obj) {
-        var dict = new Dictionary<string, string>();
-        foreach (var prop in obj) dict[prop.Key] = prop.Value?.ToString() ?? "";
+    private static Dictionary<string, string> ParseSimpleDictionary(JsonObject obj) 
+    {
+        var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var prop in obj) 
+        {
+            string val = prop.Value is JsonArray arr 
+                ? string.Join("|", arr.Select(x => x?.ToString())) 
+                : prop.Value?.ToString() ?? "";
+                
+            dict[prop.Key] = val;
+        }
         return dict;
     }
 
