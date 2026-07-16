@@ -1,15 +1,12 @@
 {
-    "write": {
-        "ExecutedLayer": true,
-        "ExecuteMetod": "KickPlayerFromServer",
-        "ArgsExecuteMetod": {
-            "targetId": "PLAYER_UID_TOKEN?error('Cant kick all players')"
-        },
-        "AdditionalArgs": {
-            "targetid": {
-                "input": "PLAYER_UID_TOKEN",
-                "configInput": ["type:int", "lim:-1/1+"]
-            }
+    "debug": {
+        "ExecutedLayer": false,
+        "write": {
+            "ExecutedLayer": true,
+            "ExecuteMetod": "Write",
+            "ArgsExecuteMetod": {"text": "INPUTED_TEXT?error('why im say?')"},
+            "ConfigInput": {"INPUTED_TEXT": ["type:str", "lim:-1"]}
+            
         }
     },
     "server": {
@@ -18,15 +15,9 @@
             "ExecutedLayer": true,
             "ExecuteMetod": "GameServerOpen",
             "ArgsExecuteMetod": {"port": "USER_VEL_CACOETO_CHISLO?8008", "limitUser": "LIMIT_NA_VHODIASHIH?-1"},
-            "AdditionalArgs": {
-                "port": {
-                    "input": "USER_VEL_CACOETO_CHISLO",
-                    "configInput": ["type:int", "lim:range(1,99999)"]
-                },
-                "limituser": {
-                    "input": "LIMIT_NA_VHODIASHIH",
-                    "configInput": ["type:int", "lim:-1/1+"]
-                }
+            "ConfigInput": {
+                "USER_VEL_CACOETO_CHISLO": ["type:int", "lim:range(1,99999)"],
+                "LIMIT_NA_VHODIASHIH": ["type:int", "lim:-1/1+"]
             }
         },
         "player": {
@@ -39,37 +30,10 @@
                     "reasonCode": "KICK_REASON_CODE?0",
                     "banDuration": "BAN_DURATION_VAL?-1"
                 },
-                "AdditionalArgs": {
-                    "targetid": {
-                        "input": "PLAYER_UID_TOKEN",
-                        "configInput": ["type:int", "lim:-1/1+"]
-                    },
-                    "reasoncode": {
-                        "input": "KICK_REASON_CODE",
-                        "configInput": ["type:int", "lim:range(0,99)"]
-                    },
-                    "banduration": {
-                        "input": "BAN_DURATION_VAL",
-                        "configInput": ["type:time", "lim:5m+"]
-                    }
-                }
-            },
-            "ignore": {
-                "ExecutedLayer": true,
-                "ExecuteMetod": "PlayerIgnorePlayer",
-                "ArgsExecuteMetod": {
-                    "targetPlayer": "PLAYER_NICKNAME?PLAYER_UID_TOKEN?error('Who should I block?')",
-                    "senderPlayer": "get(Engine.Player.UID)"
-                },
-                "AdditionalArgs": {
-                    "target": {
-                        "input": "PLAYER_NICKNAME",
-                        "configInput": ["type:str", "lim:range(3,15)"]
-                    },
-                    "targetUID": {
-                        "input": "PLAYER_UID_TOKEN",
-                        "configInput": ["type:str", "lim:range(3,15)"]
-                    }
+                "ConfigInput": {
+                    "PLAYER_UID_TOKEN": ["type:int", "lim:-1||1+"],
+                    "KICK_REASON_CODE": ["type:int", "lim:range(0,99)"],
+                    "BAN_DURATION_VAL": ["type:time", "lim:5m+"]
                 }
             }
         }
