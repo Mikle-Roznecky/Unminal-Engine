@@ -12,7 +12,7 @@ public class GameConsole
     private RichTextSegment? _richTextRenderer;
     public string InputedCommand {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
-    private const string _pathToFileHistory = "./Assets/ConsoleHistory.log";
+    private readonly string _pathToFileHistory = Engine.Paths.Config.ConsoleHistoryL;
     private KeyboardState? _prevInput;
     private ParserCommands parserCommands; 
 
@@ -28,13 +28,13 @@ public class GameConsole
         Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
-        parserCommands = new ParserCommands("./Assets/CommandExecutorConfig.json");
+        parserCommands = new ParserCommands(Engine.Paths.Config.CommandConfigJ);
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
         _textRenderer = new Text(
-            "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
+            Engine.Paths.Fonts.PFAgoraSlabPro_Bold,
             32,
-            "./Assets/shaders/text/shader.vert",
-            "./Assets/shaders/text/shader.frag"
+            Engine.Paths.Shaders.textV,
+            Engine.Paths.Shaders.textF
         );
     }
 
@@ -130,7 +130,7 @@ public class GameConsole
             index++;
         }
 
-        _textRenderer?.DrawString(InputedCommand, 10, EngineValues.WindowSize.Y - 30, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
+        _textRenderer?.DrawString(InputedCommand, 10, Engine.WindowSize.Y - 30, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
         GL.Enable(EnableCap.DepthTest);
     }
 

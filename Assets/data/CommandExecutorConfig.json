@@ -59,7 +59,7 @@
                 "ExecuteMetod": "PlayerIgnorePlayer",
                 "ArgsExecuteMetod": {
                     "targetPlayer": "PLAYER_NICKNAME?PLAYER_UID_TOKEN?error('Who should I block?')",
-                    "senderPlayer": "get(command.sender.UID)"
+                    "senderPlayer": "get(Engine.Player.UID)"
                 },
                 "AdditionalArgs": {
                     "target": {

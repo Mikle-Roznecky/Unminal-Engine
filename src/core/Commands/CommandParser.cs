@@ -61,7 +61,6 @@ internal static class JsonNodeCommandExtensions {
                     command.ArgsExecuteMethod = ParseSimpleDictionary(value.AsObject());
                 else if (key.Equals("AdditionalArgs", StringComparison.OrdinalIgnoreCase))
                     command.AdditionalArgs = ParseNestedDictionary(value.AsObject());
-                else if (key.Equals("castomArgs", StringComparison.OrdinalIgnoreCase)){}
                 else if (value is JsonObject childObject) {
                     var subCommand = childObject.ToCommand(key);
                     if (subCommand != null) command.Layer.Add(subCommand);

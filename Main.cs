@@ -55,10 +55,10 @@ public class Main : GameWindow
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
         _textRenderer = new Text(
-            "./Assets/fonts/VCR-OSD-MONO.ttf",
+            Engine.Paths.Fonts.VCR_OSD_MONO,
             32,
-            "./Assets/shaders/text/shader.vert",
-            "./Assets/shaders/text/shader.frag"
+            Engine.Paths.Shaders.textV,
+            Engine.Paths.Shaders.textF
         );
 
         _model = Matrix4.Identity;
@@ -98,9 +98,9 @@ public class Main : GameWindow
         KeyboardState input = KeyboardState;
         MouseState mouse = MouseState;
         
-        EngineValues.IsPaused = _GamePaused;
-        if (gameConsole != null) EngineValues.IsConsoleOpen = gameConsole.IsOpen;
-        EngineValues.IsDebugOpen = debug_menu;
+        Engine.IsPaused = _GamePaused;
+        if (gameConsole != null) Engine.IsConsoleOpen = gameConsole.IsOpen;
+        Engine.IsDebugOpen = debug_menu;
 
         // Full Screen enable/disable
         if (input.IsKeyReleased(Keys.F11))
@@ -163,10 +163,10 @@ public class Main : GameWindow
     protected override void OnRenderFrame(FrameEventArgs e) {   
         base.OnRenderFrame(e);
 
-        EngineValues.DeltaTime = (float)e.Time;
-        EngineValues.TotalTime += e.Time;
-        EngineValues.CurrentKeyboard = KeyboardState;
-        EngineValues.CurrentMouse = MouseState;
+        Engine.DeltaTime = (float)e.Time;
+        Engine.TotalTime += e.Time;
+        Engine.CurrentKeyboard = KeyboardState;
+        Engine.CurrentMouse = MouseState;
 
         GL.ClearColor(0, 0, 0, 1);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -205,7 +205,7 @@ public class Main : GameWindow
     {
         base.OnResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
-        EngineValues.WindowSize = new Vector2i(Size.X, Size.Y);
+        Engine.WindowSize = new Vector2i(Size.X, Size.Y);
         float currentFov = _activeCameraRef?.FOV ?? _initialFov;
         _projection = Matrix4.CreatePerspectiveFieldOfView(currentFov, Size.X / (float)Size.Y, 0.1f, 1000.0f);
 

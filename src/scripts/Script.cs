@@ -14,17 +14,17 @@ public class MyGame : BaseGame
 
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
         _textRenderer = new Text(
-            "./Assets/fonts/PFAgoraSlabPro-Bold.ttf",
+            Engine.Paths.Fonts.PFAgoraSlabPro_Bold,
             32,
-            "./Assets/shaders/text/shader.vert",
-            "./Assets/shaders/text/shader.frag"
+            Engine.Paths.Shaders.textV,
+            Engine.Paths.Shaders.textF
         );
 
         var modelData = ObjLoader.Load("./Assets/3D_objects/teapol.obj");
         var mesh = new Mesh(modelData.Vertices, modelData.Indices);
         var shader = new Shader(
-            "./Assets/shaders/main/shader.vert", 
-            "./Assets/shaders/main/shader.frag"
+            Engine.Paths.Shaders.mainV, 
+            Engine.Paths.Shaders.mainF
         );
 
         var teapot1 = new GameObject(mesh, shader)
@@ -56,16 +56,7 @@ public class MyGame : BaseGame
         };
         _objects.Add(cube2);
 
-        string[] skyboxFaces = 
-        {
-            "./Assets/SkyBox/right.png",
-            "./Assets/SkyBox/left.png",
-            "./Assets/SkyBox/top.png",
-            "./Assets/SkyBox/bottom.png",
-            "./Assets/SkyBox/front.png",
-            "./Assets/SkyBox/back.png"
-        };
-        _skybox = new Skybox(skyboxFaces);
+        _skybox = new Skybox(Engine.Paths.BaseSkyBoxAssets);
     }
 
     public override void Update(FrameUpdateVars FUV)
@@ -83,8 +74,8 @@ public class MyGame : BaseGame
         {
             obj.Draw(view, projection);
         }
-        if (!EngineValues.IsConsoleOpen && EngineValues.IsPaused && _textRenderer != null){
-            Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, EngineValues.WindowSize.Y, EngineValues.WindowSize.X, 0, -1, 1);
+        if (!Engine.IsConsoleOpen && Engine.IsPaused && _textRenderer != null){
+            Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Engine.WindowSize.Y, Engine.WindowSize.X, 0, -1, 1);
             _richTextRenderer?.Draw(_textRenderer, "In Pause", 10, 550, 0.5f, ortho);
         }
     }

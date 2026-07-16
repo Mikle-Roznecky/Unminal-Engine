@@ -48,9 +48,9 @@ public class Skybox : IDisposable
     /// </summary>
     private void LoadShaders()
     {
-        string vertCode = File.ReadAllText("./Assets/shaders/SkyBox/shader.vert");
+        string vertCode = File.ReadAllText(Engine.Paths.Shaders.skyboxV);
 
-        string fragCode = File.ReadAllText("./Assets/shaders/SkyBox/shader.frag");
+        string fragCode = File.ReadAllText(Engine.Paths.Shaders.skyboxF);
 
         int vertShader = GL.CreateShader(ShaderType.VertexShader);
         GL.ShaderSource(vertShader, vertCode);
