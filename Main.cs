@@ -1,9 +1,7 @@
 namespace Unminal.Main;
 
 [SupportedOSPlatform("windows")]
-public class Main : GameWindow
-{
-    public static bool debug_mod = false;
+public class Main : GameWindow {
     private readonly BaseGame _userGame;
     Matrix4 _model, _view, _projection;
     bool debug_menu = false;
@@ -14,29 +12,34 @@ public class Main : GameWindow
     private Camera? _activeCameraRef; 
     private GameConsole? gameConsole;
 
+    #pragma warning disable CS8605, CS8602, CS8600
     public Main(BaseGame userGame) 
         : base(
             new GameWindowSettings() 
             {
-                UpdateFrequency = Config.Get<double>("UpdateFrequency", 60.0) 
+                UpdateFrequency = 60
             }, 
             new NativeWindowSettings()
-            {
-                ClientSize = new Vector2i(
-                    Config.Get<int>("WindowWidth", 1200), 
-                    Config.Get<int>("WindowHeight", 900)
+            {   
+                Location =  new Vector2i(
+                    (int)Engine.ConfigManager.GetStandardConfig("LocationX"),
+                    (int)Engine.ConfigManager.GetStandardConfig("LocationY")
                 ),
-                Title = Config.Get<string>("Title", "Unminal Engine"),
-                
-                APIVersion = new Version(
-                    Config.Get<int>("ApiMajor", 3), 
-                    Config.Get<int>("ApiMinor", 3)
-                )
-            })
+                ClientSize = new Vector2i(
+                    (int)Engine.ConfigManager?.GetStandardConfig("Width"),
+                    (int)Engine.ConfigManager?.GetStandardConfig("Height")
+                ),
+                Title = (string)Engine.ConfigManager?.GetStandardConfig("Title"),
+                APIVersion = new Version(3, 3)
+            }
+        )
     {
         _userGame = userGame;
         this.TextInput += HandleConsoleTextInput;
+        Engine.IsDebug = (bool)Engine.ConfigManager?.GetStandardConfig("Debug");
+        System.Console.WriteLine(Engine.IsDebug);
     }
+    #pragma warning restore CS8605, CS8602, CS8600
 
     protected override void OnLoad()
     {
@@ -44,8 +47,8 @@ public class Main : GameWindow
 
         gameConsole = new GameConsole();
 
-        bool vsync = Config.Get<bool>("VSync", false);
-        this.VSync = vsync ? VSyncMode.On : VSyncMode.Off;
+        bool? vsync = (bool?)Engine.ConfigManager?.GetStandardConfig("VSync");
+        this.VSync = (vsync ?? false) ? VSyncMode.On : VSyncMode.Off;
 
         CursorState = CursorState.Grabbed;
         if (_GameFullscreen) WindowState = WindowState.Fullscreen;
@@ -215,6 +218,14 @@ public class Main : GameWindow
     {
         _textRenderer?.Dispose();
         base.OnUnload();
+
+        int currentX = this.Location.X;
+        int currentY = this.Location.Y;
+        Engine.ConfigManager?.SetStandardConfig(newLocationX: $"{currentX}");
+        Engine.ConfigManager?.SetStandardConfig(newLocationY: $"{currentY}");
+        Engine.ConfigManager?.SetStandardConfig(newDebug: $"{Engine.IsDebug}");
+        Engine.ConfigManager?.SetStandardConfig(newWidth: $"{Engine.WindowSize.X}");
+        Engine.ConfigManager?.SetStandardConfig(newHeight: $"{Engine.WindowSize.Y}");
     }
 
     protected override void OnMouseWheel(MouseWheelEventArgs e)
@@ -231,7 +242,7 @@ public class Main : GameWindow
     
     // Helper Metods
     private void SetTitle(){
-        string BaseTitle = Config.Get<string>("Title", "Unminal Engine");
+        string BaseTitle = Engine.ConfigManager?.GetStandardConfig("Title")?.ToString() ?? "";
         if (this.WindowState != WindowState.Fullscreen){
             if (debug_menu) Title = BaseTitle + " (In Debug Menu)";
             else if (_GamePaused) Title = BaseTitle + " (In Pause)";

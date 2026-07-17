@@ -1,8 +1,6 @@
 ﻿namespace Unminal;
 
 using System.Runtime.Versioning;
-using OpenTK.Windowing.Desktop;
-using OpenTK.Mathematics;
 using Unminal.Script;
 
 [SupportedOSPlatform("windows")]
@@ -10,7 +8,8 @@ class Program
 {
     static void Main()
     {
-        Config.Init();
+        Engine.BaseFolder = AppDomain.CurrentDomain.BaseDirectory;
+        Engine.ConfigManager = new();
         var userGame = new MyGame();
         using var engine = new Main.Main(userGame);
         

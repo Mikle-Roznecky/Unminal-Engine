@@ -1,6 +1,9 @@
+using Unminal.Utils.ConfigManager;
+
 namespace Unminal.Core.State;
 
 public static class Engine {
+    public static Config? ConfigManager {get; set;}
     public static Vector2i WindowSize {get; set;}
     public static float DeltaTime {get; set;}
     public static double TotalTime {get; set;}
@@ -11,6 +14,7 @@ public static class Engine {
     public static bool IsDebugOpen {get; set;}
     public static bool CanF3 {get; set;}
     public static bool IsDebug {get; set;}
+    public static string? BaseFolder {get; set;}
 
     // idk why im added this but perhaps in the 
     // future the meaning and uniqueness engine will be 
@@ -38,11 +42,13 @@ public static class Engine {
             private static readonly Dictionary<string, string> _ = new() {
                 ["CommandConfigJ"] = "./Assets/data/CommandExecutorConfig.json", 
                 ["ConsoleHistoryL"] = "./Assets/data/ConsoleHistory.log",
-                ["ConsoleHistoryJ"] = "./Assets/data/ConsoleHistory.json"
+                ["ConsoleHistoryJ"] = "./Assets/data/ConsoleHistory.json",
+                ["MainConfig"] = "./Assets/data/config.json"
             };
             public static string CommandConfigJ => _["CommandConfigJ"];
             public static string ConsoleHistoryL => _["ConsoleHistoryL"]; 
             public static string ConsoleHistoryJ => _["ConsoleHistoryJ"];
+            public static string MainConfig => _["MainConfig"];
         }
         public class Shaders {
             private static readonly Dictionary<string, string> _ = new() {

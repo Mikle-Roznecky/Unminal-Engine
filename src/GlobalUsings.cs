@@ -11,7 +11,7 @@ global using System.Globalization;
 
 global using Unminal.Core.ObjLoader;
 global using Unminal.Core.Commands.Structure;
-global using Unminal.Utils.Config;
+// global using Unminal.Utils.Config;
 global using Unminal.Core.Camera;
 global using Unminal.Main;
 global using Unminal.Render.MeshProgram;

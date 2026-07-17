@@ -1,167 +1,150 @@
-namespace Unminal.Utils.Config;
+// Im take this code with another my project "SyncraRPC"
+// now these two projects are running on the same config system
+// im chnge it but this is soo cool))) 
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Versioning;
 using System.Text.Json;
 
-[SupportedOSPlatform("windows")]
-public static class Config
+namespace Unminal.Utils.ConfigManager;
+
+public class Config
 {
-    private static readonly ConfigManager _manager = new ConfigManager("config.json");
-    public static bool IsLoaded { get; private set; } = false;
-    public static void Init()
-    {
-        _manager.Load();
-        IsLoaded = true;
+    string fileConfig = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Engine.Paths.Config.MainConfig[2..]);
+
+    public Config(string FileConfig = "") {
+        System.Console.WriteLine(fileConfig);
+        if (!(FileConfig == "")) this.fileConfig = FileConfig;
+        JsonRoot conf = ReadConfig(this.fileConfig);
+        System.Console.WriteLine();
     }
 
-    public static T Get<T>(string key, T? defaultValue = default)
+    #pragma warning disable CS8603, CS8602
+    public static T ConvertTo<T>(object input) {
+        if (input == null || input == DBNull.Value) return default(T);
+        try {
+            Type targetType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+            if (targetType == typeof(bool)) {
+                string str = input.ToString().Trim();
+                if (str == "1") return (T)(object)true;
+                if (str == "0") return (T)(object)false;
+                return (T)(object)bool.Parse(str);
+            }
+            if (targetType == typeof(string)) {
+                if (input is bool b) return (T)(object)(b ? "true" : "false");
+                string str = input.ToString().Trim();
+                if (str == "1") return (T)(object)"true";
+                if (str == "0") return (T)(object)"false";
+            }
+            return (T)Convert.ChangeType(input, targetType);
+        } catch {
+            return default(T);
+        }
+    }
+    #pragma warning restore CS8603, CS8602
+
+    public void SetStandardConfig(
+        string? newTitle = null,
+        string? newDebug = null,
+        string? newHeight = null,
+        string? newWidth = null,
+        string? newVSync = null,
+        string? newLocationX = null,
+        string? newLocationY = null
+    )
     {
-        if (!IsLoaded) Init();
+        JsonRoot config = ReadConfig(this.fileConfig);
+        if (config.Changeable == null) config.Changeable = new ChangeableData();
+        if (config.Changeable.WindowSettings == null) config.Changeable.WindowSettings = new WindowSettings();
+        config.Changeable.Title = newTitle ?? (string?)this.GetStandardConfig("Title");
+        config.Changeable.Debug = newDebug != null
+            ? ConvertTo<bool>(newDebug)
+            : (bool?)this.GetStandardConfig("Debug");
+        config.Changeable.WindowSettings.Height = newHeight != null
+            ? ConvertTo<int>(newHeight)
+            : (int?)this.GetStandardConfig("Height");
+        config.Changeable.WindowSettings.Width = newWidth != null
+            ? ConvertTo<int>(newWidth)
+            : (int?)this.GetStandardConfig("Width");
+        config.Changeable.WindowSettings.VSync = newVSync != null
+            ? ConvertTo<bool>(newVSync)
+            : (bool?)this.GetStandardConfig("VSync");
+        config.Changeable.WindowSettings.LocationX = newLocationX != null
+            ? ConvertTo<int>(newLocationX)
+            : (int?)this.GetStandardConfig("LocationX");
+        config.Changeable.WindowSettings.LocationY = newLocationY != null
+            ? ConvertTo<int>(newLocationY)
+            : (int?)this.GetStandardConfig("LocationY");
+        SaveToFile(config);
+    }
+
+    public object? GetStandardConfig(string key)
+    {
+        JsonRoot config = ReadConfig(this.fileConfig);
+        if (config.Changeable == null) {throw new JsonException("74 line in Config.cs null object");}
+        if (config.Changeable.WindowSettings == null){throw new JsonException("75 line in Config.cs null object");}
+
+        return key switch
+        {
+            "Title" => config.Changeable.Title,
+            "Debug" => config.Changeable.Debug,
+            "Height" => Convert.ToInt32(config.Changeable.WindowSettings.Height),
+            "Width" => Convert.ToInt32(config.Changeable.WindowSettings.Width),
+            "VSync" => config.Changeable.WindowSettings.VSync,
+            "LocationX" => config.Changeable.WindowSettings.LocationX,
+            "LocationY" => config.Changeable.WindowSettings.LocationY,
+            _ => ""
+        };
+    }
+
+    public void SetUserDefinedConfig(string key, object value)
+    {
+        JsonRoot currentConfig = ReadConfig(this.fileConfig);
+
+        if (currentConfig.UserDefined == null) {
+            currentConfig.UserDefined = new Dictionary<string, object>();
+        }
+
+        currentConfig.UserDefined[key] = value;
+        SaveToFile(currentConfig);
+    }
         
-        var value = _manager.Get(key, defaultValue);
+    private JsonRoot ReadConfig(string PathToFile)
+    {   
+        if (!File.Exists(PathToFile)) {
+            return new JsonRoot();
+        }
 
-        #pragma warning disable CS8603
-        return value ?? defaultValue;
-        #pragma warning restore CS8603
+        using FileStream stream = File.OpenRead(PathToFile);
+        JsonRoot data = JsonSerializer.Deserialize<JsonRoot>(stream)!;
+        return data;
     }
-    
-    public static void Save()
+
+    private void SaveToFile(JsonRoot config)
     {
-        _manager.Save();
+        var options = new JsonSerializerOptions { WriteIndented = true};
+        string jsonString = JsonSerializer.Serialize(config, options);
+        File.WriteAllText(this.fileConfig, jsonString);
     }
 }
 
-/// <summary>
-/// Manages configuration settings by saving and loading them from a JSON file.
-/// </summary>
-[SupportedOSPlatform("windows")]
-public class ConfigManager
+public class JsonRoot
 {
-    private readonly Dictionary<string, object> _settings = new Dictionary<string, object>();
-    
-    private readonly string _filePath;
+    public ChangeableData? Changeable {get; set;}
+    [System.Text.Json.Serialization.JsonPropertyName("User-defined")]
+    public Dictionary<string, object>? UserDefined {get; set;}
+}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ConfigManager"/> class with a specified file path.
-    /// </summary>
-    /// <param name="filePath">The path to the configuration JSON file. Default is "config.json".</param>
-    public ConfigManager(string filePath = "config.json")
-    {
-        _filePath = filePath;
-    }
+public class ChangeableData
+{
+    public string? Title {get; set;}
+    public bool? Debug {get; set;}
+    public WindowSettings? WindowSettings {get; set;}
+}
 
-    /// <summary>
-    /// Loads configuration settings from the JSON file. If the file does not exist, a default empty file is created.
-    /// </summary>
-    public void Load()
-    {
-        if (!File.Exists(_filePath))
-        {
-            GameConsole.Instance?.Log("Error", $"File '{_filePath}' not found. Creating default empty config.");
-            Save();
-            return;
-        }
-
-        try
-        {
-            string json = File.ReadAllText(_filePath);
-            
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                ReadCommentHandling = JsonCommentHandling.Skip
-            };
-
-            var data = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json, options);
-
-            if (data != null)
-            {
-                _settings.Clear();
-                foreach (var kvp in data)
-                {
-                    _settings[kvp.Key] = ConvertJsonElementToObject(kvp.Value);
-                }
-            }
-            
-            GameConsole.Instance?.Log("Debug", "Loaded successfully.");
-        }
-        catch (Exception ex)
-        {
-            GameConsole.Instance?.Log("Error", $"Error loading file: {ex.Message}");
-        }
-    }
-
-    /// <summary>
-    /// Saves the current configuration settings into the JSON file with indentation formatting.
-    /// </summary>
-    public void Save()
-    {
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = true
-        };
-        
-        string json = JsonSerializer.Serialize(_settings, options);
-        File.WriteAllText(_filePath, json);
-    }
-
-    /// <summary>
-    /// Retrieves a configuration value associated with the specified key, casting or converting it to the requested type.
-    /// </summary>
-    /// <typeparam name="T">The type of the configuration value to return.</typeparam>
-    /// <param name="key">The unique key of the setting.</param>
-    /// <param name="defaultValue">The value to return if the key is not found or type conversion fails.</param>
-    /// <returns>The stored setting value converted to type <typeparamref name="T"/>, or <paramref name="defaultValue"/>.</returns>
-    public T Get<T>(string key, T defaultValue = default!)
-    {
-        if (_settings.TryGetValue(key, out object? value))
-        {
-            try
-            {
-                if (value is T typedValue)
-                {
-                    return typedValue;
-                }
-                return (T)Convert.ChangeType(value, typeof(T))!;
-            }
-            catch (Exception ex)
-            {
-                GameConsole.Instance?.Log("Error", $"Type mismatch for key '{key}'. Expected {typeof(T)}, got {value.GetType()}. Error: {ex.Message}");
-                return defaultValue;
-            }
-        }
-        else
-        {
-            return defaultValue;
-        }
-    }
-
-    /// <summary>
-    /// Converts a <see cref="JsonElement"/> to its corresponding standard C# primitive object type.
-    /// </summary>
-    /// <param name="element">The JSON element to convert.</param>
-    /// <returns>A primitive object (string, int, long, double, bool, DBNull, or raw JSON string).</returns>
-    private object ConvertJsonElementToObject(JsonElement element)
-    {
-        switch (element.ValueKind)
-        {
-            case JsonValueKind.String:
-                return element.GetString() ?? string.Empty;
-            case JsonValueKind.Number:
-                if (element.TryGetInt32(out int i)) return i;
-                if (element.TryGetInt64(out long l)) return l;
-                if (element.TryGetDouble(out double d)) return d;
-                return element.GetDouble();
-            case JsonValueKind.True:
-            case JsonValueKind.False:
-                return element.GetBoolean();
-            case JsonValueKind.Null:
-                return DBNull.Value;
-            default:
-                return element.GetRawText(); 
-        }
-    }
+public class WindowSettings
+{
+    public bool? VSync {get; set;}
+    public int? Height {get; set;}
+    public int? Width {get; set;}
+    public int? LocationX {get; set;}
+    public int? LocationY {get; set;}
 }
