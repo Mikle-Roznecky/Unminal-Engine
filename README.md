@@ -1,13 +1,13 @@
-# Unminal (Engine on CSharp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![.NET Version](https://img.shields.io/badge/.NET-10.0-blue)](https://dotnet.microsoft.com/)
 [![OpenTK](https://img.shields.io/badge/OpenTK-4.9.4-green)](https://opentk.net/)
 [![Windows](https://img.shields.io/badge/Windows-10%2B-0078D6)](https://www.microsoft.com/windows)
 
-> A simple, open-source 3D game engine built from scratch in C# using OpenTK.
-> **[Wiki of this project](https://dovintc-off.github.io/Unminal-wiki/)**
+## **Unminal Engine — Freedom to Will, Freedom to Act**
 
-Welcome to **Unminal**! This is a personal project aimed at creating a flexible and modular 3D game engine. The entire codebase is open-source, meaning you are free to download, modify, experiment with, and build the project yourself.
+* The engine **doesn't dictate rules**; it hands you the tools to **bring your vision** to life. From a **flexible console system** to **rendering control** — there are no restrictions here, only possibilities.
+* Help us keep this spirit alive: **star the repo** and **watch Unminal evolve!**
+* A simple, open-source 3D game engine built from scratch in C# using OpenTK.
 
 ## Features
 
@@ -35,7 +35,7 @@ Welcome to **Unminal**! This is a personal project aimed at creating a flexible 
 1.  Clone the repository:
     ```bash
     git clone https://github.com/dovintc-off/Unminal-Engine.git
-    cd Engine-on-CSharp
+    cd Unminal-Engine
     ```
 
 2.  Restore dependencies (optional, `dotnet run` does this automatically):
