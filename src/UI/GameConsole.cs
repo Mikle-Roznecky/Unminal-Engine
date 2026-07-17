@@ -1,6 +1,8 @@
 namespace Unminal.UI.GameConsole;
 using System.Runtime.CompilerServices;
+using System.Reflection;
 using Unminal.Core.Commands.CommandParser;
+using Unminal.Core.Commands.ExecutedMethods;
 
 [SupportedOSPlatform("windows")]
 public class GameConsole
@@ -137,8 +139,6 @@ public class GameConsole
     private void CommandExecutor(string Excommand) 
     {
         if (string.IsNullOrWhiteSpace(Excommand)) return;
-        
-        System.Console.WriteLine(Excommand);
         
         string trimmed = Excommand.TrimStart('/');
         List<Command> commands = parserCommands.Parse();
@@ -299,7 +299,21 @@ public class GameConsole
                 finalArgs[argName] = finalValue ?? "";
         }
 
-        Console.WriteLine($"[#green]Success! Executing: {current.ExecuteMethod}");
-        foreach(var kvp in finalArgs) Console.WriteLine($"  -> {kvp.Key}: {kvp.Value} ({kvp.Value?.GetType().Name})");
-    }
+        // Console.WriteLine($"[#green]Success! Executing: {current.ExecuteMethod}");
+        // foreach(var kvp in finalArgs) Console.WriteLine($"  -> {kvp.Key}: {kvp.Value} ({kvp.Value?.GetType().Name})");
+
+        Type type = typeof(CalledMethods);
+        string? methodName = current.ExecuteMethod;
+        MethodInfo? method = type.GetMethod(methodName!, BindingFlags.Public | BindingFlags.Static);
+        if (method != null) {
+            object[] parameters = new object[] { finalArgs };
+            bool result = (method.Invoke(null, parameters) as bool?) ?? false;
+            if (!result) {
+                System.Console.WriteLine($"[#red]Something went wrong with executing method: \"{current.Name}\"");
+            }
+        } else {
+            System.Console.WriteLine($"[#red]Method \"{current.Name}\" not found");
+        }
+        System.Console.WriteLine("[#green] Executed");
+    }   
 }

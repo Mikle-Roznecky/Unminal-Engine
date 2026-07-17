@@ -1,0 +1,6 @@
+debug write text "Hello World!"
+debug write
+debug write text
+debug write text "hi my world
+server open port 2676 limitUser 3
+debug write text "Hello World!"

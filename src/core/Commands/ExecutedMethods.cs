@@ -1,11 +1,12 @@
 namespace Unminal.Core.Commands.ExecutedMethods;
 
-public class Methods {
-    public void SetCanf3(bool canf3) {
-        Engine.CanF3 = canf3;
+public static class CalledMethods {
+    public static bool SetCanf3(Dictionary<string, object> args) {
+        return true;
     }
 
-    public void Write(string text) {
-        System.Console.WriteLine("[DEBUG] "+text);
+    public static bool Write(Dictionary<string, object> args) {
+        System.Console.WriteLine(args["text"]);
+        return true;
     }
 }

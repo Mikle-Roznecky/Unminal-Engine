@@ -10,6 +10,7 @@ public static class Engine {
     public static bool IsConsoleOpen {get; set;}
     public static bool IsDebugOpen {get; set;}
     public static bool CanF3 {get; set;}
+    public static bool IsDebug {get; set;}
 
     // idk why im added this but perhaps in the 
     // future the meaning and uniqueness engine will be 
