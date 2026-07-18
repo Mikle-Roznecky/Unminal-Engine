@@ -1,13 +1,12 @@
 // camera.cs
-namespace Unminal.Core.Camera;
+namespace Unminal.Core.PlayerCamera;
 
-public class Camera
-{
+public class Camera {
     public Vector3 Front => _front;
     public Vector3 Position { get; set; }
     public float Yaw { get; set; }
     public float Pitch { get; set; }
-    
+    public float[] limitationFOV {get; set;} = {30.0f, 120.0f};
     private float _fov = MathHelper.PiOver4;
     public float FOV
     { 
@@ -15,8 +14,9 @@ public class Camera
         set 
         {
             _fov = MathHelper.Clamp(value, 
-                MathHelper.DegreesToRadians(30.0f), 
-                MathHelper.DegreesToRadians(120.0f));
+                MathHelper.DegreesToRadians(limitationFOV[0]), 
+                MathHelper.DegreesToRadians(limitationFOV[1])
+            );
         }
     }
 
@@ -103,5 +103,25 @@ public class Camera
     public void ProcessMouseScroll(float yOffset)
     {
         FOV -= (yOffset / 120.0f) * 4f;
+    }
+
+    public void UpdateProjection() {
+        float aspectRatio = (float)Engine.WindowSize.X / Engine.WindowSize.Y;
+        Matrix4 projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(
+            _fov,
+            aspectRatio, 
+            0.1f,
+            1000f
+        );
+
+        int programId = GL.GetInteger(GetPName.CurrentProgram);
+        if (programId != 0) 
+        {
+            int loc = GL.GetUniformLocation(programId, "projection");
+            if (loc != -1) 
+            {
+                GL.UniformMatrix4(loc, false, ref projectionMatrix);
+            }
+        }
     }
 }
