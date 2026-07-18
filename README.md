@@ -9,13 +9,18 @@
 * Help us keep this spirit alive: **star the repo** and **watch Unminal evolve!**
 * A simple, open-source 3D game engine built from scratch in C# using OpenTK.
 
-## Features
+### 🗺️ Features
+1. Import objects with textures (UV system) \*
+2. Update Text Renderer \*\*
+3. Update Graphics <br>
+3.1 Shape Refactoring: reduction of creation in scripts \*\*\* <br>
+3.2 Light Refactoring: creating a separate object \*\*\*\* <br>
+4. Implement AABB collision (at beginning only with built-in shapes) \*\*\*\*\* 
+5. Create water object (visually, without collision) \*\*\*
+6. Particles \*\*
 
-*   **Custom Rendering Pipeline:** Built on top of OpenGL 3.3 Core Profile via OpenTK.
-*   **Modular Architecture:** Separation of concerns (Camera, Shader, Mesh, GameObject).
-*   **Asset Management:** Basic loading for OBJ models and PNG textures.
-*   **Skybox Support:** Environment rendering for immersive scenes.
-*   **MIT License:** Free to use and modify with attribution.
+> __Difficulty__ <br>
+> __\* Simple | \*\* Medium | \*\*\* Hard | \*\*\*\* So Hard | \*\*\*\*\* Hardcore__
 
 *(Note: This project is in early development. Features like Lua scripting, ECS, and Vulkan support are planned for future versions.)*
 
