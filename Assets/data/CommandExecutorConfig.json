@@ -3,38 +3,32 @@
         "ExecutedLayer": false,
         "write": {
             "ExecutedLayer": true,
-            "ExecuteMetod": "Write",
-            "ArgsExecuteMetod": {"text": "INPUTED_TEXT?error('why im say?')"},
+            "ExecuteMethod": "Write",
+            "ArgsExecuteMethod": {"text": "INPUTED_TEXT?error('why im say?')"},
             "ConfigInput": {"INPUTED_TEXT": ["type:str", "lim:-1"]}
             
-        }
-    },
-    "server": {
-        "ExecutedLayer": false,
-        "open": {
-            "ExecutedLayer": true,
-            "ExecuteMetod": "GameServerOpen",
-            "ArgsExecuteMetod": {"port": "USER_VEL_CACOETO_CHISLO?8008", "limitUser": "LIMIT_NA_VHODIASHIH?-1"},
-            "ConfigInput": {
-                "USER_VEL_CACOETO_CHISLO": ["type:int", "lim:range(1,99999)"],
-                "LIMIT_NA_VHODIASHIH": ["type:int", "lim:-1/1+"]
+        },
+        "camera": {
+            "ExecutedLayer": false,
+            "set_fov": {
+                "ExecutedLayer": true,
+                "ExecuteMethod": "Fov_set",
+                "ArgsExecuteMethod": {"value": "INPUTED_FOV?error(write value of FOV)"},
+                "ConfigInput": {"INPUTED_FOV": ["type:int", "lim:-1"]}
+            },
+            "get_fov": {
+                "ExecutedLayer": true,
+                "ExecuteMethod": "Fov_get",
+                "ArgsExecuteMethod": null
             }
         },
-        "player": {
-            "ExecutedLayer": false,
-            "kick": {
-                "ExecutedLayer": true,
-                "ExecuteMetod": "KickPlayerFromServer",
-                "ArgsExecuteMetod": {
-                    "targetId": "PLAYER_UID_TOKEN?error('Cant kick all players')",
-                    "reasonCode": "KICK_REASON_CODE?0",
-                    "banDuration": "BAN_DURATION_VAL?-1"
-                },
-                "ConfigInput": {
-                    "PLAYER_UID_TOKEN": ["type:int", "lim:-1||1+"],
-                    "KICK_REASON_CODE": ["type:int", "lim:range(0,99)"],
-                    "BAN_DURATION_VAL": ["type:time", "lim:5m+"]
-                }
+        "test": {
+            "ExecutedLayer": true,
+            "ExecuteMethod": "Test",
+            "ArgsExecuteMethod": {"value": "INPUTED_FOV?error(write value of FOV)", "test": "INPUTED_TEXT?67"},
+            "ConfigInput": {
+                "INPUTED_FOV": ["type:int", "lim:-1"],
+                "INPUTED_TEXT": ["type:int", "lim:-1"]
             }
         }
     }

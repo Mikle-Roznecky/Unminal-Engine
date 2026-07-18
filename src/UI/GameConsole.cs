@@ -214,24 +214,28 @@ public class GameConsole
         var argTokens = tokensArg;
 
         var userArgs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        List<string> argOrder = new List<string>();
 
-        for (int j = 0; j < argTokens.Count; j++) 
-        {
-            string key = argTokens[j];
+        var expectedParams = current.ArgsExecuteMethod
+            .Select(kvp => new { ParamName = kvp.Key, Token = kvp.Value.Split('?')[0].Trim() })
+            .ToList();
+
+        for (int j = 0; j < argTokens.Count; j++)  {
+            if (j < expectedParams.Count) {
+                userArgs[expectedParams[j].ParamName] = argTokens[j];
+            }  else  {
+                Console.WriteLine($"[#red]Too many arguments. Expected {expectedParams.Count}, got {argTokens.Count}.");
+                return;
+            }
+        }
+
+        foreach (var (argName, rawValue) in current.ArgsExecuteMethod)  {
+            var parts = rawValue.Split('?', 2);
+            string logic = parts.Length > 1 ? parts[1].Trim() : "";
             
-            if (!argOrder.Contains(key)) 
-                argOrder.Add(key);
-
-            if (j + 1 < argTokens.Count && 
-                !argTokens[j + 1].StartsWith("/")) 
-            {
-                userArgs[key] = argTokens[j + 1];
-                j++;
-            } 
-            else 
-            {
-                System.Console.WriteLine($"[#red]Need values for: {key}");
+            bool isRequired = logic.StartsWith("error(", StringComparison.OrdinalIgnoreCase);
+            
+            if (isRequired && !userArgs.ContainsKey(argName)) {
+                Console.WriteLine($"[#red]Need values for: {argName}");
                 return;
             }
         }

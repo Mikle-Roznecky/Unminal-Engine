@@ -12,7 +12,7 @@ public class Atlas : IDisposable
 
     private ConcurrentDictionary<char, GlyphData> _glyphs = new ConcurrentDictionary<char, GlyphData>();
 
-    private const string Charset = """ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?-+*/|\=()[]{}<>:;"'@#$%^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя""";
+    private const string Charset = """ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?-_+*/|\=()[]{}<>:;"'@#$%^""";
 
     public Atlas(string fontPath, int fontSize, int atlasSize = 512)
     {

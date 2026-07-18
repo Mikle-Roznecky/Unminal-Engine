@@ -33,7 +33,8 @@ public class Main : GameWindow {
                 APIVersion = new Version(3, 3)
             }
         )
-    {
+    {   
+
         _userGame = userGame;
         this.TextInput += HandleConsoleTextInput;
         Engine.IsDebug = (bool)Engine.ConfigManager?.GetStandardConfig("Debug");
@@ -97,6 +98,9 @@ public class Main : GameWindow {
 
     protected override void OnUpdateFrame(FrameEventArgs e) {
         base.OnUpdateFrame(e);
+        
+        Engine.Player.CameraObj = _activeCameraRef;
+        if (Engine.Player.CameraObj == null) throw new Exception("[#red]Something went wrong, camera is null: see file main.cs (line ~102)");
 
         KeyboardState input = KeyboardState;
         MouseState mouse = MouseState;
@@ -166,10 +170,21 @@ public class Main : GameWindow {
     protected override void OnRenderFrame(FrameEventArgs e) {   
         base.OnRenderFrame(e);
 
+        Engine.WindowSize = new Vector2i(Size.X, Size.Y);
         Engine.DeltaTime = (float)e.Time;
         Engine.TotalTime += e.Time;
         Engine.CurrentKeyboard = KeyboardState;
         Engine.CurrentMouse = MouseState;
+
+        if (_activeCameraRef != null) 
+        {
+            _projection = Matrix4.CreatePerspectiveFieldOfView(
+                _activeCameraRef.FOV,
+                Size.X / (float)Size.Y, 
+                0.1f, 
+                1000.0f
+            );
+        }
 
         GL.ClearColor(0, 0, 0, 1);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -208,7 +223,6 @@ public class Main : GameWindow {
     {
         base.OnResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
-        Engine.WindowSize = new Vector2i(Size.X, Size.Y);
         float currentFov = _activeCameraRef?.FOV ?? _initialFov;
         _projection = Matrix4.CreatePerspectiveFieldOfView(currentFov, Size.X / (float)Size.Y, 0.1f, 1000.0f);
 
@@ -240,7 +254,7 @@ public class Main : GameWindow {
         } 
     }
     
-    // Helper Metods
+    // Helper Methods
     private void SetTitle(){
         string BaseTitle = Engine.ConfigManager?.GetStandardConfig("Title")?.ToString() ?? "";
         if (this.WindowState != WindowState.Fullscreen){

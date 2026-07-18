@@ -1,6 +1,10 @@
-debug write text "Hello World!"
-debug write
-debug write text
-debug write text "hi my world
-server open port 2676 limitUser 3
-debug write text "Hello World!"
+debug camera set_fov 90
+debug camera get_fov
+debug camera set_fov 120
+debug camera set_fov 90
+debug camera set_value 45
+debug camera set_fov 45
+debug camera set_fov 90
+debug camera set_fov 120
+debug camera set_fov 120
+debug camera set_fov 120

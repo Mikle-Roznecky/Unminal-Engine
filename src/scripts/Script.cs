@@ -41,9 +41,9 @@ public class MyGame : BaseGame
 
         var cube1 = new GameObject(mesh, shader)
         {
-            Position = new Vector3(20, 12, -50), 
+            Position = new Vector3(20, 20, -70), 
             Scale = new Vector3(6f),
-            Color = new Vector3(0.2f, 0.8f, 0.2f),
+            Color = new Vector3(1f, 1f, 0f),
             LightPos = new Vector3(10f, 15f, 10f)
         };
         _objects.Add(cube1);
@@ -74,9 +74,9 @@ public class MyGame : BaseGame
         {
             obj.Draw(view, projection);
         }
-        if (!Engine.IsConsoleOpen && Engine.IsPaused && _textRenderer != null){
-            Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Engine.WindowSize.Y, Engine.WindowSize.X, 0, -1, 1);
-            _richTextRenderer?.Draw(_textRenderer, "In Pause", 10, 550, 0.5f, ortho);
+        if (!Engine.IsConsoleOpen && Engine.IsPaused && _textRenderer != null && _richTextRenderer != null){
+            Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Engine.WindowSize.X, Engine.WindowSize.Y, 0, -1, 1);
+            _richTextRenderer.Draw(_textRenderer, "In Pause", 10, 550, 0.5f, ortho);
         }
     }
 }

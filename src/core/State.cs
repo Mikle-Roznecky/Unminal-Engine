@@ -3,17 +3,20 @@ using Unminal.Utils.ConfigManager;
 namespace Unminal.Core.State;
 
 public static class Engine {
+    // Window state
     public static Config? ConfigManager {get; set;}
     public static Vector2i WindowSize {get; set;}
     public static float DeltaTime {get; set;}
     public static double TotalTime {get; set;}
     public static KeyboardState? CurrentKeyboard {get; set;}
     public static MouseState? CurrentMouse {get; set;}
+    // Menu state
     public static bool IsPaused {get; set;}
     public static bool IsConsoleOpen {get; set;}
     public static bool IsDebugOpen {get; set;}
     public static bool CanF3 {get; set;}
     public static bool IsDebug {get; set;}
+    // path to folder where located Unminal.exe file
     public static string? BaseFolder {get; set;}
 
     // idk why im added this but perhaps in the 
@@ -23,10 +26,20 @@ public static class Engine {
         public static string? userName {get; set;}
         public static string? id {get; set;}
         public static string? language {get; set;}
+        // Original camera object
+        public static Camera? CameraObj {get; set;}
+        // I'll think about what to do about it.
+        // public static Vector3 CameraPosition {get; set;}
+        // public static float Yaw {get; set;}
+        // public static float Pitch {get; set;}
+        // public static float Fov {get; set;}
+        // public static float MoveSpeed { get; set; }
+        // public static float MouseSensitivity { get; set; }
+        // public static float[]? limitationFOV {get; set;}
     }
 
     public static class ExtensionData {
-        // here may be a engine "extensions" data (maybe)
+        // here a engine "extensions" data (maybe)
     };
 
     public static class Paths {
@@ -89,3 +102,4 @@ public static class Engine {
         }
     }
 }
+// yeah im soooo love word "maybe" 

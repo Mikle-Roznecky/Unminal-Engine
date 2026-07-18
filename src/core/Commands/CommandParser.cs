@@ -59,12 +59,11 @@ internal static class JsonNodeCommandExtensions
             {
                 string key = property.Key;
                 JsonNode? value = property.Value;
-
                 if (value == null) continue;
 
                 switch (key.ToLowerInvariant())
                 {
-                    case "executemetod":
+                    case "executemethod":
                         command.ExecuteMethod = value.ToString();
                         break;
                         
@@ -72,7 +71,7 @@ internal static class JsonNodeCommandExtensions
                         command.ExecutedLayer = value.GetValue<bool>();
                         break;
                         
-                    case "argsexecutemetod":
+                    case "argsexecutemethod":
                         command.ArgsExecuteMethod = ParseSimpleDictionary(value.AsObject());
                         break;
                         
