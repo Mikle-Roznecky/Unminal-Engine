@@ -104,24 +104,4 @@ public class Camera {
     {
         FOV -= (yOffset / 120.0f) * 4f;
     }
-
-    public void UpdateProjection() {
-        float aspectRatio = (float)Engine.WindowSize.X / Engine.WindowSize.Y;
-        Matrix4 projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(
-            _fov,
-            aspectRatio, 
-            0.1f,
-            1000f
-        );
-
-        int programId = GL.GetInteger(GetPName.CurrentProgram);
-        if (programId != 0) 
-        {
-            int loc = GL.GetUniformLocation(programId, "projection");
-            if (loc != -1) 
-            {
-                GL.UniformMatrix4(loc, false, ref projectionMatrix);
-            }
-        }
-    }
 }
