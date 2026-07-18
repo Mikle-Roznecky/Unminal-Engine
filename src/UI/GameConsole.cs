@@ -258,6 +258,14 @@ public class GameConsole
                             string t = r[5..].ToLower();
                             if (t == "int" && !int.TryParse(userValue, out _)) {
                                 Console.WriteLine($"[#red]Type Error: '{argName}' must be integer."); return;
+                            } else if (t == "bool") {
+                                string lowerVal = userValue.ToLowerInvariant();
+                                if (lowerVal != "true" && lowerVal != "false" && 
+                                    lowerVal != "1" && lowerVal != "0" &&
+                                    lowerVal != "yes" && lowerVal != "no") {
+                                    Console.WriteLine($"[#red]Type Error: '{argName}' must be boolean (true/false/1/0).");
+                                    return;
+                                }
                             }
                         } else if (r.StartsWith("lim:range(")) {
                             int sIdx = r.IndexOf('(') + 1;
@@ -274,7 +282,12 @@ public class GameConsole
                         }
                     }
                 }
-                finalValue = userValue;
+                if (rules != null && rules.Contains("type:bool", StringComparison.OrdinalIgnoreCase)) {
+                    string lowerVal = userValue!.ToLowerInvariant();
+                    finalValue = lowerVal is "true" or "1" or "yes";
+                } else {
+                    finalValue = userValue;
+                }
             } else {
                 if (logic.StartsWith("error(")) {
                     int s = logic.IndexOf('(') + 1;
