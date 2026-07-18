@@ -261,8 +261,7 @@ public class GameConsole
                             } else if (t == "bool") {
                                 string lowerVal = userValue.ToLowerInvariant();
                                 if (lowerVal != "true" && lowerVal != "false" && 
-                                    lowerVal != "1" && lowerVal != "0" &&
-                                    lowerVal != "yes" && lowerVal != "no") {
+                                    lowerVal != "1" && lowerVal != "0") {
                                     Console.WriteLine($"[#red]Type Error: '{argName}' must be boolean (true/false/1/0).");
                                     return;
                                 }
@@ -284,7 +283,7 @@ public class GameConsole
                 }
                 if (rules != null && rules.Contains("type:bool", StringComparison.OrdinalIgnoreCase)) {
                     string lowerVal = userValue!.ToLowerInvariant();
-                    finalValue = lowerVal is "true" or "1" or "yes";
+                    finalValue = lowerVal is "true" or "1";
                 } else {
                     finalValue = userValue;
                 }
