@@ -15,8 +15,8 @@ public class Camera
         set 
         {
             _fov = MathHelper.Clamp(value, 
-                MathHelper.DegreesToRadians(1.0f), 
-                MathHelper.DegreesToRadians(90.0f));
+                MathHelper.DegreesToRadians(30.0f), 
+                MathHelper.DegreesToRadians(120.0f));
         }
     }
 
@@ -102,6 +102,6 @@ public class Camera
     
     public void ProcessMouseScroll(float yOffset)
     {
-        FOV -= (yOffset / 120.0f) * 0.1f;
+        FOV -= (yOffset / 120.0f) * 4f;
     }
 }
