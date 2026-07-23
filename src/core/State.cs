@@ -16,6 +16,7 @@ public static class Engine {
     public static bool IsDebugOpen {get; set;}
     public static bool CanF3 {get; set;}
     public static bool IsDebug {get; set;}
+    public static bool ShowLight { get; set; } = false;
     // path to folder where located Unminal.exe file
     public static string? BaseFolder {get; set;}
 

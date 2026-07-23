@@ -22,13 +22,11 @@
                 "ArgsExecuteMethod": null
             }
         },
-        "test": {
-            "ExecutedLayer": true,
-            "ExecuteMethod": "Test",
-            "ArgsExecuteMethod": {"value": "INPUTED_FOV?error(write value of FOV)", "test": "INPUTED_TEXT?67"},
-            "ConfigInput": {
-                "INPUTED_FOV": ["type:int", "lim:-1"],
-                "INPUTED_TEXT": ["type:int", "lim:-1"]
+        "light":{
+            "ExecutedLayer": false,
+            "display": {
+               "ExecutedLayer": true,
+               "executemethod": "ToggleLightDisplay" 
             }
         }
     }

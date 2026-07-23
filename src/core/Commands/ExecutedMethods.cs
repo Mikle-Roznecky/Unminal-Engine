@@ -33,8 +33,10 @@ public static class CalledMethods {
         return true;
     }
 
-    public static bool Test(Dictionary<string, object> args) {
-        System.Console.WriteLine(args["value"] + " " + args["test"]);
+    public static bool ToggleLightDisplay(Dictionary<string, object> args)
+    {
+        Engine.ShowLight = !Engine.ShowLight;
+        System.Console.WriteLine($"Light display: {(Engine.ShowLight ? "[#green]ON" : "[#red]OFF")}");
         return true;
     }
 } 

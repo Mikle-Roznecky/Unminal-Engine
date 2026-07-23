@@ -8,3 +8,7 @@ debug camera set_fov 90
 debug camera set_fov 120
 debug camera set_fov 120
 debug camera set_fov 120
+debug light display
+debug light display
+debug light display
+debug light display
