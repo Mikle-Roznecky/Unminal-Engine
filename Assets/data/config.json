@@ -6,7 +6,8 @@
         "VSync": false,
         "Height": 900,
         "Width": 1300
-    }
+    },
+    "LightType": "Forward-Rendering-With-UBO"
   },
   "User-defined": null
 }

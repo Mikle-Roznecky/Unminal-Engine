@@ -1,9 +1,9 @@
-using Unminal.Utils.ConfigManager;
-
 namespace Unminal.Core.State;
 
 public static class Engine {
     // Window state
+    public static LightManager? LightManager { get; set; }
+    public static ILightingPipeline? LightingPipeline { get; set; }
     public static Config? ConfigManager {get; set;}
     public static Vector2i WindowSize {get; set;}
     public static float DeltaTime {get; set;}

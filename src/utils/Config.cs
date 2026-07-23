@@ -48,7 +48,8 @@ public class Config
         string? newWidth = null,
         string? newVSync = null,
         string? newLocationX = null,
-        string? newLocationY = null
+        string? newLocationY = null,
+        string? lightType = null
     )
     {
         JsonRoot config = ReadConfig(this.fileConfig);
@@ -73,6 +74,9 @@ public class Config
         config.Changeable.WindowSettings.LocationY = newLocationY != null
             ? ConvertTo<int>(newLocationY)
             : (int?)this.GetStandardConfig("LocationY");
+        config.Changeable.LightType = lightType != null
+            ? lightType.ToString()
+            : (string?)this.GetStandardConfig("LightType");
         SaveToFile(config);
     }
 
@@ -91,6 +95,7 @@ public class Config
             "VSync" => config.Changeable.WindowSettings.VSync,
             "LocationX" => config.Changeable.WindowSettings.LocationX,
             "LocationY" => config.Changeable.WindowSettings.LocationY,
+            "LightType" => config.Changeable.LightType,
             _ => ""
         };
     }
@@ -138,6 +143,7 @@ public class ChangeableData
     public string? Title {get; set;}
     public bool? Debug {get; set;}
     public WindowSettings? WindowSettings {get; set;}
+    public string? LightType {get; set;}
 }
 
 public class WindowSettings

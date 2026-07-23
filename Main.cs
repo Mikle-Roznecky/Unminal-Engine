@@ -11,6 +11,8 @@ public class Main : GameWindow {
     private Text? _textRenderer;
     private Camera? _activeCameraRef; 
     private GameConsole? gameConsole;
+    private LightManager? _lightManager;
+    private ILightingPipeline? _lightingPipeline;
 
     #pragma warning disable CS8605, CS8602, CS8600
     public Main(BaseGame userGame) 
@@ -67,6 +69,23 @@ public class Main : GameWindow {
 
         _model = Matrix4.Identity;
         _projection = Matrix4.CreatePerspectiveFieldOfView(_initialFov, Size.X / (float)Size.Y, 0.1f, 1000.0f);
+
+        _lightManager = new LightManager();
+
+        string lightType = (string?)Engine.ConfigManager?.GetStandardConfig("LightType") ?? "Forward-Rendering-With-UBO";
+
+        if (lightType == "Forward-Rendering-With-UBO") {
+            _lightingPipeline = new ForwardUBOPipeline(_lightManager);
+        } else {
+            _lightingPipeline = new ForwardUBOPipeline(_lightManager);
+        }
+
+        _lightingPipeline.Initialize();
+
+        Engine.LightManager = _lightManager;
+        Engine.LightingPipeline = _lightingPipeline;
+
+        _userGame.Load(_projection);
 
         _userGame.Load(_projection);
 
@@ -188,6 +207,9 @@ public class Main : GameWindow {
 
         GL.ClearColor(0, 0, 0, 1);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+        _lightingPipeline?.BeginFrame();
+
         _userGame.Draw(_projection);
 
         if (gameConsole != null && gameConsole.IsOpen) {
@@ -231,6 +253,10 @@ public class Main : GameWindow {
     protected override void OnUnload()
     {
         _textRenderer?.Dispose();
+        
+        _lightingPipeline?.Dispose();
+        _lightManager?.Dispose();
+        
         base.OnUnload();
 
         int currentX = this.Location.X;

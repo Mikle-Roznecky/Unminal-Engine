@@ -1,5 +1,5 @@
-global using OpenTK.Mathematics;
 global using OpenTK.Windowing.GraphicsLibraryFramework;
+global using OpenTK.Mathematics;
 global using System.Drawing;
 global using OpenTK.Graphics.OpenGL4;
 global using System.Runtime.Versioning;
@@ -11,9 +11,10 @@ global using System.Globalization;
 
 global using Unminal.Core.ObjLoader;
 global using Unminal.Core.Commands.Structure;
-// global using Unminal.Utils.Config;
+global using Unminal.Utils.ConfigManager;
 global using Unminal.Core.PlayerCamera;
 global using Unminal.Main;
+global using Unminal.Render.Light;
 global using Unminal.Render.MeshProgram;
 global using Unminal.Render.ShaderProgram;
 global using Unminal.Render.Objects;
