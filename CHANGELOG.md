@@ -2,7 +2,54 @@
 # All changes in project Unminal (earlier EOCS)
 # Project create by Dov1ntc!
 
-## [0.2.2-alpha] - 2026.03.05
+## [0.2.3] - 2026.07.25
+### **Added**
+- **Resource Path Resolution System:** Implemented `GetPath` utility class with support for virtual path prefixes (`assets:/`, `data:/`, `font:/`, `obj:/`). Ensures **cross-platform compatibility** and prevents path traversal attacks (..).
+
+- **Commands System Architecture:**
+    - Created *modular command execution pipeline* (`CommandParser`, `ExecutedMethods`, `Structure`).
+    - Added **verification** for command arguments and support for `different types` in args.
+    - Implemented `range()` and `get()` methods for *dynamic data* access via console.
+
+- **Advanced Text Rendering:**
+    - Integrated `RichTextSegment` system *for multi-colored* text rendering.
+    - Added support for special characters (`;`, `\`, etc.) *and color tags* in console output.
+    - Implemented thread-safe glyph storage using `ConcurrentDictionary`. **(Thanks to Mikle Roznecky)**
+
+- **Configuration Management:**
+    - Rewrote config loader (ported logic from `SyncraRPC`) with JSON serialization.
+    - *Moved configuration files* to dedicated Assets/data/ directory.
+
+- **Camera & Projection:**
+    - Added FOV clamping (`Min: 30 degeers`, `Max: 120 degeers`).
+
+- **Project Infrastructure:**
+    - Added `CONTRIBUTORS.md` and updated `LICENSE`.
+    - Created `feat/server-extension` branch foundation.
+
+### **Changed**
+- **Major Project Restructuring:** *Reorganized entire codebase* into clear modules: `core/`, `render/`, `ui/`, `utils/`, `scripts/`.
+
+- **UI Refactoring:**
+    - *Separated UI components* into dedicated folders (`InputFieldRender`, `TextRender`).
+    - Game *status is now displayed* in the window title bar.
+
+- **Engine Values:** Centralized global state management in `EngineValues` class (`src/core/State.cs`).
+
+### **Fixed**
+- **Null Reference Safety:** Resolved all **"possible null reference"** warnings across the solution.
+- **Compiler Warnings:** Removed all `#pragma warning disable` directives; fixed `CS8603` and `CS8601` *nullable warnings natively*.
+- **Console Stability:** Fixed bug where console would crash on specific inputs; improved text parsing without color tags.
+- **Code Parser:** Deleted legacy code parser and implemented custom solution for better reliability.
+- **Branch Management:** Cleaned up obsolete branches and merged main into feature branches correctly.
+
+### **Tech Debt / Known Issues**
+- **Physics engine is not yet implemented (planned for v0.4 release).**
+- **Server extension is in early development stage.**
+- **Some UI elements still lack full styling consistency.**
+
+
+## [0.2.2-alpha] - 2026.05.03
 
 ### Added
 - Developer Console: Implemented the core `GameConsole` class with history logging and file persistence.
