@@ -8,7 +8,7 @@ class Program
 {
     static void Main()
     {
-        Engine.BaseFolder = AppDomain.CurrentDomain.BaseDirectory;
+        Engine.Paths.BaseFolder = AppDomain.CurrentDomain.BaseDirectory;
         Engine.ConfigManager = new();
         var userGame = new MyGame();
         using var engine = new Main.Main(userGame);

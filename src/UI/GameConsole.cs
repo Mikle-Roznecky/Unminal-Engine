@@ -14,7 +14,7 @@ public class GameConsole
     private RichTextSegment? _richTextRenderer;
     public string InputedCommand {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
-    private readonly string _pathToFileHistory = Engine.Paths.Config.ConsoleHistoryL;
+    private readonly string _pathToFileHistory = GetPath.GetCorrectPath(Engine.Paths.Config.ConsoleHistoryL);
     private KeyboardState? _prevInput;
     private ParserCommands parserCommands; 
 
@@ -30,13 +30,13 @@ public class GameConsole
         Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
-        parserCommands = new ParserCommands(Engine.Paths.Config.CommandConfigJ);
+        parserCommands = new ParserCommands(GetPath.GetCorrectPath(Engine.Paths.Config.CommandConfigJ));
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
         _textRenderer = new Text(
-            Engine.Paths.Fonts.PFAgoraSlabPro_Bold,
+            GetPath.GetCorrectPath(Engine.Paths.Fonts.PFAgoraSlabPro_Bold),
             32,
-            Engine.Paths.Shaders.textV,
-            Engine.Paths.Shaders.textF
+            GetPath.GetCorrectPath(Engine.Paths.Shaders.textV),
+            GetPath.GetCorrectPath(Engine.Paths.Shaders.textF)
         );
     }
 

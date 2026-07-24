@@ -30,4 +30,5 @@ global using Unminal.UI.TextRender.Glyph;
 global using Unminal.UI.TextRender.TextRenderer;
 global using Unminal.UI.TextRender;
 global using Unminal.Utils.Colors;
+global using Unminal.Utils.GetPath;
 global using Unminal.Core.State;

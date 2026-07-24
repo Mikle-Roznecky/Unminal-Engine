@@ -17,8 +17,6 @@ public static class Engine {
     public static bool CanF3 {get; set;}
     public static bool IsDebug {get; set;}
     public static bool ShowLight { get; set; } = false;
-    // path to folder where located Unminal.exe file
-    public static string? BaseFolder {get; set;}
 
     // idk why im added this but perhaps in the 
     // future the meaning and uniqueness engine will be 
@@ -29,14 +27,6 @@ public static class Engine {
         public static string? language {get; set;}
         // Original camera object
         public static Camera? CameraObj {get; set;}
-        // I'll think about what to do about it.
-        // public static Vector3 CameraPosition {get; set;}
-        // public static float Yaw {get; set;}
-        // public static float Pitch {get; set;}
-        // public static float Fov {get; set;}
-        // public static float MoveSpeed { get; set; }
-        // public static float MouseSensitivity { get; set; }
-        // public static float[]? limitationFOV {get; set;}
     }
 
     public static class ExtensionData {
@@ -44,6 +34,12 @@ public static class Engine {
     };
 
     public static class Paths {
+        // path to folder where located Unminal.exe file
+        public static string BaseFolder {get; set;} = "";
+        public static string Assets = @"Assets\";
+        public static string Objects = @"Assets\objects\";
+        public static string Data = @"Assets\data\";
+        public static string Font = @"Assets\fonts\";
         public static readonly string[] BaseSkyBoxAssets = {
             "./Assets/SkyBox/right.png",
             "./Assets/SkyBox/left.png",

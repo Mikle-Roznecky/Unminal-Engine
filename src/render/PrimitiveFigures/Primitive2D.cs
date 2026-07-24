@@ -14,8 +14,8 @@ public abstract class Primitive2D : IDisposable
 
     protected int VertexCount {get; private set;}
 
-    private readonly string pathVertex = Engine.Paths.Shaders.baseV;
-    private readonly string pathFragment = Engine.Paths.Shaders.baseF;
+    private readonly string pathVertex = GetPath.GetCorrectPath(Engine.Paths.Shaders.baseV);
+    private readonly string pathFragment = GetPath.GetCorrectPath(Engine.Paths.Shaders.baseF);
 
     /// <summary>
     /// Initializes a new instance of the class with default values, automatically loading geometry and compiling shaders.

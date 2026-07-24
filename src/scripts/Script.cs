@@ -20,18 +20,19 @@ public class MyGame : BaseGame {
         Engine.LightManager?.AddLight(new LightData(new Vector3(-10f, 5f, -10f), new Vector3(0.2f, 0.2f, 1.0f), 0.8f));
 
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
+
         _textRenderer = new Text(
-            Engine.Paths.Fonts.PFAgoraSlabPro_Bold,
+            GetPath.GetCorrectPath(Engine.Paths.Fonts.PFAgoraSlabPro_Bold),
             32,
-            Engine.Paths.Shaders.textV,
-            Engine.Paths.Shaders.textF
+            GetPath.GetCorrectPath(Engine.Paths.Shaders.textV),
+            GetPath.GetCorrectPath(Engine.Paths.Shaders.textF)
         );
 
-        var modelData = ObjLoader.Load("./Assets/3D_objects/teapol.obj");
+        var modelData = ObjLoader.Load("./Assets/objects/teapol.obj");
         var mesh = new Mesh(modelData.Vertices, modelData.Indices);
         var shader = new Shader(
-            Engine.Paths.Shaders.mainV, 
-            Engine.Paths.Shaders.mainF
+            GetPath.GetCorrectPath(Engine.Paths.Shaders.mainV), 
+            GetPath.GetCorrectPath(Engine.Paths.Shaders.mainF)
         );
 
         var teapot1 = new GameObject(mesh, shader)
@@ -50,7 +51,7 @@ public class MyGame : BaseGame {
         };
         _objects.Add(teapot2);
 
-        _skybox = new Skybox(Engine.Paths.BaseSkyBoxAssets);
+        _skybox = new Skybox(GetPath.GetCorrectPath(Engine.Paths.BaseSkyBoxAssets));
     }
 
     public override void Update(FrameUpdateVars FUV)

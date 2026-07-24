@@ -7,15 +7,12 @@ using System.ComponentModel;
 
 namespace Unminal.Utils.ConfigManager;
 
-public class Config
-{
-    string fileConfig = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Engine.Paths.Config.MainConfig[2..]);
+public class Config {
+    string fileConfig = GetPath.GetPath.GetCorrectPath(Engine.Paths.Config.MainConfig);
 
     public Config(string FileConfig = "") {
-        System.Console.WriteLine(fileConfig);
         if (!(FileConfig == "")) this.fileConfig = FileConfig;
         JsonRoot conf = ReadConfig(this.fileConfig);
-        System.Console.WriteLine();
     }
 
     public T ConvertTo<T>(object input) {

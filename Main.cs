@@ -47,11 +47,12 @@ public class Main : GameWindow {
         GL.Enable(EnableCap.Blend); 
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
+
         _textRenderer = new Text(
-            Engine.Paths.Fonts.VCR_OSD_MONO,
+            GetPath.GetCorrectPath(Engine.Paths.Fonts.VCR_OSD_MONO),
             32,
-            Engine.Paths.Shaders.textV,
-            Engine.Paths.Shaders.textF
+            GetPath.GetCorrectPath(Engine.Paths.Shaders.textV),
+            GetPath.GetCorrectPath(Engine.Paths.Shaders.textF)
         );
 
         _model = Matrix4.Identity;
