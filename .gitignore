@@ -2,8 +2,11 @@
 [Bb]in/
 [Oo]bj/
 debug/
+
+# My
 .env
 *.txt
+
 # VS Code specific
 .vscode/*
 !.vscode/settings.json
