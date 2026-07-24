@@ -104,7 +104,7 @@ public class Config
 
     private T To<T>(object? value){
         if (value == null || value == DBNull.Value) {
-            throw new Exception("[#red][ERROR] Value is null");
+            throw new Exception("[#red][ERROR] Value is null 2");
         }
 
         if (value is T strictValue)

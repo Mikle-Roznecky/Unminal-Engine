@@ -1,7 +1,18 @@
-NEED THE CORRECT PATH TO FILES (not relative, full)
+================================
+====== ✖ Not completed ✖ ======
+======== Plan In order =========
+================================
 
-next step create server-extension 
+1. Need the correct path to files (not relative, full)
+2. Make normal state processing
+3. Server Extension
+4. Creating primitive shapes from a box (cube, ball, etc.)
+5. Complete class "Config"
+6. Loading textures for objects
 
-Commands ✔
-Server Extension ✖
-Remove All #pragma warning (and wix warnings) ✖
+================================
+========== ✔ Done ✔ ===========
+================================
+
+1. Commands
+2. Remove All #pragma warning (and wix warnings)
