@@ -14,35 +14,20 @@ public class Main : GameWindow {
     private LightManager? _lightManager;
     private ILightingPipeline? _lightingPipeline;
 
-    #pragma warning disable CS8605, CS8602, CS8600
-    public Main(BaseGame userGame) 
-        : base(
-            new GameWindowSettings() 
-            {
-                UpdateFrequency = 60
-            }, 
-            new NativeWindowSettings()
-            {   
-                Location =  new Vector2i(
-                    (int)Engine.ConfigManager.GetStandardConfig("LocationX"),
-                    (int)Engine.ConfigManager.GetStandardConfig("LocationY")
-                ),
-                ClientSize = new Vector2i(
-                    (int)Engine.ConfigManager?.GetStandardConfig("Width"),
-                    (int)Engine.ConfigManager?.GetStandardConfig("Height")
-                ),
-                Title = (string)Engine.ConfigManager?.GetStandardConfig("Title"),
+    public Main(BaseGame userGame) : base(
+            new GameWindowSettings() { UpdateFrequency = 60 }, 
+            new NativeWindowSettings(){ 
+                Location =  new Vector2i(Engine.ConfigManager.GetConfig<int>("LocationX"), Engine.ConfigManager.GetConfig<int>("LocationY")),
+                ClientSize = new Vector2i(Engine.ConfigManager.GetConfig<int>("Width"), Engine.ConfigManager.GetConfig<int>("Height")),
+                Title = Engine.ConfigManager.GetConfig<string>("Title"),
                 APIVersion = new Version(3, 3)
             }
         )
-    {   
-
+    {
         _userGame = userGame;
         this.TextInput += HandleConsoleTextInput;
-        Engine.IsDebug = (bool)Engine.ConfigManager?.GetStandardConfig("Debug");
-        System.Console.WriteLine(Engine.IsDebug);
+        Engine.IsDebug = Engine.ConfigManager.GetConfig<bool>("Debug");
     }
-    #pragma warning restore CS8605, CS8602, CS8600
 
     protected override void OnLoad()
     {
@@ -50,8 +35,10 @@ public class Main : GameWindow {
 
         gameConsole = new GameConsole();
 
-        bool? vsync = (bool?)Engine.ConfigManager?.GetStandardConfig("VSync");
-        this.VSync = (vsync ?? false) ? VSyncMode.On : VSyncMode.Off;
+        if (Engine.ConfigManager != null) {
+            bool vsync = Engine.ConfigManager.GetConfig<bool>("VSync");
+            this.VSync = vsync ? VSyncMode.On : VSyncMode.Off;
+        }
 
         CursorState = CursorState.Grabbed;
         if (_GameFullscreen) WindowState = WindowState.Fullscreen;
@@ -72,7 +59,7 @@ public class Main : GameWindow {
 
         _lightManager = new LightManager();
 
-        string lightType = (string?)Engine.ConfigManager?.GetStandardConfig("LightType") ?? "Forward-Rendering-With-UBO";
+        string lightType = Engine.ConfigManager?.GetConfig<string>("LightType") ?? "Forward-Rendering-With-UBO";
 
         if (lightType == "Forward-Rendering-With-UBO") {
             _lightingPipeline = new ForwardUBOPipeline(_lightManager);
@@ -261,11 +248,11 @@ public class Main : GameWindow {
 
         int currentX = this.Location.X;
         int currentY = this.Location.Y;
-        Engine.ConfigManager?.SetStandardConfig(newLocationX: $"{currentX}");
-        Engine.ConfigManager?.SetStandardConfig(newLocationY: $"{currentY}");
-        Engine.ConfigManager?.SetStandardConfig(newDebug: $"{Engine.IsDebug}");
-        Engine.ConfigManager?.SetStandardConfig(newWidth: $"{Engine.WindowSize.X}");
-        Engine.ConfigManager?.SetStandardConfig(newHeight: $"{Engine.WindowSize.Y}");
+        Engine.ConfigManager?.SetConfig(newLocationX: $"{currentX}");
+        Engine.ConfigManager?.SetConfig(newLocationY: $"{currentY}");
+        Engine.ConfigManager?.SetConfig(newDebug: $"{Engine.IsDebug}");
+        Engine.ConfigManager?.SetConfig(newWidth: $"{Engine.WindowSize.X}");
+        Engine.ConfigManager?.SetConfig(newHeight: $"{Engine.WindowSize.Y}");
     }
 
     protected override void OnMouseWheel(MouseWheelEventArgs e)
@@ -282,7 +269,7 @@ public class Main : GameWindow {
     
     // Helper Methods
     private void SetTitle(){
-        string BaseTitle = Engine.ConfigManager?.GetStandardConfig("Title")?.ToString() ?? "";
+        string BaseTitle = Engine.ConfigManager?.GetConfig<string>("Title")?.ToString() ?? "";
         if (this.WindowState != WindowState.Fullscreen){
             if (debug_menu) Title = BaseTitle + " (In Debug Menu)";
             else if (_GamePaused) Title = BaseTitle + " (In Pause)";

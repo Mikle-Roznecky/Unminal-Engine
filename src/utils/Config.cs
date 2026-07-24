@@ -3,6 +3,7 @@
 // im chnge it but this is soo cool))) 
 
 using System.Text.Json;
+using System.ComponentModel;
 
 namespace Unminal.Utils.ConfigManager;
 
@@ -17,31 +18,29 @@ public class Config
         System.Console.WriteLine();
     }
 
-    #pragma warning disable CS8603, CS8602
-    public static T ConvertTo<T>(object input) {
-        if (input == null || input == DBNull.Value) return default(T);
+    public T ConvertTo<T>(object input) {
+        if (input == null || input == DBNull.Value) throw new Exception("[#red][ERROR] Value is null");;
         try {
             Type targetType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
             if (targetType == typeof(bool)) {
-                string str = input.ToString().Trim();
+                string str = (input.ToString() ?? "").Trim();
                 if (str == "1") return (T)(object)true;
                 if (str == "0") return (T)(object)false;
                 return (T)(object)bool.Parse(str);
             }
             if (targetType == typeof(string)) {
                 if (input is bool b) return (T)(object)(b ? "true" : "false");
-                string str = input.ToString().Trim();
+                string str = (input.ToString() ?? "").Trim();
                 if (str == "1") return (T)(object)"true";
                 if (str == "0") return (T)(object)"false";
             }
             return (T)Convert.ChangeType(input, targetType);
         } catch {
-            return default(T);
+            throw new Exception("[#red][ERROR] Value is Unknown");
         }
     }
-    #pragma warning restore CS8603, CS8602
 
-    public void SetStandardConfig(
+    public void SetConfig(
         string? newTitle = null,
         string? newDebug = null,
         string? newHeight = null,
@@ -55,61 +54,79 @@ public class Config
         JsonRoot config = ReadConfig(this.fileConfig);
         if (config.Changeable == null) config.Changeable = new ChangeableData();
         if (config.Changeable.WindowSettings == null) config.Changeable.WindowSettings = new WindowSettings();
-        config.Changeable.Title = newTitle ?? (string?)this.GetStandardConfig("Title");
+        config.Changeable.Title = newTitle ?? this.GetConfig<string>("Title") ?? "Title";
         config.Changeable.Debug = newDebug != null
             ? ConvertTo<bool>(newDebug)
-            : (bool?)this.GetStandardConfig("Debug");
+            : this.GetConfig<bool>("Debug");
         config.Changeable.WindowSettings.Height = newHeight != null
             ? ConvertTo<int>(newHeight)
-            : (int?)this.GetStandardConfig("Height");
+            : this.GetConfig<int>("Height");
         config.Changeable.WindowSettings.Width = newWidth != null
             ? ConvertTo<int>(newWidth)
-            : (int?)this.GetStandardConfig("Width");
+            : this.GetConfig<int>("Width");
         config.Changeable.WindowSettings.VSync = newVSync != null
             ? ConvertTo<bool>(newVSync)
-            : (bool?)this.GetStandardConfig("VSync");
+            : this.GetConfig<bool>("VSync");
         config.Changeable.WindowSettings.LocationX = newLocationX != null
             ? ConvertTo<int>(newLocationX)
-            : (int?)this.GetStandardConfig("LocationX");
+            : this.GetConfig<int>("LocationX");
+
         config.Changeable.WindowSettings.LocationY = newLocationY != null
             ? ConvertTo<int>(newLocationY)
-            : (int?)this.GetStandardConfig("LocationY");
+            : this.GetConfig<int>("LocationY");
+
         config.Changeable.LightType = lightType != null
             ? lightType.ToString()
-            : (string?)this.GetStandardConfig("LightType");
+            : this.GetConfig<string>("LightType");
         SaveToFile(config);
     }
 
-    public object? GetStandardConfig(string key)
+    public T GetConfig<T>(string key)
     {
         JsonRoot config = ReadConfig(this.fileConfig);
-        if (config.Changeable == null) {throw new JsonException("74 line in Config.cs null object");}
-        if (config.Changeable.WindowSettings == null){throw new JsonException("75 line in Config.cs null object");}
+        if (config.Changeable == null) {throw new JsonException("[#red]in Config.cs null object");}
+        if (config.Changeable.WindowSettings == null){throw new JsonException("[#red]in Config.cs null object");}
 
-        return key switch
-        {
+        object val = key switch {
             "Title" => config.Changeable.Title,
             "Debug" => config.Changeable.Debug,
-            "Height" => Convert.ToInt32(config.Changeable.WindowSettings.Height),
-            "Width" => Convert.ToInt32(config.Changeable.WindowSettings.Width),
+            "Height" => config.Changeable.WindowSettings.Height,
+            "Width" => config.Changeable.WindowSettings.Width,
             "VSync" => config.Changeable.WindowSettings.VSync,
             "LocationX" => config.Changeable.WindowSettings.LocationX,
             "LocationY" => config.Changeable.WindowSettings.LocationY,
             "LightType" => config.Changeable.LightType,
-            _ => ""
+            _ => throw new Exception($"{key} not found in config")
         };
+
+        return To<T>(val);
     }
 
-    public void SetUserDefinedConfig(string key, object value)
-    {
-        JsonRoot currentConfig = ReadConfig(this.fileConfig);
-
-        if (currentConfig.UserDefined == null) {
-            currentConfig.UserDefined = new Dictionary<string, object>();
+    private T To<T>(object? value){
+        if (value == null || value == DBNull.Value) {
+            throw new Exception("[#red][ERROR] Value is null");
         }
 
-        currentConfig.UserDefined[key] = value;
-        SaveToFile(currentConfig);
+        if (value is T strictValue)
+            return strictValue;
+
+        Type target = typeof(T);
+        Type undertype = Nullable.GetUnderlyingType(target) ?? target;
+
+        try {
+            if (undertype.IsEnum) {
+                if (value is string s) return (T)Enum.Parse(undertype, s, true);
+                return (T)Enum.ToObject(undertype, value);
+            }
+            var converter = TypeDescriptor.GetConverter(undertype);
+            if (converter != null && converter.CanConvertFrom(value.GetType())) {
+                return (T)converter.ConvertFrom(null, CultureInfo.InvariantCulture, value)!;
+            }
+
+            return (T)Convert.ChangeType(value, undertype, CultureInfo.InvariantCulture);
+        } catch {
+            throw new Exception("[#red][ERROR] Value is unknown");
+        }
     }
         
     private JsonRoot ReadConfig(string PathToFile)
@@ -131,6 +148,7 @@ public class Config
     }
 }
 
+// Config structure
 public class JsonRoot
 {
     public ChangeableData? Changeable {get; set;}
@@ -140,17 +158,17 @@ public class JsonRoot
 
 public class ChangeableData
 {
-    public string? Title {get; set;}
-    public bool? Debug {get; set;}
-    public WindowSettings? WindowSettings {get; set;}
-    public string? LightType {get; set;}
+    public string Title {get; set;} = "Title";
+    public bool Debug {get; set;}
+    public WindowSettings WindowSettings {get; set;} = new WindowSettings();
+    public string LightType {get; set;} = "Forward-Rendering-With-UBO";
 }
 
 public class WindowSettings
 {
-    public bool? VSync {get; set;}
-    public int? Height {get; set;}
-    public int? Width {get; set;}
-    public int? LocationX {get; set;}
-    public int? LocationY {get; set;}
+    public bool VSync {get; set;}
+    public int Height {get; set;}
+    public int Width {get; set;}
+    public int LocationX {get; set;}
+    public int LocationY {get; set;}
 }
