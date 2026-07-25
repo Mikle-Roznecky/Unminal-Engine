@@ -1,7 +1,9 @@
 namespace Unminal.Utils.GetPath;
+using System.Runtime.CompilerServices;
 
 public static class GetPath {
-    public static string GetCorrectPath(string virtualPath) {
+    public static string GetCorrectPath(string virtualPath, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0) {
+
         if (string.IsNullOrWhiteSpace(virtualPath))
             throw new ArgumentException("Path cannot be null or empty.", nameof(virtualPath));
 
@@ -40,7 +42,7 @@ public static class GetPath {
             basePath = Engine.Paths.BaseFolder;
         }
 
-        System.Console.WriteLine(Path.Combine(basePath, cleanPath.Trim()));
+        System.Console.WriteLine($"[#CornflowerBlue][INFO] Load path: {Path.Combine(basePath, cleanPath.Trim())}, caller {Path.GetFileName(file)}, line: {line}");
         return Path.Combine(basePath, cleanPath.Trim());
     }
 

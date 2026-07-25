@@ -67,8 +67,11 @@ public class Camera {
     /// </summary>
     /// <param name="input">The current state of the keyboard.</param>
     /// <param name="deltaTime">The time elapsed since the previous frame (for smooth animation).</param>
-    public void ProcessInput(KeyboardState input, float deltaTime)
-    {
+    public void ProcessInput(KeyboardState? input, float deltaTime) {
+        if (input == null) {
+            System.Console.WriteLine("[#red] Input is null");
+            return;
+        }
         float velocity = MoveSpeed * deltaTime;
 
         if (input.IsKeyDown(Keys.W)) Position += _front * velocity;

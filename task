@@ -3,16 +3,15 @@
 ======== Plan In order =========
 ================================
 
-1. Make normal state processing
-2. Divide the console class into different
-3. Simplify the creation of an object (in any way)
-4. Creating primitive shapes from a box (square, circle, triangle, etc.) (2D)
-5. Create more ui elements (text field, button, etc.)
-6. Better Console UI (currently, there is only one name for the UI in the console...)
-7. Server Extension
-8. Creating primitive shapes from a box (cube, ball, etc.) (3D)
-9. Complete class "Config"
-10. Loading textures for objects
+1. Divide the console class into different
+2. Simplify the creation of an object (in any way)
+3. Creating primitive shapes from a box (square, circle, triangle, etc.) (2D)
+4. Create more ui elements (text field, button, etc.)
+5. Better Console UI (currently, there is only one name for the UI in the console...)
+6. Server Extension
+7. Creating primitive shapes from a box (cube, ball, etc.) (3D)
+8. Complete class "Config"
+9. Loading textures for objects
 
 ================================
 ========== ✔ Done ✔ ===========
@@ -21,3 +20,10 @@
 1. Commands System (17.07) 
 2. Remove all warning 1 accordingly, all are deleted #pragma (24.07)
 3. Need the correct path to files (not relative, full) (24.07)
+4. Make normal state processing (25.07)
+
+================================
+======== optimization ==========
+================================
+
+1. Caching the command structure

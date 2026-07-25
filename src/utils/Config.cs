@@ -45,7 +45,8 @@ public class Config {
         string? newVSync = null,
         string? newLocationX = null,
         string? newLocationY = null,
-        string? lightType = null
+        string? newLightType = null,
+        string? newCanf3 = null
     )
     {
         JsonRoot config = ReadConfig(this.fileConfig);
@@ -67,14 +68,16 @@ public class Config {
         config.Changeable.WindowSettings.LocationX = newLocationX != null
             ? ConvertTo<int>(newLocationX)
             : this.GetConfig<int>("LocationX");
-
         config.Changeable.WindowSettings.LocationY = newLocationY != null
             ? ConvertTo<int>(newLocationY)
             : this.GetConfig<int>("LocationY");
-
-        config.Changeable.LightType = lightType != null
-            ? lightType.ToString()
+        config.Changeable.LightType = newLightType != null
+            ? newLightType.ToString()
             : this.GetConfig<string>("LightType");
+        config.Changeable.Canf3 = newCanf3 != null
+            ? ConvertTo<bool>(newCanf3)
+            : this.GetConfig<bool>("Canf3");
+
         SaveToFile(config);
     }
 
@@ -93,6 +96,7 @@ public class Config {
             "LocationX" => config.Changeable.WindowSettings.LocationX,
             "LocationY" => config.Changeable.WindowSettings.LocationY,
             "LightType" => config.Changeable.LightType,
+            "Canf3" => config.Changeable.Canf3,
             _ => throw new Exception($"{key} not found in config")
         };
 
@@ -157,6 +161,7 @@ public class ChangeableData
 {
     public string Title {get; set;} = "Title";
     public bool Debug {get; set;}
+    public bool Canf3 {get; set;}
     public WindowSettings WindowSettings {get; set;} = new WindowSettings();
     public string LightType {get; set;} = "Forward-Rendering-With-UBO";
 }

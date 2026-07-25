@@ -2,7 +2,18 @@
 # All changes in project Unminal (earlier EOCS)
 # Project create by Dov1ntc!
 
-## [0.2.3] - 2026.07.25
+## [0.2.4rs-1] - 2026.07.25
+### **Added**
+- Loaded paths are displayed in the console (not inside the game)
+
+### **Changed**
+- Refactored global state management in `Main.cs` using `Engine.GlobalWindowState`
+- Removed `FrameUpdateVars` class; scripts now access input/time data directly via `Engine` class
+
+### **Fixed**
+- Eliminated duplicate resource loading caused by double `_userGame.Load()` call
+
+## [0.2.3] - 2026.07.24
 ### **Added**
 - **Resource Path Resolution System:** Implemented `GetPath` utility class with support for virtual path prefixes (`assets:/`, `data:/`, `font:/`, `obj:/`). Ensures **cross-platform compatibility** and prevents path traversal attacks (..).
 

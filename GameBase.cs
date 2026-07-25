@@ -12,9 +12,9 @@ public abstract class BaseGame
         if (ActiveCamera == null)
             ActiveCamera = new Camera(new Vector3(0, 5, 10), -90.0f, 0.0f);
     }
-    public virtual void Update(FrameUpdateVars FUV) 
+    public virtual void Update() 
     {
-        ActiveCamera?.ProcessInput(FUV.Keyboard, FUV.DeltaTime);
+        ActiveCamera?.ProcessInput(Engine.CurrentKeyboard, Engine.DeltaTime);
     }
     public virtual void Draw(Matrix4 projection){}
 }

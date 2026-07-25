@@ -11,9 +11,6 @@ public static class Engine {
     public static KeyboardState? CurrentKeyboard {get; set;}
     public static MouseState? CurrentMouse {get; set;}
     // Menu state
-    public static bool IsPaused {get; set;}
-    public static bool IsConsoleOpen {get; set;}
-    public static bool IsDebugOpen {get; set;}
     public static bool CanF3 {get; set;}
     public static bool IsDebug {get; set;}
     public static bool ShowLight { get; set; } = false;
@@ -32,6 +29,14 @@ public static class Engine {
     public static class ExtensionData {
         // here a engine "extensions" data (maybe)
     };
+
+    // Global window state
+    public static class GlobalWindowState {
+        public static bool InConsole {get; set;}
+        public static bool IsFullScreen {get; set;}
+        public static bool InDebugMenu {get; set;}
+        public static bool InPause {get; set;}
+    }
 
     public static class Paths {
         // path to folder where located Unminal.exe file

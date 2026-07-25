@@ -4,15 +4,13 @@ namespace Unminal.Main;
 public class Main : GameWindow {
     private readonly BaseGame _userGame;
     Matrix4 _model, _view, _projection;
-    bool debug_menu = false;
-    bool _GamePaused = false;
-    bool _GameFullscreen = false;
     float _initialFov = MathHelper.PiOver4;
     private Text? _textRenderer;
     private Camera? _activeCameraRef; 
     private GameConsole? gameConsole;
     private LightManager? _lightManager;
     private ILightingPipeline? _lightingPipeline;
+    private Dictionary<string, string> _debugTexts = new();
 
     public Main(BaseGame userGame) : base(
             new GameWindowSettings() { UpdateFrequency = 60 }, 
@@ -29,8 +27,7 @@ public class Main : GameWindow {
         Engine.IsDebug = Engine.ConfigManager.GetConfig<bool>("Debug");
     }
 
-    protected override void OnLoad()
-    {
+    protected override void OnLoad() {
         base.OnLoad(); 
 
         gameConsole = new GameConsole();
@@ -39,9 +36,6 @@ public class Main : GameWindow {
             bool vsync = Engine.ConfigManager.GetConfig<bool>("VSync");
             this.VSync = vsync ? VSyncMode.On : VSyncMode.Off;
         }
-
-        CursorState = CursorState.Grabbed;
-        if (_GameFullscreen) WindowState = WindowState.Fullscreen;
 
         GL.Enable(EnableCap.DepthTest);
         GL.Enable(EnableCap.Blend); 
@@ -75,17 +69,17 @@ public class Main : GameWindow {
 
         _userGame.Load(_projection);
 
-        _userGame.Load(_projection);
-
         _activeCameraRef = _userGame.ActiveCamera;
 
-        if (_activeCameraRef == null)
-        {
+        if (_activeCameraRef == null) {
             _activeCameraRef = new Camera(new Vector3(0, 5, 10), -90.0f, 0.0f);
             _userGame.ActiveCamera = _activeCameraRef;
         }
 
         _view = _activeCameraRef.GetViewMatrix();
+        
+        if (Engine.ConfigManager == null) return;
+        Engine.CanF3 = Engine.ConfigManager.GetConfig<bool>("Canf3");
     }
 
     protected override void OnMouseMove(MouseMoveEventArgs e)
@@ -105,50 +99,48 @@ public class Main : GameWindow {
 
     protected override void OnUpdateFrame(FrameEventArgs e) {
         base.OnUpdateFrame(e);
-        
-        Engine.Player.CameraObj = _activeCameraRef;
-        if (Engine.Player.CameraObj == null) throw new Exception("[#red]Something went wrong, camera is null: see file main.cs (line ~102)");
-
         KeyboardState input = KeyboardState;
         MouseState mouse = MouseState;
-        
-        Engine.IsPaused = _GamePaused;
-        if (gameConsole != null) Engine.IsConsoleOpen = gameConsole.IsOpen;
-        Engine.IsDebugOpen = debug_menu;
+
+        if (!IsFocused) return;
+
+        if (input.IsKeyReleased(Keys.Escape)) {
+            Engine.GlobalWindowState.InPause = !Engine.GlobalWindowState.InPause;
+            CursorState = Engine.GlobalWindowState.InPause ? CursorState.Normal : CursorState.Grabbed;
+        }
+        if (Engine.GlobalWindowState.InPause) return;
+
+        if (gameConsole == null) throw new Exception("[#red][ERROR]: Console Is Null"); 
+
+        Engine.Player.CameraObj = _activeCameraRef;
+        if (Engine.Player.CameraObj == null) throw new Exception("[#red][ERROR]: Something went wrong, camera is null: see file main.cs (line ~102)");
 
         // Full Screen enable/disable
-        if (input.IsKeyReleased(Keys.F11))
-        {
-            _GameFullscreen = !_GameFullscreen;
-            WindowState = _GameFullscreen ? WindowState.Fullscreen : WindowState.Normal;
+        if (input.IsKeyReleased(Keys.F11)) {
+            Engine.GlobalWindowState.IsFullScreen = !Engine.GlobalWindowState.IsFullScreen;
+            WindowState = Engine.GlobalWindowState.IsFullScreen ? WindowState.Fullscreen : WindowState.Normal;
         }
 
-        gameConsole?.ProcessInput(input);
-
+        gameConsole.ProcessInput(input);
+        Engine.GlobalWindowState.InConsole = gameConsole.IsOpen;
         // Console open/close
-        if (gameConsole != null && gameConsole.IsOpen)
-        {
+        if (gameConsole != null && gameConsole.IsOpen) {
             CursorState = CursorState.Normal;
-        }
-        else
-        {
+        } else {
             if (input.IsKeyReleased(Keys.F3)) { 
-                debug_menu = !debug_menu;
+                if (Engine.CanF3) {
+                    Engine.GlobalWindowState.InDebugMenu = !Engine.GlobalWindowState.InDebugMenu;
+                } else {
+                    System.Console.WriteLine("[#red][INFO]: No permission to use the debug menu");
+                }
             }
 
-            if (input.IsKeyReleased(Keys.Escape))
-            {
-                _GamePaused = !_GamePaused;
-            }
-
-            CursorState = _GamePaused ? CursorState.Normal : CursorState.Grabbed;
+            CursorState = Engine.GlobalWindowState.InPause ? CursorState.Normal : CursorState.Grabbed;
         }
 
         // Script Update Data
-        if ((gameConsole == null || !gameConsole.IsOpen) && !_GamePaused)
-        {
-            var FUV = new FrameUpdateVars(input, mouse, (float)e.Time);
-            _userGame.Update(FUV);
+        if ((gameConsole == null || !gameConsole.IsOpen) && !Engine.GlobalWindowState.InPause) {
+            _userGame.Update();
 
             if (_userGame.ActiveCamera != null)
             {
@@ -158,17 +150,13 @@ public class Main : GameWindow {
 
             _model = Matrix4.Identity;
         }
-        SetTitle();
     }
 
-    private void HandleConsoleTextInput(TextInputEventArgs e)
-    {
-        if (gameConsole != null && gameConsole.IsOpen)
-        {
+    private void HandleConsoleTextInput(TextInputEventArgs e) {
+        if (gameConsole != null && gameConsole.IsOpen) {
             string text = e.AsString; 
             
-            if (!string.IsNullOrEmpty(text) && text[0] >= 32)
-            {
+            if (!string.IsNullOrEmpty(text) && text[0] >= 32) {
                 gameConsole.AppendToCommand(text);
             }
         }
@@ -183,8 +171,7 @@ public class Main : GameWindow {
         Engine.CurrentKeyboard = KeyboardState;
         Engine.CurrentMouse = MouseState;
 
-        if (_activeCameraRef != null) 
-        {
+        if (_activeCameraRef != null) {
             _projection = Matrix4.CreatePerspectiveFieldOfView(
                 _activeCameraRef.FOV,
                 Size.X / (float)Size.Y, 
@@ -205,41 +192,37 @@ public class Main : GameWindow {
         } 
 
         // Debug Menu
-        if (_textRenderer != null && debug_menu && _activeCameraRef != null)
-        {
+        if (_textRenderer != null && Engine.GlobalWindowState.InDebugMenu && _activeCameraRef != null) {
             float TS = 0.5f;
             Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Size.X, Size.Y, 0, -1, 1);
             
-            _textRenderer.DrawString($"Unminal V0.2.1 {gameConsole?.IsOpen}", 10, 7, TS, ortho, new Vector4(Colors.White, 1f), 2f);
-            _textRenderer.DrawString($"FPS: {1.0 / e.Time:F1}", 10, 63, TS, ortho, new Vector4(Colors.White, 1f), 1f); 
-            
-            string posText = string.Format(CultureInfo.InvariantCulture, 
+            _debugTexts["name"] = $"Unminal V0.2.3";
+            _debugTexts["fps"] = $"FPS: {1.0 / e.Time:F1}";
+            _debugTexts["pos&fov"] = string.Format(CultureInfo.InvariantCulture,
                 "Pos: {0:F1} {1:F1} {2:F1} | FOV: {3}", 
-
                 _activeCameraRef.Position.X, _activeCameraRef.Position.Y, _activeCameraRef.Position.Z, 
-                MathHelper.RadiansToDegrees(_activeCameraRef!.FOV));
-            _textRenderer.DrawString(posText, 10, 91, TS, ortho, new Vector4(Colors.White, 1f), 1f);
-
-            string dirText = string.Format(CultureInfo.InvariantCulture, 
+                MathHelper.RadiansToDegrees(_activeCameraRef.FOV));
+            _debugTexts["direction"] = string.Format(CultureInfo.InvariantCulture, 
                 "Dir: {0:F1} {1:F1} {2:F1}", 
                 _activeCameraRef.Front.X, _activeCameraRef.Front.Y, _activeCameraRef.Front.Z);
-            _textRenderer.DrawString(dirText, 10, 119, TS, ortho, new Vector4(Colors.White, 1f), 1f); 
+    
+            _textRenderer.DrawString(_debugTexts["name"], 10, 7, TS, ortho, new Vector4(Colors.White, 1f), 2f);
+            _textRenderer.DrawString(_debugTexts["fps"], 10, 63, TS, ortho, new Vector4(Colors.White, 1f), 1f); 
+            _textRenderer.DrawString(_debugTexts["pos&fov"], 10, 91, TS, ortho, new Vector4(Colors.White, 1f), 1f);
+            _textRenderer.DrawString(_debugTexts["direction"], 10, 119, TS, ortho, new Vector4(Colors.White, 1f), 1f); 
 
         }
         Context.SwapBuffers();
     }
 
-    protected override void OnResize(ResizeEventArgs e)
-    {
+    protected override void OnResize(ResizeEventArgs e) {
         base.OnResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
         float currentFov = _activeCameraRef?.FOV ?? _initialFov;
         _projection = Matrix4.CreatePerspectiveFieldOfView(currentFov, Size.X / (float)Size.Y, 0.1f, 1000.0f);
-
     }
 
-    protected override void OnUnload()
-    {
+    protected override void OnUnload() {
         _textRenderer?.Dispose();
         
         _lightingPipeline?.Dispose();
@@ -256,45 +239,13 @@ public class Main : GameWindow {
         Engine.ConfigManager?.SetConfig(newHeight: $"{Engine.WindowSize.Y}");
     }
 
-    protected override void OnMouseWheel(MouseWheelEventArgs e)
-    {
+    protected override void OnMouseWheel(MouseWheelEventArgs e) {
         base.OnMouseWheel(e);
-        if (gameConsole != null && !gameConsole.IsOpen){
-            if (_activeCameraRef != null)
-            {
+        if (gameConsole != null && !gameConsole.IsOpen) {
+            if (_activeCameraRef != null) {
                 _activeCameraRef.ProcessMouseScroll(e.OffsetY);
                 _projection = Matrix4.CreatePerspectiveFieldOfView(_activeCameraRef.FOV, Size.X / (float)Size.Y, 0.1f, 100.0f);
             }
         } 
-    }
-    
-    // Helper Methods
-    private void SetTitle(){
-        string BaseTitle = Engine.ConfigManager?.GetConfig<string>("Title")?.ToString() ?? "";
-        if (this.WindowState != WindowState.Fullscreen){
-            if (debug_menu) Title = BaseTitle + " (In Debug Menu)";
-            else if (_GamePaused) Title = BaseTitle + " (In Pause)";
-            else if (gameConsole != null && gameConsole.IsOpen) Title = BaseTitle + " (In Console)";
-            else Title = BaseTitle;
-        } else {
-            if (Title != BaseTitle) Title = BaseTitle;
-        }
-    }
-}
-
-// Helper Classes
-
-public class FrameUpdateVars
-{
-    public KeyboardState Keyboard { get; private set; }
-    public MouseState Mouse { get; private set; }
-
-    public float DeltaTime { get; private set; }
-
-    public FrameUpdateVars(KeyboardState keyboard, MouseState mouse, float deltaTime)
-    {
-        Keyboard = keyboard;
-        Mouse = mouse;
-        DeltaTime = deltaTime;
     }
 }

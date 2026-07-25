@@ -54,24 +54,27 @@ public class MyGame : BaseGame {
         _skybox = new Skybox(GetPath.GetCorrectPath(Engine.Paths.BaseSkyBoxAssets));
     }
 
-    public override void Update(FrameUpdateVars FUV)
+    public override void Update()
     {
-        base.Update(FUV);
+        base.Update();
+
+        KeyboardState? keyboard = Engine.CurrentKeyboard;
+        if (keyboard == null) return;
 
         if (_mainLight != null)
         {
-            float speed = 15.0f * FUV.DeltaTime;
+            float speed = 15.0f * Engine.DeltaTime;
             
-            if (FUV.Keyboard.IsKeyDown(Keys.LeftShift) || FUV.Keyboard.IsKeyDown(Keys.RightShift))
+            if (keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift))
                 speed *= 3.0f;
 
-            if (FUV.Keyboard.IsKeyDown(Keys.Up))    _mainLight.Position += new Vector3(0, 0, -1) * speed;
-            if (FUV.Keyboard.IsKeyDown(Keys.Down))  _mainLight.Position += new Vector3(0, 0,  1) * speed;
-            if (FUV.Keyboard.IsKeyDown(Keys.Left))  _mainLight.Position += new Vector3(-1, 0, 0) * speed;
-            if (FUV.Keyboard.IsKeyDown(Keys.Right)) _mainLight.Position += new Vector3( 1, 0, 0) * speed;
+            if (keyboard.IsKeyDown(Keys.Up))    _mainLight.Position += new Vector3(0, 0, -1) * speed;
+            if (keyboard.IsKeyDown(Keys.Down))  _mainLight.Position += new Vector3(0, 0,  1) * speed;
+            if (keyboard.IsKeyDown(Keys.Left))  _mainLight.Position += new Vector3(-1, 0, 0) * speed;
+            if (keyboard.IsKeyDown(Keys.Right)) _mainLight.Position += new Vector3( 1, 0, 0) * speed;
             
-            if (FUV.Keyboard.IsKeyDown(Keys.Q)) _mainLight.Position += new Vector3(0,  1, 0) * speed;
-            if (FUV.Keyboard.IsKeyDown(Keys.E)) _mainLight.Position += new Vector3(0, -1, 0) * speed;
+            if (keyboard.IsKeyDown(Keys.Q)) _mainLight.Position += new Vector3(0,  1, 0) * speed;
+            if (keyboard.IsKeyDown(Keys.E)) _mainLight.Position += new Vector3(0, -1, 0) * speed;
         }
     }
 
