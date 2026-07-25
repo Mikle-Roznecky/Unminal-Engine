@@ -1,5 +1,4 @@
 namespace Unminal.Render.Objects;
-using OpenTK.Mathematics;
 
 [SupportedOSPlatform("windows")]
 public class GameObject
@@ -11,10 +10,34 @@ public class GameObject
     public Vector3 Scale { get; set; } = Vector3.One;
     public Vector3 Color { get; set; } = Vector3.One;
     
+    private static Shader? _defaultShader;
 
     public GameObject(Mesh mesh, Shader shader) {
         Mesh = mesh;
         Shader = shader;
+    }
+
+    public GameObject(string objFilePath) 
+        : this(LoadMeshFromObj(objFilePath), GetOrCreateDefaultShader()) 
+    {
+    }
+
+    private static Mesh LoadMeshFromObj(string path)
+    {
+        var modelData = ObjLoader.Load(path);
+        return new Mesh(modelData.Vertices, modelData.Indices);
+    }
+
+    private static Shader GetOrCreateDefaultShader()
+    {
+        if (_defaultShader == null)
+        {
+            _defaultShader = new Shader(
+                GetPath.GetCorrectPath(Engine.Paths.Shaders.mainV),
+                GetPath.GetCorrectPath(Engine.Paths.Shaders.mainF)
+            );
+        }
+        return _defaultShader;
     }
 
     public void Draw(Matrix4 viewMatrix, Matrix4 projectionMatrix, Vector3 viewPos)
