@@ -5,6 +5,7 @@
 ## [0.2.4rs-1] - 2026.07.25
 ### **Added**
 - Loaded paths are displayed in the console (not inside the game)
+- Simplify the creation of an object
 
 ### **Changed**
 - Refactored global state management in `Main.cs` using `Engine.GlobalWindowState`

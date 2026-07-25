@@ -1,16 +1,21 @@
 ================================
+======= task for v0.2.4 ========
+================================
 ====== ✖ Not completed ✖ ======
 ======== Plan In order =========
 ================================
 
-1. Simplify the creation of an object (in any way)
-2. Creating primitive shapes from a box (square, circle, triangle, etc.) (2D)
-3. Create more ui elements (text field, button, etc.)
-4. Better Console UI (currently, there is only one name for the UI in the console...)
-5. Server Extension
-6. Creating primitive shapes from a box (cube, ball, etc.) (3D)
-7. Complete class "Config"
-8. Loading textures for objects
+1. Creating primitive shapes from a box (square, circle, triangle, etc.) (2D)
+2. Create class Billboard (draw with text)
+3. Combine the "Text" & "RichTextSegment" classes into one
+4. Improve the quality of the text and add the ability to create an outline for the text
+5. Create more ui elements (text field, button, etc.)
+6. Better Console UI (currently, there is only one name for the UI in the console...)
+7. Server Extension
+8. Complete class "Config"
+9. Create class Billboard (draw with castom texture)
+10. Creating primitive shapes from a box (cube, ball, etc.) (3D)
+11. Loading textures for objects
 
 ================================
 ========== ✔ Done ✔ ===========
@@ -21,9 +26,11 @@
 3. Need the correct path to files (not relative, full) (24.07)
 4. Make normal state processing (25.07)
 5. Divide the console class into different (25.07)
+6. Simplify the creation of an object (in any way) (25.07) I thought it would be more difficult
 
 ================================
 ======== optimization ==========
 ================================
 
-1. Caching the command structure
+1. Caching the command structure ✖
+2. Text, console, and skybox should be made static. ✖
