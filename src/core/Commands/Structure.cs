@@ -27,18 +27,22 @@ public class Command {
     public static object? get(object root, string key) {
         if (root == null || string.IsNullOrWhiteSpace(key)) return null;
         var parts = key.Split('.', StringSplitOptions.RemoveEmptyEntries);
+        Type currentType = root.GetType();
         object? current = root; 
         foreach (var part in parts) {
             if (current == null) return null;
-            var type = current.GetType();
-            var member = type.GetMember(part, 
-                BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | 
-                BindingFlags.IgnoreCase).FirstOrDefault();
+            var member = currentType.GetMember(part, 
+                BindingFlags.Public | BindingFlags.NonPublic | 
+                BindingFlags.Static | BindingFlags.IgnoreCase).FirstOrDefault();
+            if (member == null) return null;
             current = member switch {
-                PropertyInfo prop => prop.GetValue(current),
-                FieldInfo field => field.GetValue(current),
+                PropertyInfo prop => prop.GetValue(null),
+                FieldInfo field => field.GetValue(null),
                 _ => null
             };
+            if (current != null && parts.Last() != part) {
+                currentType = current.GetType();
+            }
         }
         return current;
     }

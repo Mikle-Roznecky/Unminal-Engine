@@ -9,6 +9,7 @@
 ### **Changed**
 - Refactored global state management in `Main.cs` using `Engine.GlobalWindowState`
 - Removed `FrameUpdateVars` class; scripts now access input/time data directly via `Engine` class
+- The console file has been split into `ArgumentProcessor.cs`, `CommandExecutor.cs`, `CommandTokenizer.cs`
 
 ### **Fixed**
 - Eliminated duplicate resource loading caused by double `_userGame.Load()` call
