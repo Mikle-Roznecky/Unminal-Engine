@@ -18,6 +18,8 @@ public static class GetPath {
                       normalized.StartsWith(@"font:\", StringComparison.OrdinalIgnoreCase);
         bool isObj = normalized.StartsWith("obj:/", StringComparison.OrdinalIgnoreCase) ||
                      normalized.StartsWith(@"obj:\", StringComparison.OrdinalIgnoreCase);
+        bool isShader = normalized.StartsWith("shader:/", StringComparison.OrdinalIgnoreCase) ||
+                     normalized.StartsWith(@"shader:\", StringComparison.OrdinalIgnoreCase);
 
         string cleanPath;
         string basePath;
@@ -34,6 +36,9 @@ public static class GetPath {
         } else if (isObj) {
             cleanPath = normalized.Substring(5);
             basePath = Engine.Paths.Objects;
+        } else if (isShader) {
+            cleanPath = normalized.Substring(8);
+            basePath = Engine.Paths.Shader;
         } else {
             cleanPath = normalized;
             if (cleanPath.StartsWith("./", StringComparison.Ordinal) || cleanPath.StartsWith(@".\", StringComparison.Ordinal))

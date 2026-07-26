@@ -46,27 +46,29 @@ public class MyGame : BaseGame {
         base.Update();
     }
 
-    public override void Draw(Matrix4 projection) {
+    public override void Draw(Matrix4 projection, Matrix4 view) {
         Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Engine.WindowSize.X, Engine.WindowSize.Y, 0, -1, 1);
 
         if (ActiveCamera == null) return;
-        Matrix4 view = ActiveCamera.GetViewMatrix();
 
         skybox!.Draw(view, projection);
 
-        foreach (var obj in _objects) {
-            obj.Draw(view, projection, ActiveCamera.Position);
-        }
+        foreach (var obj in _objects) obj.Draw(view, projection, ActiveCamera.Position);
 
+        new Billboard()
+            .Position(new Vector3(0, -4, 0)).Scale(new Vector2(2.0f, 2.0f))
+            .Color(new Vector4(1, 0.4f, 0, 1)).Draw(view, projection);
+        
+        if (Scene.circle == null) return;
         Scene.circle.Draw(ortho);
     }
 
     public override void Unload() {
         base.Unload();
 
-        foreach (var obj in _objects) {
-            obj.Dispose();
-        }
+        foreach (var obj in _objects) obj.Dispose();
+
+        Billboard.Dispose();
         _textRenderer?.Dispose();
         skybox?.Dispose();
     }

@@ -24,6 +24,7 @@ global using Unminal.Render.ShaderProgram;
 global using Unminal.Render.Objects;
 global using Unminal.Render.Primitive._2D;
 global using Unminal.Render.SkyBox;
+global using Unminal.Render.Billboards;
 global using Unminal.Script.Core;
 global using Unminal.UI.GameConsole;
 global using Unminal.UI.InputFieldRender;

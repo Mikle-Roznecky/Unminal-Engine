@@ -49,6 +49,11 @@ public class Main : GameWindow {
             GetPath.GetCorrectPath(Engine.Paths.Shaders.textF)
         );
 
+        Billboard.Initialize(
+            GetPath.GetCorrectPath("shader:/billboard.vert"), 
+            GetPath.GetCorrectPath("shader:/billboard.frag")
+        );
+
         _model = Matrix4.Identity;
         _projection = Matrix4.CreatePerspectiveFieldOfView(_initialFov, Size.X / (float)Size.Y, 0.1f, 1000.0f);
 
@@ -184,7 +189,7 @@ public class Main : GameWindow {
 
         _lightingPipeline?.BeginFrame();
 
-        _userGame.Draw(_projection);
+        _userGame.Draw(_projection, _view);
 
         if (gameConsole != null && gameConsole.IsOpen) {
             gameConsole.DrawConsole(Size.X, Size.Y);

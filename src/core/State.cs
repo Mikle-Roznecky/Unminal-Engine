@@ -45,6 +45,7 @@ public static class Engine {
         public static string Objects = @"Assets\objects\";
         public static string Data = @"Assets\data\";
         public static string Font = @"Assets\fonts\";
+        public static string Shader = @"Assets\Shaders\";
         public static readonly string[] BaseSkyBoxAssets = {
             "./Assets/SkyBox/right.png",
             "./Assets/SkyBox/left.png",
@@ -67,29 +68,27 @@ public static class Engine {
         }
         public class Shaders {
             private static readonly Dictionary<string, string> _ = new() {
-                ["mainV"] = "./Assets/shaders/main/shader.vert",
-                ["mainF"] = "./Assets/shaders/main/shader.frag",
-
-                ["skyboxV"] = "./Assets/shaders/SkyBox/shader.vert",
-                ["skyboxF"] = "./Assets/shaders/SkyBox/shader.frag",
-
-                ["textV"] = "./Assets/shaders/text/shader.vert",
-                ["textF"] = "./Assets/shaders/text/shader.frag",
-
+                ["mainV"] = "./Assets/shaders/main.vert",
+                ["mainF"] = "./Assets/shaders/main.frag",
+                ["skyboxV"] = "./Assets/shaders/skybox.vert",
+                ["skyboxF"] = "./Assets/shaders/skybox.frag",
+                ["textV"] = "./Assets/shaders/text.vert",
+                ["textF"] = "./Assets/shaders/text.frag",
                 ["baseV"] = "./Assets/shaders/base.vert",
-                ["baseF"] = "./Assets/shaders/base.frag"
+                ["baseF"] = "./Assets/shaders/base.frag",
+                ["billboardV"] = "./Assets/shaders/billboard.vert",
+                ["billboardF"] = "./Assets/shaders/billboard.frag"
             };
             public static string mainV => _["mainV"];
             public static string mainF => _["mainF"];
-
             public static string skyboxV => _["skyboxV"];
             public static string skyboxF => _["skyboxF"];
-
             public static string textV => _["textV"];
             public static string textF => _["textF"];
-
             public static string baseV => _["baseV"];
             public static string baseF => _["baseF"];
+            public static string billboardV => _["billboardV"];
+            public static string billboardF => _["billboardF"];
         }
 
         public class Fonts {
