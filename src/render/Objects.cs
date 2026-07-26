@@ -40,15 +40,18 @@ public class GameObject : IDisposable
         return _defaultShader;
     }
 
-    public void Draw(Matrix4 viewMatrix, Matrix4 projectionMatrix, Vector3 viewPos)
-    {
+    public void Draw() {
+        if (Engine.Player.CameraObj == null) {
+            System.Console.WriteLine("[#red][WARNING] Camera is null");
+            return;
+        }
         if (Mesh == null || Shader == null) return;
         Shader.Use();
 
         Engine.LightingPipeline?.ApplyLighting(Shader);
 
         Shader.SetVector3("objectColor", Color);
-        Shader.SetVector3("viewPos", viewPos);
+        Shader.SetVector3("viewPos", Engine.Player.CameraObj.Position);
         
         Matrix4 model = Matrix4.Identity;
         model *= Matrix4.CreateScale(Scale);
@@ -58,8 +61,8 @@ public class GameObject : IDisposable
         model *= Matrix4.CreateTranslation(Position);
         
         Shader.SetMatrix4("model", model);
-        Shader.SetMatrix4("view", viewMatrix);
-        Shader.SetMatrix4("projection", projectionMatrix);
+        Shader.SetMatrix4("view", Engine.View);
+        Shader.SetMatrix4("projection", Engine.Projection);
         Mesh.Draw();
     }
 

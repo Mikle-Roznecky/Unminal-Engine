@@ -14,7 +14,10 @@ public static class Engine {
     public static bool CanF3 {get; set;}
     public static bool IsDebug {get; set;}
     public static bool ShowLight { get; set; } = false;
-
+    // Matrix
+    public static Matrix4 Projection {get; set;}
+    public static Matrix4 View {get; set;}
+    public static Matrix4 Ortho {get; set;}
     // idk why im added this but perhaps in the 
     // future the meaning and uniqueness engine will be 
     // that it is easy to create a network division (maybe)

@@ -108,22 +108,21 @@ public class GameConsole {
         GL.Enable(EnableCap.Blend);
 
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, width, height, 0, -1, 1);
 
         _background.Position = new Vector2(0, 0);
         _background.Scale = new Vector2(width, height);
 
         _background.Color = new Vector4(0.0f, 0.0f, 0.0f, 0.5f);
 
-        _background.Draw(ortho);
+        _background.Draw();
 
         int index = 0;
         foreach (var line in History) {
-            _textRenderer?.DrawString(line, 10, (30 * index) + 2, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
+            _textRenderer?.DrawString(line, 10, (30 * index) + 2, 0.5f, new Vector4(Colors.White, 1f), 1f);
             index++;
         }
 
-        _textRenderer?.DrawString(InputedCommand, 10, Engine.WindowSize.Y - 30, 0.5f, ortho, new Vector4(Colors.White, 1f), 1f);
+        _textRenderer?.DrawString(InputedCommand, 10, Engine.WindowSize.Y - 30, 0.5f, new Vector4(Colors.White, 1f), 1f);
             GL.Enable(EnableCap.DepthTest);
     }
 

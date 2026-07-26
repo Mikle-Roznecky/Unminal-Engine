@@ -42,25 +42,17 @@ public class MyGame : BaseGame {
         skybox = new Skybox(GetPath.GetCorrectPath(Engine.Paths.BaseSkyBoxAssets));
     }
 
-    public override void Update() {
-        base.Update();
-    }
-
     public override void Draw(Matrix4 projection, Matrix4 view) {
-        Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Engine.WindowSize.X, Engine.WindowSize.Y, 0, -1, 1);
+        skybox!.Draw();
 
-        if (ActiveCamera == null) return;
-
-        skybox!.Draw(view, projection);
-
-        foreach (var obj in _objects) obj.Draw(view, projection, ActiveCamera.Position);
+        foreach (var obj in _objects) obj.Draw();
 
         new Billboard()
-            .Position(new Vector3(0, -4, 0)).Scale(new Vector2(2.0f, 2.0f))
-            .Color(new Vector4(1, 0.4f, 0, 1)).Draw(view, projection);
+            .Position(new Vector3(15, 8, -40)).Scale(new Vector2(8.0f, 5.0f))
+            .Color(new Vector4(Colors.DarkRed, 1)).Draw();
         
         if (Scene.circle == null) return;
-        Scene.circle.Draw(ortho);
+        Scene.circle.Draw();
     }
 
     public override void Unload() {

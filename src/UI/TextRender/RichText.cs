@@ -39,13 +39,13 @@ public class RichTextSegment {
         return Parts;
     } 
 
-    public void Draw(Text renderer, string text, float x, float y, float scale, Matrix4 projection) {
+    public void Draw(Text renderer, string text, float x, float y, float scale) {
         List<TextPart> Parts = ParseColor(text, defaultColor);
         float cur_x = x;
         if (Parts == null) return;
         foreach (TextPart part in Parts) {
             if (string.IsNullOrEmpty(part.Text)) continue;
-            renderer.DrawString(part.Text, cur_x, y, scale, projection, part.TextColor);
+            renderer.DrawString(part.Text, cur_x, y, scale, part.TextColor);
             cur_x += renderer.MeasureWidth(part.Text, scale);
         }
     }

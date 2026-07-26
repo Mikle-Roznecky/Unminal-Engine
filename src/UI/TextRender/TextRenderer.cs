@@ -159,8 +159,8 @@ public class Text : IDisposable
     /// <param name="projection">The orthographic or perspective matrix mapping text coordinates to the screen layout.</param>
     /// <param name="color">The color vector applied to shade the text glyphs.</param>
     /// <param name="spacing">The pixel gap multiplier applied uniformly between individual characters. Default is 1.0f.</param>
-    public void DrawString(string text, float x, float y, float scale, Matrix4 projection, Vector4 color, float spacing = 1.0f)
-    {
+    public void DrawString(string text, float x, float y, float scale, Vector4 color, float spacing = 1.0f) {
+        Matrix4 projection = Engine.Ortho;
         if (string.IsNullOrEmpty(text)) return;
 
         _vertexBuffer.Clear();

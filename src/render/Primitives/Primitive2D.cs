@@ -85,8 +85,8 @@ public abstract class Primitive2D : IDisposable
 
     protected abstract float[] GetVertices();
 
-    public void Draw(Matrix4 projection)
-    {
+    public void Draw() {
+        Matrix4 projection = Engine.Projection;
         GL.UseProgram(ShaderProgram);
         
         int locProj = GL.GetUniformLocation(ShaderProgram, "uProjection");

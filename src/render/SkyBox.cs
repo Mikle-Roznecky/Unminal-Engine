@@ -191,13 +191,8 @@ public class Skybox : IDisposable
         }
     }
 
-    /// <summary>
-    /// Renders the skybox using the specified view and projection matrices, temporarily modifying depth and culling states.
-    /// </summary>
-    /// <param name="view">The current camera view matrix, from which translation will be removed.</param>
-    /// <param name="projection">The current camera projection matrix.</param>
-    public void Draw(Matrix4 view, Matrix4 projection)
-    {
+    public void Draw() {
+        Matrix4 projection = Engine.Projection;
         bool depthTestEnabled = GL.IsEnabled(EnableCap.DepthTest);
         bool cullFaceEnabled = GL.IsEnabled(EnableCap.CullFace);
 
@@ -207,7 +202,7 @@ public class Skybox : IDisposable
 
         GL.UseProgram(_shaderProgram);
         
-        Matrix4 skyboxView = view;
+        Matrix4 skyboxView = Engine.View;
         skyboxView.Row3.X = 0;
         skyboxView.Row3.Y = 0;
         skyboxView.Row3.Z = 0;

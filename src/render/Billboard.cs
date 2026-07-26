@@ -59,7 +59,7 @@ public class Billboard {
         return this;
     }
 
-    public void Draw(Matrix4 view, Matrix4 projection) {
+    public void Draw() {
         if (!_isInitialized || _sharedShader == null || _sharedMesh == null) {
             throw new InvalidOperationException("Billboard is not initialized. Call Billboard.Initialize() first.");
         }
@@ -70,8 +70,8 @@ public class Billboard {
 
         _sharedShader.Use();
 
-        _sharedShader.SetMatrix4("view", view);
-        _sharedShader.SetMatrix4("projection", projection);
+        _sharedShader.SetMatrix4("view", Engine.View);
+        _sharedShader.SetMatrix4("projection", Engine.Projection);
 
         if (_locPos != -1) GL.Uniform3(_locPos, _position);
         if (_locScale != -1) GL.Uniform2(_locScale, _scale.X, _scale.Y);

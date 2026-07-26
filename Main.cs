@@ -106,6 +106,10 @@ public class Main : GameWindow {
         base.OnUpdateFrame(e);
         KeyboardState input = KeyboardState;
         MouseState mouse = MouseState;
+        Engine.Projection = _projection;
+        Engine.View = _view;
+        Engine.CurrentKeyboard = input;
+        Engine.CurrentMouse = mouse;
 
         if (!IsFocused) return;
 
@@ -172,8 +176,6 @@ public class Main : GameWindow {
         Engine.WindowSize = new Vector2i(Size.X, Size.Y);
         Engine.DeltaTime = (float)e.Time;
         Engine.TotalTime += e.Time;
-        Engine.CurrentKeyboard = KeyboardState;
-        Engine.CurrentMouse = MouseState;
 
         if (_activeCameraRef != null) {
             _projection = Matrix4.CreatePerspectiveFieldOfView(
@@ -195,10 +197,12 @@ public class Main : GameWindow {
             gameConsole.DrawConsole(Size.X, Size.Y);
         } 
 
+        Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Size.X, Size.Y, 0, -1, 1);
+        Engine.Ortho = ortho;
+
         // Debug Menu
         if (_textRenderer != null && Engine.GlobalWindowState.InDebugMenu && _activeCameraRef != null) {
             float TS = 0.5f;
-            Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, Size.X, Size.Y, 0, -1, 1);
             
             _debugTexts["name"] = $"Unminal V0.2.3";
             _debugTexts["fps"] = $"FPS: {1.0 / e.Time:F1}";
@@ -210,10 +214,10 @@ public class Main : GameWindow {
                 "Dir: {0:F1} {1:F1} {2:F1}", 
                 _activeCameraRef.Front.X, _activeCameraRef.Front.Y, _activeCameraRef.Front.Z);
     
-            _textRenderer.DrawString(_debugTexts["name"], 10, 7, TS, ortho, new Vector4(Colors.White, 1f), 2f);
-            _textRenderer.DrawString(_debugTexts["fps"], 10, 63, TS, ortho, new Vector4(Colors.White, 1f), 1f); 
-            _textRenderer.DrawString(_debugTexts["pos&fov"], 10, 91, TS, ortho, new Vector4(Colors.White, 1f), 1f);
-            _textRenderer.DrawString(_debugTexts["direction"], 10, 119, TS, ortho, new Vector4(Colors.White, 1f), 1f); 
+            _textRenderer.DrawString(_debugTexts["name"], 10, 7, TS, new Vector4(Colors.White, 1f), 2f);
+            _textRenderer.DrawString(_debugTexts["fps"], 10, 63, TS, new Vector4(Colors.White, 1f), 1f); 
+            _textRenderer.DrawString(_debugTexts["pos&fov"], 10, 91, TS, new Vector4(Colors.White, 1f), 1f);
+            _textRenderer.DrawString(_debugTexts["direction"], 10, 119, TS, new Vector4(Colors.White, 1f), 1f); 
 
         }
         Context.SwapBuffers();
