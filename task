@@ -5,7 +5,7 @@
 ======== Plan In order =========
 ================================
 
-1. Create class Billboard (draw with text)
+1. Create class Billboard (draw with text) (80% completed)
 2. Combine the "Text" & "RichTextSegment" classes into one
 3. Improve the quality of the text and add the ability to create an outline for the text
 4. Create more ui elements (text field, button, etc.)

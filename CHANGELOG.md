@@ -2,7 +2,7 @@
 # All changes in project Unminal (earlier EOCS)
 # Project create by Dov1ntc!
 
-## [0.2.4rs-1] - 2026.07.25
+## [0.2.4-prerelease-1] - 2026.07.25
 ### **Added**
 - Loaded paths are displayed in the console (not inside the game)
 - Simplify the creation of an object

@@ -61,7 +61,8 @@ public class Billboard {
 
     public void Draw() {
         if (!_isInitialized || _sharedShader == null || _sharedMesh == null) {
-            throw new InvalidOperationException("Billboard is not initialized. Call Billboard.Initialize() first.");
+            System.Console.WriteLine("[#red]Billboard is not initialized. Call Billboard.Initialize() first.");
+            return;
         }
 
         GL.Enable(EnableCap.DepthTest);
