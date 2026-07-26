@@ -191,7 +191,7 @@ public class Main : GameWindow {
 
         _lightingPipeline?.BeginFrame();
 
-        _userGame.Draw(_projection, _view);
+        _userGame.Draw();
 
         if (gameConsole != null && gameConsole.IsOpen) {
             gameConsole.DrawConsole(Size.X, Size.Y);

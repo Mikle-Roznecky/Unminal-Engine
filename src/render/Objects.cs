@@ -6,7 +6,7 @@ public class GameObject : IDisposable
     public Mesh? Mesh { get; set; }
     public Shader? Shader { get; set; }
     public Vector3 Position { get; set; } = Vector3.Zero;
-    public Vector3 Rotation { get; set; } = Vector3.Zero;
+    public Quaternion Orientation { get; set; } = Quaternion.Identity;
     public Vector3 Scale { get; set; } = Vector3.One;
     public Vector3 Color { get; set; } = Vector3.One;
     private bool _disposed = false;
@@ -53,17 +53,31 @@ public class GameObject : IDisposable
         Shader.SetVector3("objectColor", Color);
         Shader.SetVector3("viewPos", Engine.Player.CameraObj.Position);
         
-        Matrix4 model = Matrix4.Identity;
-        model *= Matrix4.CreateScale(Scale);
-        model *= Matrix4.CreateRotationX(Rotation.X);
-        model *= Matrix4.CreateRotationY(Rotation.Y);
-        model *= Matrix4.CreateRotationZ(Rotation.Z);
-        model *= Matrix4.CreateTranslation(Position);
+        Matrix4 model = Matrix4.CreateScale(Scale) 
+                    * Matrix4.CreateFromQuaternion(Orientation) 
+                    * Matrix4.CreateTranslation(Position);
         
         Shader.SetMatrix4("model", model);
         Shader.SetMatrix4("view", Engine.View);
         Shader.SetMatrix4("projection", Engine.Projection);
         Mesh.Draw();
+    }
+
+    public void Rotate(float angle, string axis) 
+    {
+        float radians = MathHelper.DegreesToRadians(angle * Engine.DeltaTime);
+        
+        Vector3 rotationAxis = axis.ToLower() switch 
+        {
+            "x" => Vector3.UnitX,
+            "z" => Vector3.UnitZ,
+            "y" => Vector3.UnitY,
+            _   => Vector3.Zero 
+        };
+
+        if (rotationAxis == Vector3.Zero) return;
+
+        Orientation = Quaternion.FromAxisAngle(rotationAxis, radians) * Orientation;
     }
 
     public void Dispose() {
