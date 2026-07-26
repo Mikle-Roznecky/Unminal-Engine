@@ -142,8 +142,7 @@ public class Main : GameWindow {
         if ((gameConsole == null || !gameConsole.IsOpen) && !Engine.GlobalWindowState.InPause) {
             _userGame.Update();
 
-            if (_userGame.ActiveCamera != null)
-            {
+            if (_userGame.ActiveCamera != null) {
                 _activeCameraRef = _userGame.ActiveCamera;
                 _view = _activeCameraRef.GetViewMatrix();
             }
@@ -229,7 +228,7 @@ public class Main : GameWindow {
         _lightManager?.Dispose();
         
         base.OnUnload();
-
+        _userGame.Unload();
         int currentX = this.Location.X;
         int currentY = this.Location.Y;
         Engine.ConfigManager?.SetConfig(newLocationX: $"{currentX}");

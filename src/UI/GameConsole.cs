@@ -17,8 +17,7 @@ public class GameConsole {
     Square _background = new Square(
         new Vector2(0, 0),
         new Vector2(200, 150),
-        new Vector3(0.0f, 1.0f, 0.0f),
-        0.5f,
+        new Vector4(0.0f, 1.0f, 0.0f, 0.5f),
         0
     );
 
@@ -85,10 +84,7 @@ public class GameConsole {
         {
             Console.WriteLine("[Console] cant read history file");
             return new List<string>();
-        }
-
-        try
-        {
+        } try {       
             return new List<string>(File.ReadAllLines(_pathToFileHistory));
         } catch (Exception e) {
             Console.WriteLine($"[Console] cant read history file {e}");
@@ -114,11 +110,10 @@ public class GameConsole {
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, width, height, 0, -1, 1);
 
-        _background.Position = new Vector2(width / 2f, height / 2f);
+        _background.Position = new Vector2(0, 0);
         _background.Scale = new Vector2(width, height);
 
-        _background.Color = new Vector3(0.0f, 0.0f, 0.0f);
-        _background.Alpha = 0.5f;
+        _background.Color = new Vector4(0.0f, 0.0f, 0.0f, 0.5f);
 
         _background.Draw(ortho);
 

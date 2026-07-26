@@ -1,7 +1,7 @@
 namespace Unminal.Render.Objects;
 
 [SupportedOSPlatform("windows")]
-public class GameObject
+public class GameObject : IDisposable
 {
     public Mesh? Mesh { get; set; }
     public Shader? Shader { get; set; }
@@ -9,7 +9,7 @@ public class GameObject
     public Vector3 Rotation { get; set; } = Vector3.Zero;
     public Vector3 Scale { get; set; } = Vector3.One;
     public Vector3 Color { get; set; } = Vector3.One;
-    
+    private bool _disposed = false;
     private static Shader? _defaultShader;
 
     public GameObject(Mesh mesh, Shader shader) {
@@ -61,5 +61,26 @@ public class GameObject
         Shader.SetMatrix4("view", viewMatrix);
         Shader.SetMatrix4("projection", projectionMatrix);
         Mesh.Draw();
+    }
+
+    public void Dispose() {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing) {
+        if (!_disposed) {
+            if (disposing) {
+                Mesh?.Dispose();
+            }
+            Mesh = null;
+            Shader = null;
+            
+            _disposed = true;
+        }
+    }
+
+    ~GameObject() {
+        Dispose(false);
     }
 }
