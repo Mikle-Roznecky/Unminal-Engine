@@ -11,15 +11,17 @@ public static class GetPath {
 
         string normalized = virtualPath.Trim();
         bool isAssets = normalized.StartsWith("assets:/", StringComparison.OrdinalIgnoreCase) ||
-                        normalized.StartsWith(@"assets:\", StringComparison.OrdinalIgnoreCase);
+                    normalized.StartsWith(@"assets:\", StringComparison.OrdinalIgnoreCase);
         bool isData = normalized.StartsWith("data:/", StringComparison.OrdinalIgnoreCase) ||
-                      normalized.StartsWith(@"data:\", StringComparison.OrdinalIgnoreCase);
+                    normalized.StartsWith(@"data:\", StringComparison.OrdinalIgnoreCase);
         bool isFont = normalized.StartsWith("font:/", StringComparison.OrdinalIgnoreCase) ||
-                      normalized.StartsWith(@"font:\", StringComparison.OrdinalIgnoreCase);
+                    normalized.StartsWith(@"font:\", StringComparison.OrdinalIgnoreCase);
         bool isObj = normalized.StartsWith("obj:/", StringComparison.OrdinalIgnoreCase) ||
-                     normalized.StartsWith(@"obj:\", StringComparison.OrdinalIgnoreCase);
+                    normalized.StartsWith(@"obj:\", StringComparison.OrdinalIgnoreCase);
         bool isShader = normalized.StartsWith("shader:/", StringComparison.OrdinalIgnoreCase) ||
-                     normalized.StartsWith(@"shader:\", StringComparison.OrdinalIgnoreCase);
+                    normalized.StartsWith(@"shader:\", StringComparison.OrdinalIgnoreCase);
+        bool isTexture = normalized.StartsWith("texture:/", StringComparison.OrdinalIgnoreCase) ||
+                    normalized.StartsWith(@"texture:\", StringComparison.OrdinalIgnoreCase);
 
         string cleanPath;
         string basePath;
@@ -39,6 +41,9 @@ public static class GetPath {
         } else if (isShader) {
             cleanPath = normalized.Substring(8);
             basePath = Engine.Paths.Shader;
+        } else if (isTexture) {
+            cleanPath = normalized.Substring(9);
+            basePath = Engine.Paths.Textures;
         } else {
             cleanPath = normalized;
             if (cleanPath.StartsWith("./", StringComparison.Ordinal) || cleanPath.StartsWith(@".\", StringComparison.Ordinal))

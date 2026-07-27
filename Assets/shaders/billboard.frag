@@ -1,8 +1,16 @@
 #version 330 core
 out vec4 FragColor;
 
-uniform vec4 color;
+in vec2 TexCoord;
+
+uniform sampler2D billboardTex;
 
 void main() {
-    FragColor = color; 
+    vec4 texColor = texture(billboardTex, TexCoord);
+    
+    if (texColor.a < 0.01) {
+        discard;
+    }
+    
+    FragColor = texColor; 
 }

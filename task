@@ -12,9 +12,8 @@
 5. Better Console UI (currently, there is only one name for the UI in the console...)
 6. Extensions \ Plugins
 7. Complete class "Config"
-8. Create class Billboard (draw with castom texture)
-9. Creating primitive shapes from a box (cube, ball, etc.) (3D)
-10. Loading textures for objects
+8. Creating primitive shapes from a box (cube, ball, etc.) (3D)
+9. Loading textures for objects
 
 ================================
 ========== ✔ Done ✔ ===========
@@ -27,6 +26,7 @@
 5. Divide the console class into different (25.07)
 6. Simplify the creation of an object (in any way) (25.07) I thought it would be more difficult
 7. Creating primitive shapes from a box (square, circle, triangle, etc.) (2D) (26.07)
+8. Create class Billboard (draw with castom texture) (27.07)
 
 ================================ 
 ======== optimization ==========

@@ -6,10 +6,11 @@ public class MyGame : BaseGame {
     private List<GameObject> _objects = new List<GameObject>();
     private Skybox? skybox;
     private Text? _textRenderer;
+    public string Cat = "";
 
     public override void Load(Matrix4 initialProjection) {
         ActiveCamera = new Camera(new Vector3(0, 0, 0), -90.0f, 0.0f);
-
+        Cat = GetPath.GetCorrectPath("texture:/cat.png");
         _objects = LoadObjects(_objects);
 
         Engine.LightManager?.ClearLights();
@@ -43,8 +44,7 @@ public class MyGame : BaseGame {
 
         new Billboard()
             .Position(new Vector3(15, 8, -40)).Scale(new Vector2(8.0f, 5.0f))
-            .Color(new Vector4(Colors.DarkRed, 1)).Draw();
-        
+            .Texture(Cat).Draw();
         if (Scene.circle == null) return;
         Scene.circle.Draw();
     }

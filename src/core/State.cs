@@ -48,7 +48,8 @@ public static class Engine {
         public static string Objects = @"Assets\objects\";
         public static string Data = @"Assets\data\";
         public static string Font = @"Assets\fonts\";
-        public static string Shader = @"Assets\Shaders\";
+        public static string Shader = @"Assets\shaders\";
+        public static string Textures = @"Assets\textures\";
         public static readonly string[] BaseSkyBoxAssets = {
             "./Assets/SkyBox/right.png",
             "./Assets/SkyBox/left.png",

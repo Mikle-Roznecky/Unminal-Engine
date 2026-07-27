@@ -6,9 +6,7 @@ public class Mesh : IDisposable
 {
     private int _vao, _vbo, _ebo, _indexCount, _vertexCount;
 
-    public Mesh(float[] vertices, uint[] indices)
-    {
-        _vertexCount = vertices.Length / 3;
+    public Mesh(float[] vertices, uint[] indices, int[] attributes) {
         _indexCount = indices.Length;
 
         _vao = GL.GenVertexArray();
@@ -30,17 +28,27 @@ public class Mesh : IDisposable
                       BufferUsageHint.StaticDraw
         );
 
+        int totalComponents = 0;
+        foreach (int count in attributes) {
+            totalComponents += count;
+        }
+        int stride = totalComponents * sizeof(float);
 
-        int stride = 6 * sizeof(float);
+        int offset = 0;
+        for (int i = 0; i < attributes.Length; i++) {
+            int componentCount = attributes[i];
+            
+            GL.VertexAttribPointer(i, componentCount, VertexAttribPointerType.Float, false, stride, offset);
+            GL.EnableVertexAttribArray(i);
 
-        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, stride, 0);
-        GL.EnableVertexAttribArray(0);
-
-        GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, stride, 3 * sizeof(float));
-        GL.EnableVertexAttribArray(1);
+            offset += componentCount * sizeof(float);
+        }
 
         GL.BindVertexArray(0);
     }
+
+    public Mesh(float[] vertices, uint[] indices) 
+        : this(vertices, indices, new int[] { 3, 3 }) {}
 
     public void Draw()
     {
