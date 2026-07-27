@@ -145,6 +145,13 @@ public static class Colors
         return (false, len);
     }
 
+    public static Vector3 VEC3toRGB(Vector3 color) {
+        byte r = (byte)(color[0] * 255);
+        byte g = (byte)(color[1] * 255);
+        byte b = (byte)(color[2] * 255);
+        return new Vector3(r, g, b);
+    }
+
     public static (bool IsValid, int Length) IsValidHEX(Vector4 color) {
         bool valid = color.X is >= 0f and <= 1f &&
                     color.Y is >= 0f and <= 1f &&

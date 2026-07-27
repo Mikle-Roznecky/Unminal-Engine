@@ -1,6 +1,7 @@
 // camera.cs
 namespace Unminal.Core.PlayerCamera;
 
+[SupportedOSPlatform("windows")]
 public class Camera {
     public Vector3 Front => _front;
     public Vector3 Position { get; set; }
@@ -69,7 +70,7 @@ public class Camera {
     /// <param name="deltaTime">The time elapsed since the previous frame (for smooth animation).</param>
     public void ProcessInput(KeyboardState? input, float deltaTime) {
         if (input == null) {
-            System.Console.WriteLine("[#red] Input is null");
+            Console.WriteLine("[#red] Input is null");
             return;
         }
         float velocity = MoveSpeed * deltaTime;

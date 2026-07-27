@@ -9,7 +9,7 @@ public class RichTextSegment {
         defaultColor = DefaultColor;
     }
 
-    private List<TextPart> ParseColor(string text, Vector4 DefaultColor)  {
+    public static List<TextPart> ParseColor(string text, Vector4 DefaultColor)  {
         var Parts = new List<TextPart>{};
         string parsedText = text;
         var (IsValidColor, LenColor) = Colors.IsValidHEX(DefaultColor); 
@@ -50,7 +50,7 @@ public class RichTextSegment {
         }
     }
 
-    private struct TextPart {
+    public struct TextPart {
         public string Text;
         public Vector4 TextColor;
     }   

@@ -7,7 +7,7 @@ public class Main : GameWindow {
     float _initialFov = MathHelper.PiOver4;
     private Text? _textRenderer;
     private Camera? _activeCameraRef; 
-    private GameConsole? gameConsole;
+    private Console? gameConsole;
     private LightManager? _lightManager;
     private ILightingPipeline? _lightingPipeline;
     private Dictionary<string, string> _debugTexts = new();
@@ -30,7 +30,7 @@ public class Main : GameWindow {
     protected override void OnLoad() {
         base.OnLoad(); 
 
-        gameConsole = new GameConsole();
+        gameConsole = new Console();
 
         if (Engine.ConfigManager != null) {
             bool vsync = Engine.ConfigManager.GetConfig<bool>("VSync");
@@ -140,7 +140,7 @@ public class Main : GameWindow {
                 if (Engine.CanF3) {
                     Engine.GlobalWindowState.InDebugMenu = !Engine.GlobalWindowState.InDebugMenu;
                 } else {
-                    System.Console.WriteLine("[#red][INFO]: No permission to use the debug menu");
+                    Console.WriteLine("[#red][INFO]: No permission to use the debug menu");
                 }
             }
 

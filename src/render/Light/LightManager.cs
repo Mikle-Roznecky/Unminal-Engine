@@ -6,6 +6,7 @@ namespace Unminal.Render.Light;
 /// Manages all light sources and handles the Uniform Buffer Object (UBO) 
 /// for efficient GPU data transfer.
 /// </summary>
+[SupportedOSPlatform("windows")]
 public class LightManager : IDisposable
 {
     public const int MaxLights = 1000; 

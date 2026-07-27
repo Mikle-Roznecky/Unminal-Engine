@@ -7,6 +7,7 @@ using System.ComponentModel;
 
 namespace Unminal.Utils.ConfigManager;
 
+[SupportedOSPlatform("windows")]
 public class Config {
     string fileConfig = GetPath.GetPath.GetCorrectPath(Engine.Paths.Config.MainConfig);
 

@@ -1,5 +1,6 @@
 namespace Unminal.Render.Primitive._2D;
 
+[SupportedOSPlatform("windows")]
 public class Circle : Primitive2D {
     private readonly short _segments;
     private readonly float _radius;

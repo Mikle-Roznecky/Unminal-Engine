@@ -1,5 +1,6 @@
 namespace Unminal.Core.Commands.Processor;
 
+[SupportedOSPlatform("windows")]
 public static class ArgumentProcessor {
     public static Dictionary<string, object> Process(Command command, List<string> userTokens) {
         var finalArgs = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);

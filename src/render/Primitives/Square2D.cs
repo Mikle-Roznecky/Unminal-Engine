@@ -1,5 +1,6 @@
 namespace Unminal.Render.Primitive._2D;
 
+[SupportedOSPlatform("windows")]
 public class Square : Primitive2D {
     public Square(Vector2 position, Vector2 scale, Vector4 color, float rotation) {
         Position = position;

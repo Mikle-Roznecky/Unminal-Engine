@@ -1,6 +1,7 @@
 namespace Unminal.Core.Commands.Executor;
 using System.Reflection;
 
+[SupportedOSPlatform("windows")]
 public static class CommandExecutor {
     public static void Execute(string Excommand, ParserCommands parserCommands) {
         if (string.IsNullOrWhiteSpace(Excommand)) return;
@@ -71,12 +72,12 @@ public static class CommandExecutor {
         if (method != null) {
             bool result = (method.Invoke(null, new object[] { finalArgs }) as bool?) ?? false;
             if (!result) {
-                System.Console.WriteLine($"[#red]Something went wrong with executing method: \"{current.Name}\"");
+                Console.WriteLine($"[#red]Something went wrong with executing method: \"{current.Name}\"");
             } else {
-                System.Console.WriteLine("[#green] Executed");
+                Console.WriteLine("[#green] Executed");
             }
         } else {
-            System.Console.WriteLine($"[#red]Method \"{current.ExecuteMethod}\" not found");
+            Console.WriteLine($"[#red]Method \"{current.ExecuteMethod}\" not found");
         }
     }   
 }

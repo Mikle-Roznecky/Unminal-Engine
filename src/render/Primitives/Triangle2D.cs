@@ -1,5 +1,6 @@
 namespace Unminal.Render.Primitive._2D;
 
+[SupportedOSPlatform("windows")]
 public class Triangle : Primitive2D {
     public Triangle(Vector2 position, float scale, Vector4 color, float rotation, Vector2? pivotPoint = null) {
         Position = position;

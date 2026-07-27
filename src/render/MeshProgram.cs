@@ -4,7 +4,7 @@ namespace Unminal.Render.MeshProgram;
 [SupportedOSPlatform("windows")]
 public class Mesh : IDisposable
 {
-    private int _vao, _vbo, _ebo, _indexCount, _vertexCount;
+    private int _vao, _vbo, _ebo, _indexCount;
 
     public Mesh(float[] vertices, uint[] indices, int[] attributes) {
         _indexCount = indices.Length;

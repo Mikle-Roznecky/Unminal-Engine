@@ -1,5 +1,6 @@
 namespace Unminal.Core.State;
 
+[SupportedOSPlatform("windows")]
 public static class Engine {
     // Window state
     public static LightManager? LightManager { get; set; }

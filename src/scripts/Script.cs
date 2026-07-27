@@ -28,10 +28,13 @@ public class MyGame : BaseGame {
 
     public override void Update() {
         base.Update();
+        if (Engine.Player.CameraObj == null) return;
 
+        #pragma warning disable  
         Scene.teapot1.Rotate(90f, "x");
         Scene.cube1.Rotate(90f, "y");
         Scene.cube2.Rotate(90f, "z");
+        #pragma warning restore
 
         Engine.LightManager?.ClearLights();
         Engine.LightManager?.AddLight(new LightData(Engine.Player.CameraObj.Position, Colors.White, 30f));

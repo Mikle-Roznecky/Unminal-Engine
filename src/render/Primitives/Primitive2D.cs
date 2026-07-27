@@ -1,7 +1,7 @@
 namespace Unminal.Render.Primitive._2D;
 
-public abstract class Primitive2D : IDisposable
-{
+[SupportedOSPlatform("windows")]
+public abstract class Primitive2D : IDisposable {
     protected int VBO;
     protected int VAO;
     protected int ShaderProgram = -1;

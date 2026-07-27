@@ -58,7 +58,7 @@ public class Atlas : IDisposable
             
             if (currentY + size.Height > Height)
             {
-                GameConsole.GameConsole.Instance?.Log("Warning", $"Font atlas overflow! Symbol: '{c}'");
+                Console.Instance?.Log("Warning", $"Font atlas overflow! Symbol: '{c}'");
                 break;
             }
 
@@ -84,7 +84,7 @@ public class Atlas : IDisposable
             Directory.CreateDirectory(dirName);
         }
         bitmap.Save(outputPath, ImageFormat.Png);
-        GameConsole.GameConsole.Instance?.Log("Debug", $"Font atlas saved to: {outputPath}");
+        Console.Instance?.Log("Debug", $"Font atlas saved to: {outputPath}");
 
         LoadTextureToOpenGL(bitmap);
     }

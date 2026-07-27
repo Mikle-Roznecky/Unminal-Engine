@@ -1,11 +1,11 @@
-namespace Unminal.UI.GameConsole;
+namespace Unminal.Core.EngineConsole;
 using System.Runtime.CompilerServices;
 
 [SupportedOSPlatform("windows")]
-public class GameConsole {
+public class Console {
     public bool IsOpen {get; private set;} = false;
     public List<string> History {get; private set;} = new List<string>();
-    public static GameConsole? Instance { get; private set; }
+    public static Console? Instance { get; private set; }
     private Text? _textRenderer;
     private RichTextSegment? _richTextRenderer;
     public string InputedCommand {get; private set;} = "";
@@ -21,7 +21,7 @@ public class GameConsole {
         0
     );
 
-    public GameConsole(bool isOpen = false) {
+    public Console(bool isOpen = false) {
         Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
@@ -92,17 +92,38 @@ public class GameConsole {
         }
     }
      
-    private void WriteHistory(string command)
-    {
+    private void WriteHistory(string command) {
         try {
             File.AppendAllText(_pathToFileHistory, command + Environment.NewLine);
         } catch (Exception e) {
             Console.WriteLine($"[Console] Error write command history: {e}");
+            
         }
     }   
 
-    public void DrawConsole(int width, int height)
-    {
+    public static void WriteLine(object text){
+        string safeText = text?.ToString() ?? string.Empty;
+        List<RichTextSegment.TextPart> Parts;
+        Parts = RichTextSegment.ParseColor(safeText, new Vector4(Colors.White, 1));
+        foreach (RichTextSegment.TextPart part in Parts) { 
+            Vector3 vec3Color = Colors.VEC3toRGB(new Vector3(part.TextColor));
+            System.Console.Write($"\x1b[38;2;{vec3Color[0]};{vec3Color[1]};{vec3Color[2]}m{part.Text}\x1b[0m");
+        }
+        System.Console.Write("\x1b[0m\n");
+    }
+
+    public static void Write(object text){
+        string safeText = text?.ToString() ?? string.Empty;
+        List<RichTextSegment.TextPart> Parts;
+        Parts = RichTextSegment.ParseColor(safeText, new Vector4(Colors.White, 1));
+        foreach (RichTextSegment.TextPart part in Parts) { 
+            Vector3 vec3Color = Colors.VEC3toRGB(new Vector3(part.TextColor));
+            System.Console.Write($"\x1b[38;2;{vec3Color[0]};{vec3Color[1]};{vec3Color[2]}m{part.Text}\x1b[0m");
+        }
+         System.Console.Write("\x1b[0m");
+    }
+
+    public void DrawConsole(int width, int height) {
         if (!IsOpen) return;
         GL.Disable(EnableCap.DepthTest);
         GL.Enable(EnableCap.Blend);

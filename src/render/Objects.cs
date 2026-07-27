@@ -42,7 +42,7 @@ public class GameObject : IDisposable
 
     public void Draw() {
         if (Engine.Player.CameraObj == null) {
-            System.Console.WriteLine("[#red][WARNING] Camera is null");
+            Console.WriteLine("[#red][WARNING] Camera is null");
             return;
         }
         if (Mesh == null || Shader == null) return;
