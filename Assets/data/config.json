@@ -1,7 +1,8 @@
 {
   "Changeable": {
     "Title": "Unminal Engine",
-    "Debug": false,
+    "Debug": true,
+    "Canf3": true,
     "WindowSettings": {
         "VSync": false,
         "Height": 900,

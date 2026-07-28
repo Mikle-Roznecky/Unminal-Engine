@@ -43,8 +43,7 @@ public class Camera {
         UpdateVectors();
     }
 
-    public Matrix4 GetViewMatrix()
-    {
+    public Matrix4 GetViewMatrix() {
         return Matrix4.LookAt(Position, Position + _front, _up);
     }
 

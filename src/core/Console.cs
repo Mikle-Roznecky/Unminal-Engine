@@ -10,9 +10,12 @@ public class Console {
     private RichTextSegment? _richTextRenderer;
     public string InputedCommand {get; private set;} = "";
     private bool _wasToggleKeyPressed = false;
-    private readonly string _pathToFileHistory = GetPath.GetCorrectPath(Engine.Paths.Config.ConsoleHistoryL);
+    private readonly string _pathToFileHistory = GetPath.GetCorrectPath(Engine.Paths.Config.ConsoleHistory);
     private KeyboardState? _prevInput;
     private ParserCommands parserCommands; 
+    public enum LogType {
+        ERROR, INFO, WARNING 
+    }
 
     Square _background = new Square(
         new Vector2(0, 0),
@@ -25,7 +28,7 @@ public class Console {
         Instance = this;
         History = ReadHistory();
         IsOpen = isOpen;
-        parserCommands = new ParserCommands(GetPath.GetCorrectPath(Engine.Paths.Config.CommandConfigJ));
+        parserCommands = new ParserCommands(GetPath.GetCorrectPath(Engine.Paths.Config.CommandConfig));
         _richTextRenderer = new RichTextSegment(new Vector4(1, 1, 1, 1));
         _textRenderer = new Text(
             GetPath.GetCorrectPath(Engine.Paths.Fonts.PFAgoraSlabPro_Bold),
@@ -121,6 +124,32 @@ public class Console {
             System.Console.Write($"\x1b[38;2;{vec3Color[0]};{vec3Color[1]};{vec3Color[2]}m{part.Text}\x1b[0m");
         }
          System.Console.Write("\x1b[0m");
+    }
+
+    public static void CreateLog(LogType Level, string LogText, bool CrashGame = false, string CrashError = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0){
+        LogToSystemConsole(Level, LogText, CrashGame, CrashError: CrashError, file: file, line: line);
+        LogToGameConsole(Level, LogText, CrashGame);
+    }
+
+    private static void LogToSystemConsole(LogType Level, string LogText, bool CrashGame = false, string CrashError = "", [CallerFilePath] string file = "", [CallerLineNumber] int line = 0){
+        var (prefix, textcolor, resetcolor) = Level switch {
+            LogType.ERROR => ("[#red][ERROR] ", "[#crimson]", " [#darkgrey]"),
+            LogType.INFO =>  ("[#cornflowerblue][INFO] ", "[#white]", " [#darkgrey]"),
+            LogType.WARNING => ("[#yellow][WARNING] ", "[#gold]", " [#darkgrey]"),
+            _ => ("[#white][LOG]", "[#white]", "[#white]")
+        };
+
+        string calledFileName = Path.GetFileName(file);
+        Console.WriteLine($"{prefix}{textcolor}{LogText}{resetcolor}Called in {calledFileName}:{line}");
+
+        if (CrashGame) {
+            string message = string.IsNullOrWhiteSpace(CrashError) ? "Game Crashed!" : $"Game Crashed: {CrashError}";
+            throw new Crash(message);
+        }
+    }
+
+    private static void LogToGameConsole(LogType Level, string LogText, bool CrashGame = false){
+        
     }
 
     public void DrawConsole(int width, int height) {

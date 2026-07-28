@@ -13,7 +13,7 @@ public class Main : GameWindow {
     private Dictionary<string, string> _debugTexts = new();
 
     public Main(BaseGame userGame) : base(
-            new GameWindowSettings() { UpdateFrequency = 60 }, 
+            new GameWindowSettings() { UpdateFrequency = 0 }, 
             new NativeWindowSettings(){ 
                 Location =  new Vector2i(Engine.ConfigManager.GetConfig<int>("LocationX"), Engine.ConfigManager.GetConfig<int>("LocationY")),
                 ClientSize = new Vector2i(Engine.ConfigManager.GetConfig<int>("Width"), Engine.ConfigManager.GetConfig<int>("Height")),

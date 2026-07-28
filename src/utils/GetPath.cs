@@ -53,7 +53,7 @@ public static class GetPath {
             basePath = Engine.Paths.BaseFolder;
         }
 
-        Console.WriteLine($"[#CornflowerBlue][INFO] [#white]Load file: {Path.Combine(basePath, cleanPath.Trim())} [#darkgrey]in {Path.GetFileName(file)} on line: {line}");
+        Console.CreateLog(Console.LogType.INFO, $"Load file: {Path.Combine(basePath, cleanPath.Trim())}", file:file, line:line);
         return Path.Combine(basePath, cleanPath.Trim());
     }
 

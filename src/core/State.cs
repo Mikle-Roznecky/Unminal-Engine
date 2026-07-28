@@ -12,7 +12,7 @@ public static class Engine {
     public static KeyboardState? CurrentKeyboard {get; set;}
     public static MouseState? CurrentMouse {get; set;}
     // Menu state
-    public static bool CanF3 {get; set;}
+    public static bool CanF3 {get; set;} = true;
     public static bool IsDebug {get; set;}
     public static bool ShowLight { get; set; } = false;
     // Matrix
@@ -61,14 +61,12 @@ public static class Engine {
         };
         public class Config {
             private static readonly Dictionary<string, string> _ = new() {
-                ["CommandConfigJ"] = "./Assets/data/CommandExecutorConfig.json", 
-                ["ConsoleHistoryL"] = "./Assets/data/ConsoleHistory.log",
-                ["ConsoleHistoryJ"] = "./Assets/data/ConsoleHistory.json",
+                ["CommandConfig"] = "./Assets/data/CommandExecutorConfig.json", 
+                ["ConsoleHistory"] = "./Assets/data/ConsoleHistory.log",
                 ["MainConfig"] = "./Assets/data/config.json"
             };
-            public static string CommandConfigJ => _["CommandConfigJ"];
-            public static string ConsoleHistoryL => _["ConsoleHistoryL"]; 
-            public static string ConsoleHistoryJ => _["ConsoleHistoryJ"];
+            public static string CommandConfig => _["CommandConfig"];
+            public static string ConsoleHistory => _["ConsoleHistory"]; 
             public static string MainConfig => _["MainConfig"];
         }
         public class Shaders {
